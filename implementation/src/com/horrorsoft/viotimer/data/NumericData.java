@@ -1,7 +1,5 @@
 package com.horrorsoft.viotimer.data;
 
-import android.util.Log;
-
 /**
  * Created with IntelliJ IDEA.
  * User: alexey
@@ -41,8 +39,8 @@ public class NumericData extends CommonData {
 
     @Override
     public String getDataDescription() {
-        String formatString = "%s%." + precision + "f%s";
-        String strValue = String.format(formatString, prefix, (getCurrentValue() / 1.0) / divider , suffix);
+        String formatString = "%s%." + getPrecision() + "f%s";
+        String strValue = String.format(formatString, getPrefix(), (getCurrentValue() / 1.0) / getDivider(), getSuffix());
         return String.format(super.getDataDescription(), strValue);
     }
 
@@ -75,10 +73,21 @@ public class NumericData extends CommonData {
     }
 
     public String getSuffix() {
-        return suffix;
+        if (suffix == null)
+            return "";
+        else
+            return suffix;
     }
 
     public String getPrefix() {
-        return prefix;
+        if (prefix == null)
+            return "";
+        else
+            return prefix;
+    }
+
+    @Override
+    public int getType() {
+        return ICommonData.TYPE_NUMERIC;
     }
 }

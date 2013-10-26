@@ -23,9 +23,14 @@ public class RadioButtonAndComboBoxData extends CommonData {
         return returnIndex;
     }
 
-    public enum TypeOfData {
-        RadioButton,
-        ComboBox
+    public int getCurrentIndex() {
+        return getItemIndexByValue(getCurrentValue());
+    }
+
+    public void setCurrentValueByIndex(int selectedIndex) {
+        if (selectedIndex >= 0 && selectedIndex < listOfItemData.size()) {
+            setCurrentValue(listOfItemData.get(selectedIndex).value);
+        }
     }
 
     public class ItemData {
@@ -39,7 +44,7 @@ public class RadioButtonAndComboBoxData extends CommonData {
     }
 
     private int size;
-    private TypeOfData typeOfData;
+    private int typeOfData;
     private List<ItemData> listOfItemData;
 
     public List<ItemData> getListOfItemData() {
@@ -50,12 +55,13 @@ public class RadioButtonAndComboBoxData extends CommonData {
         listOfItemData.add(new ItemData(itemValue, itemDescription));
     }
 
-    public RadioButtonAndComboBoxData(TypeOfData typeOfData) {
+    public RadioButtonAndComboBoxData(int typeOfData) {
         this.typeOfData = typeOfData;
         listOfItemData = new ArrayList<ItemData>();
     }
 
-    TypeOfData getTypeOfData() {
+    @Override
+    public int getType() {
         return typeOfData;
     }
 
@@ -79,7 +85,7 @@ public class RadioButtonAndComboBoxData extends CommonData {
     private String getDescriptionByValue(int value) {
         int index = getItemIndexByValue(value);
         if (index < 0) {
-            return getTypeOfData() == TypeOfData.ComboBox ?
+            return getType() == ICommonData.TYPE_COMBOBOX ?
                     "Undefined description for combobox" :
                     "Undefined description for radiobutton";
         } else {

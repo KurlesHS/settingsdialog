@@ -2,6 +2,7 @@ package com.horrorsoft.viotimer;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.data.NumericData;
 import com.horrorsoft.viotimer.data.RadioButtonAndComboBoxData;
 import com.horrorsoft.viotimer.data.Separator;
@@ -9,14 +10,14 @@ import com.horrorsoft.viotimer.data.Separator;
 import java.util.Arrays;
 
 /**
- * This is a simple framework for a test of an Application.  See
+ * This is a simple framework for a test_json of an Application.  See
  * {@link android.test.ApplicationTestCase ApplicationTestCase} for more information on
  * how to write and extend Application tests.
  * <p/>
- * To run this test, you can type:
+ * To run this test_json, you can type:
  * adb shell am instrument -w \
  * -e class com.horrorsoft.viotimer.MyActivityTest \
- * com.horrorsoft.viotimer.tests/android.test.InstrumentationTestRunner
+ * com.horrorsoft.viotimer.tests/android.test_json.InstrumentationTestRunner
  */
 public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity> {
 
@@ -66,9 +67,11 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         numericData.setMinValue(maxValue);
         numericData.setMaxValue(maxValue);
 
+        ICommonData commonData = numericData;
+
         // Проверка описания занчения
-        boolean firstTry = expectedDataDescription.equals(numericData.getDataDescription());
-        boolean secondTry = expectedDataDescription2.equals(numericData.getDataDescription());
+        boolean firstTry = expectedDataDescription.equals(commonData.getDataDescription());
+        boolean secondTry = expectedDataDescription2.equals(commonData.getDataDescription());
         assertTrue(firstTry || secondTry);
 
         value = 0x123456;
@@ -83,7 +86,7 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
 
     public void testRadioButtonAndComboboxData() {
         RadioButtonAndComboBoxData radioButtonAndComboBoxData =
-                new RadioButtonAndComboBoxData(RadioButtonAndComboBoxData.TypeOfData.RadioButton);
+                new RadioButtonAndComboBoxData(ICommonData.TYPE_COMBOBOX);
         int size = 2;
         int pointer = 34;
         String description = "I'm combobox or radiobutton";

@@ -12,4 +12,9 @@ public class Separator extends CommonData {
     public boolean isSeparator() {
         return true;
     }
+
+    @Override
+    public int getType() {
+        return ICommonData.TYPE_SEPARATOR;
+    }
 }

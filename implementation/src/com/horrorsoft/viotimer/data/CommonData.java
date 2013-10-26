@@ -1,7 +1,5 @@
 package com.horrorsoft.viotimer.data;
 
-import android.util.Log;
-
 /**
  * Created with IntelliJ IDEA.
  * User: alexey
@@ -34,6 +32,11 @@ public class CommonData implements ICommonData {
 
     public void setDataDescription(String dataDescription) {
         this.dataDescription = dataDescription;
+    }
+
+    @Override
+    public int getType() {
+        return ICommonData.TYPE_UNKNOWN;
     }
 
     @Override

@@ -5,17 +5,17 @@
           android:versionCode="1"
           android:versionName="1.0">
     <!-- We add an application tag here just so that we can indicate that
-         this package needs to link against the android.test library,
-         which is needed when building test cases. -->
+         this package needs to link against the android.test_json library,
+         which is needed when building test_json cases. -->
     <uses-sdk android:minSdkVersion="6"/>
 
     <application>
         <uses-library android:name="android.test.runner"/>
     </application>
     <!--
-    This declares that this application uses the instrumentation test runner targeting
+    This declares that this application uses the instrumentation test_json runner targeting
     the package of com.horrorsoft.viotimer.  To run the tests use the command:
-    "adb shell am instrument -w com.horrorsoft.viotimer.tests/android.test.InstrumentationTestRunner"
+    "adb shell am instrument -w com.horrorsoft.viotimer.tests/android.test_json.InstrumentationTestRunner"
     -->
     <instrumentation android:name="android.test.InstrumentationTestRunner"
                      android:targetPackage="com.horrorsoft.viotimer"
