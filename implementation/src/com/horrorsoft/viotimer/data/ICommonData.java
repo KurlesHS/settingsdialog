@@ -5,7 +5,6 @@ package com.horrorsoft.viotimer.data;
  * User: alexey
  * Date: 23.10.13
  * Time: 23:45
- * To change this template use File | Settings | File Templates.
  */
 public interface ICommonData {
     public static final int TYPE_UNKNOWN = 0;

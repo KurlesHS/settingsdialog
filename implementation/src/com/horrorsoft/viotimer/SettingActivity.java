@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -15,10 +17,6 @@ import com.horrorsoft.viotimer.data.NumericData;
 import com.horrorsoft.viotimer.data.RadioButtonAndComboBoxData;
 import com.horrorsoft.viotimer.data.Separator;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +28,12 @@ import java.util.List;
  */
 
 
-public class SettingActivity extends SherlockActivity implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener, View.OnClickListener, View.OnLongClickListener {
+public class SettingActivity extends SherlockActivity implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener, View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
 
     //private static String LOG_TAG = "MyTag";
     final static int EDIT_SETTING_DIALOG = 1;
+    final static int PLUS_OPERATION = 1;
+    final static int MINUS_OPERATION = 2;
     List<ICommonData> listOfData;
     byte[] array;
     String xmlData;
@@ -41,6 +41,55 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     int lastPosition;
     int lastComboboxOrRadiobuttonIndexSelected;
     View viewForSpinBoxDialog;
+    int plusOrMinusMode;
+
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            NumericData numericData = (NumericData) dataForDialog;
+            if (numericData != null) {
+                int currentValue = numericData.getCurrentValue();
+                int step = numericData.getStep();
+                int minValue = numericData.getMinValue();
+                int maxValue = numericData.getMaxValue();
+                int newValue = minValue;
+                boolean ok = false;
+                switch (plusOrMinusMode) {
+                    case MINUS_OPERATION: {
+                        Log.d("MyTag", "numeric minus");
+                        newValue = currentValue - step;
+                        if (newValue < minValue)
+                            newValue = minValue;
+                        ok = true;
+                    }
+                    break;
+                    case PLUS_OPERATION: {
+                        Log.d("MyTag", "numeric plus");
+                        newValue = currentValue + step;
+                        if (newValue > maxValue) {
+                            newValue = maxValue;
+                        }
+                        ok = true;
+                    }
+                    break;
+                    default:
+                        break;
+                }
+                if (ok) {
+                    numericData.setCurrentValue(newValue);
+                    if (viewForSpinBoxDialog != null) {
+                        EditText editText = (EditText) viewForSpinBoxDialog.findViewById(R.id.editTextSpinBox);
+                        editText.setText(IntWithDividerAndPrecisionToString(newValue, numericData.getDivider(), numericData.getPrecision()));
+                    }
+                }
+            }
+
+            timerHandler.postDelayed(this, 50);
+        }
+    };
+
     private DialogInterface.OnDismissListener myDismissListener = new DialogInterface.OnDismissListener() {
         @Override
         public void onDismiss(DialogInterface dialog) {
@@ -89,14 +138,20 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                     int divider = numericData.getDivider();
                     editText.setText(IntWithDividerAndPrecisionToString(currentValue, divider, precision));
                     editText.setOnEditorActionListener(this);
+                    TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
+                    TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
+                    textViewPrefix.setText(numericData.getPrefix());
+                    textViewSuffix.setText(numericData.getSuffix());
                     Button plus = (Button) view.findViewById(R.id.buttonSpinBoxPlus);
                     Button minus = (Button) view.findViewById(R.id.buttonSpinBoxMinus);
                     plus.setLongClickable(true);
                     plus.setOnClickListener(this);
                     plus.setOnLongClickListener(this);
+                    plus.setOnTouchListener(this);
                     minus.setLongClickable(true);
                     minus.setOnClickListener(this);
                     minus.setOnLongClickListener(this);
+                    minus.setOnTouchListener(this);
 
                     adb.setView(view);
                 }
@@ -187,6 +242,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     DialogInterface.OnClickListener myClickListener = new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int which) {
             if (which == Dialog.BUTTON_POSITIVE) {
+                timerHandler.removeCallbacks(timerRunnable);
                 switch (dataForDialog.getType()) {
                     case ICommonData.TYPE_RADIOBUTTON: {
                         updateRadiobuttonAndComboboxData(lastComboboxOrRadiobuttonIndexSelected);
@@ -237,6 +293,8 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                     numericData.setPrecision(3);
                     numericData.setMaxValue(10000000);
                     numericData.setMinValue(0);
+                    numericData.setPrefix("pref ");
+                    numericData.setSuffix("sec");
                     numericData.setDataDescription("Numeric value: %s");
                     numericData.setDescription("Numeric data");
                     listOfData.add(numericData);
@@ -329,9 +387,22 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     @Override
     public boolean onLongClick(View v) {
         Log.d("MyTag", "Long Click");
-        onClick(v);
+        if (v.getId() == R.id.buttonSpinBoxMinus) {
+            plusOrMinusMode = MINUS_OPERATION;
+        } else if (v.getId() == R.id.buttonSpinBoxPlus) {
+            plusOrMinusMode = PLUS_OPERATION;
+        } else {
+            return false;
+        }
+        timerHandler.postDelayed(timerRunnable, 0);
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            timerHandler.removeCallbacks(timerRunnable);
+        }
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
