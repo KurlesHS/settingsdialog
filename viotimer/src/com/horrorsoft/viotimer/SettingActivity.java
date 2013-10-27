@@ -65,7 +65,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                 int currentValue = numericData.getCurrentValue();
                 int step = numericData.getStep();
                 int stepMultiplier = ++autoPushCount / 20 + 1;
-                int newStep = (int) step * stepMultiplier * stepMultiplier;
+                int newStep = step * stepMultiplier * stepMultiplier;
                 int minValue = numericData.getMinValue();
                 int maxValue = numericData.getMaxValue();
                 int newValue = minValue;
