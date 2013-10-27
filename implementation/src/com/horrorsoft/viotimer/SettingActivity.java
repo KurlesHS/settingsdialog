@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,6 +47,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
         @Override
         public void run() {
+            boolean stopTimer = false;
             NumericData numericData = (NumericData) dataForDialog;
             if (numericData != null) {
                 int currentValue = numericData.getCurrentValue();
@@ -58,18 +58,19 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                 boolean ok = false;
                 switch (plusOrMinusMode) {
                     case MINUS_OPERATION: {
-                        Log.d("MyTag", "numeric minus");
                         newValue = currentValue - step;
-                        if (newValue < minValue)
+                        if (newValue < minValue) {
                             newValue = minValue;
+                            stopTimer = true;
+                        }
                         ok = true;
                     }
                     break;
                     case PLUS_OPERATION: {
-                        Log.d("MyTag", "numeric plus");
                         newValue = currentValue + step;
                         if (newValue > maxValue) {
                             newValue = maxValue;
+                            stopTimer = true;
                         }
                         ok = true;
                     }
@@ -85,8 +86,10 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                     }
                 }
             }
-
-            timerHandler.postDelayed(this, 50);
+            if (stopTimer)
+                timerHandler.removeCallbacks(this);
+            else
+                timerHandler.postDelayed(this, 50);
         }
     };
 
@@ -266,12 +269,12 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         RadioButtonAndComboBoxData radioButtonAndComboboxData = (RadioButtonAndComboBoxData) dataForDialog;
         if (radioButtonAndComboboxData != null) {
             radioButtonAndComboboxData.setCurrentValueByIndex(selectedIndex);
-            // поиск вьюхи по позиции. Подходит только для видимых элементов
             updateCurrentItem();
         }
     }
 
     private void updateCurrentItem() {
+        // поиск вьюхи по позиции. Подходит только для видимых элементов
         ListView lvs = (ListView) findViewById(R.id.listViewForSettingsDialog);
         View v = lvs.getChildAt(lastPosition - lvs.getFirstVisiblePosition());
         TextView tv = (TextView) v.findViewById(R.id.textViewDataDescription);
@@ -348,7 +351,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
     @Override
     public void onClick(View v) {
-        Log.d("MyTag", "numeric plus - minus");
         NumericData numericData = (NumericData) dataForDialog;
         if (numericData == null) {
             return;
@@ -360,14 +362,12 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         int newValue;
         switch (v.getId()) {
             case R.id.buttonSpinBoxMinus: {
-                Log.d("MyTag", "numeric minus");
                 newValue = currentValue - step;
                 if (newValue < minValue)
                     newValue = minValue;
             }
             break;
             case R.id.buttonSpinBoxPlus: {
-                Log.d("MyTag", "numeric plus");
                 newValue = currentValue + step;
                 if (newValue > maxValue) {
                     newValue = maxValue;
@@ -386,7 +386,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
     @Override
     public boolean onLongClick(View v) {
-        Log.d("MyTag", "Long Click");
         if (v.getId() == R.id.buttonSpinBoxMinus) {
             plusOrMinusMode = MINUS_OPERATION;
         } else if (v.getId() == R.id.buttonSpinBoxPlus) {

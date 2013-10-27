@@ -35,7 +35,6 @@ public class MyActivity extends SherlockActivity implements View.OnClickListener
             btn.setOnClickListener(this);
         }
         Log.d("MyTag", getApplicationContext().getFilesDir() + "/" + "hello.txt");
-
     }
 
     @Override

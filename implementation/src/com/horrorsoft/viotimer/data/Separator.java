@@ -5,7 +5,6 @@ package com.horrorsoft.viotimer.data;
  * User: alexey
  * Date: 23.10.13
  * Time: 23:54
- * To change this template use File | Settings | File Templates.
  */
 public class Separator extends CommonData {
     @Override
