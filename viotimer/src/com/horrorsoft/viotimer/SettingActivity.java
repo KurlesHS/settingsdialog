@@ -320,7 +320,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         }
     };
 
-
     private void CreateRadioButtonDialog(AlertDialog.Builder adb) {
         RadioButtonAndComboBoxData radioButtonData = (RadioButtonAndComboBoxData) dataForDialog;
         if (radioButtonData != null) {
@@ -407,55 +406,8 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     private void fillData() {
         String jsonString = readTextFileFromRawResource(R.raw.test_json);
         listOfData = createListOfDataByJson(jsonString);
-        if (listOfData != null) {
-            return;
-        }
-        listOfData = new ArrayList<ICommonData>();
-        int forType = 0;
-        boolean x = true;
-        for (int i = 1; i <= 22; ++i) {
-            switch (forType) {
-                case 0: {
-                    NumericData numericData = new NumericData();
-                    numericData.setCurrentValue(i * 233 + i);
-                    numericData.setSize(2);
-                    numericData.setStep(10);
-                    numericData.setDivider(127);
-                    numericData.setPrecision(3);
-                    numericData.setMaxValue(10000000);
-                    numericData.setMinValue(0);
-                    numericData.setPrefix("pref ");
-                    numericData.setSuffix("sec");
-                    numericData.setDataDescription("Numeric value: %s");
-                    numericData.setDescription("Numeric data");
-                    listOfData.add(numericData);
-                }
-                break;
-                case 1: {
-                    RadioButtonAndComboBoxData radioButtonAndComboBoxData =
-                            new RadioButtonAndComboBoxData(x ? ICommonData.TYPE_RADIOBUTTON : ICommonData.TYPE_COMBOBOX);
-                    String strType = x ? "RadioButton" : "Combobox";
-                    x = !x;
-                    radioButtonAndComboBoxData.setCurrentValue(15);
-                    radioButtonAndComboBoxData.setDescription(String.format("%s data", strType));
-                    radioButtonAndComboBoxData.setDataDescription(String.format("%s value: ", strType) + "%s");
-                    radioButtonAndComboBoxData.addItem(13, "value number one");
-                    radioButtonAndComboBoxData.addItem(14, "value number two");
-                    radioButtonAndComboBoxData.addItem(15, "value number three");
-                    radioButtonAndComboBoxData.addItem(16, "value number four");
-
-                    listOfData.add(radioButtonAndComboBoxData);
-                }
-                break;
-                case 2: {
-                    Separator separator = new Separator();
-                    separator.setDescription("Separator");
-                    listOfData.add(separator);
-                }
-                break;
-            }
-            ++forType;
-            forType %= 3;
+        if (listOfData == null) {
+            listOfData = new ArrayList<ICommonData>();
         }
     }
 

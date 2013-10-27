@@ -85,7 +85,6 @@ public class SettingDialogAdapter extends BaseAdapter {
                 viewHolder.dataDescriptionTextView.setText(data.getDataDescription());
             }
         }
-
         return view;
     }
 
