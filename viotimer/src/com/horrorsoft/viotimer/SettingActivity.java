@@ -43,7 +43,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     final static int PLUS_OPERATION = 1;
     final static int MINUS_OPERATION = 2;
 
-
     List<ICommonData> listOfData;
     byte[] array;
     String xmlData;
@@ -96,7 +95,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                     numericData.setCurrentValue(newValue);
                     if (viewForSpinBoxDialog != null) {
                         EditText editText = (EditText) viewForSpinBoxDialog.findViewById(R.id.editTextSpinBox);
-                        editText.setText(IntWithDividerAndPrecisionToString(newValue, numericData.getDivider(), numericData.getPrecision()));
+                        editText.setText(intWithDividerAndPrecisionToString(newValue, numericData.getDivider(), numericData.getPrecision()));
                     }
                 }
             }
@@ -229,40 +228,15 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             adb.setPositiveButton("Ok", myClickListener);
             switch (dataForDialog.getType()) {
                 case ICommonData.TYPE_RADIOBUTTON: {
-                    CreateRadioButtonDialog(adb);
+                    createRadioButtonDialog(adb);
                 }
                 break;
                 case ICommonData.TYPE_COMBOBOX: {
-                    CreateComboboxDialog(adb);
+                    createComboboxDialog(adb);
                 }
                 break;
                 case ICommonData.TYPE_NUMERIC: {
-
-                    View view = getLayoutInflater().inflate(R.layout.editnumbers, null);
-                    viewForSpinBoxDialog = view;
-                    EditText editText = (EditText) view.findViewById(R.id.editTextSpinBox);
-                    NumericData numericData = (NumericData) dataForDialog;
-                    int currentValue = numericData.getCurrentValue();
-                    int precision = numericData.getPrecision();
-                    int divider = numericData.getDivider();
-                    editText.setText(IntWithDividerAndPrecisionToString(currentValue, divider, precision));
-                    editText.setOnEditorActionListener(this);
-                    TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
-                    TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
-                    textViewPrefix.setText(numericData.getPrefix());
-                    textViewSuffix.setText(numericData.getSuffix());
-                    Button plus = (Button) view.findViewById(R.id.buttonSpinBoxPlus);
-                    Button minus = (Button) view.findViewById(R.id.buttonSpinBoxMinus);
-                    plus.setLongClickable(true);
-                    plus.setOnClickListener(this);
-                    plus.setOnLongClickListener(this);
-                    plus.setOnTouchListener(this);
-                    minus.setLongClickable(true);
-                    minus.setOnClickListener(this);
-                    minus.setOnLongClickListener(this);
-                    minus.setOnTouchListener(this);
-
-                    adb.setView(view);
+                    createNumericDialog(adb);
                 }
                 break;
                 case ICommonData.TYPE_SEPARATOR:
@@ -276,18 +250,45 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         return null;
     }
 
-    private String IntWithDividerAndPrecisionToString(int value, int divider, int precision) {
-        return DoubleToString(value / 1.0 / divider, precision);
+    private void createNumericDialog(AlertDialog.Builder adb) {
+        View view = getLayoutInflater().inflate(R.layout.editnumbers, null);
+        viewForSpinBoxDialog = view;
+        EditText editText = (EditText) view.findViewById(R.id.editTextSpinBox);
+        NumericData numericData = (NumericData) dataForDialog;
+        int currentValue = numericData.getCurrentValue();
+        int precision = numericData.getPrecision();
+        int divider = numericData.getDivider();
+        editText.setText(intWithDividerAndPrecisionToString(currentValue, divider, precision));
+        editText.setOnEditorActionListener(this);
+        TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
+        TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
+        textViewPrefix.setText(numericData.getPrefix());
+        textViewSuffix.setText(numericData.getSuffix());
+        Button plus = (Button) view.findViewById(R.id.buttonSpinBoxPlus);
+        Button minus = (Button) view.findViewById(R.id.buttonSpinBoxMinus);
+        plus.setLongClickable(true);
+        plus.setOnClickListener(this);
+        plus.setOnLongClickListener(this);
+        plus.setOnTouchListener(this);
+        minus.setLongClickable(true);
+        minus.setOnClickListener(this);
+        minus.setOnLongClickListener(this);
+        minus.setOnTouchListener(this);
+        adb.setView(view);
     }
 
-    private String DoubleToString(double value, int precision) {
+    private String intWithDividerAndPrecisionToString(int value, int divider, int precision) {
+        return doubleToString(value / 1.0 / divider, precision);
+    }
+
+    private String doubleToString(double value, int precision) {
         String formatString = "%." + precision + "f";
         String retStr = String.format(formatString, value);
         retStr = retStr.replace(',', '.');
         return retStr;
     }
 
-    private void CreateComboboxDialog(AlertDialog.Builder adb) {
+    private void createComboboxDialog(AlertDialog.Builder adb) {
         Spinner spinner = new Spinner(this);
 
         RadioButtonAndComboBoxData radioButtonData = (RadioButtonAndComboBoxData) dataForDialog;
@@ -320,7 +321,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         }
     };
 
-    private void CreateRadioButtonDialog(AlertDialog.Builder adb) {
+    private void createRadioButtonDialog(AlertDialog.Builder adb) {
         RadioButtonAndComboBoxData radioButtonData = (RadioButtonAndComboBoxData) dataForDialog;
         if (radioButtonData != null) {
             List<RadioButtonAndComboBoxData.ItemData> listOfItemData = radioButtonData.getListOfItemData();
@@ -336,7 +337,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
-
         super.onPrepareDialog(id, dialog);
     }
 
@@ -424,7 +424,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                 value = numericData.getMaxValue();
             }
             numericData.setCurrentValue(value);
-            v.setText(IntWithDividerAndPrecisionToString(value, numericData.getDivider(), numericData.getPrecision()));
+            v.setText(intWithDividerAndPrecisionToString(value, numericData.getDivider(), numericData.getPrecision()));
         }
         return false;
     }
@@ -460,7 +460,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         numericData.setCurrentValue(newValue);
         if (viewForSpinBoxDialog != null) {
             EditText editText = (EditText) viewForSpinBoxDialog.findViewById(R.id.editTextSpinBox);
-            editText.setText(IntWithDividerAndPrecisionToString(newValue, numericData.getDivider(), numericData.getPrecision()));
+            editText.setText(intWithDividerAndPrecisionToString(newValue, numericData.getDivider(), numericData.getPrecision()));
         }
     }
 
@@ -474,6 +474,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             return false;
         }
         autoPushCount = 0;
+        // включаем автоускорение
         timerHandler.postDelayed(timerRunnable, 0);
         return false;
     }
