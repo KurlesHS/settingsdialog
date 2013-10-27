@@ -41,6 +41,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     int lastComboboxOrRadiobuttonIndexSelected;
     View viewForSpinBoxDialog;
     int plusOrMinusMode;
+    int autoPushCount = 0;
 
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
@@ -52,13 +53,14 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             if (numericData != null) {
                 int currentValue = numericData.getCurrentValue();
                 int step = numericData.getStep();
+                int newStep = (int) Math.pow(step,((++autoPushCount / 20)));
                 int minValue = numericData.getMinValue();
                 int maxValue = numericData.getMaxValue();
                 int newValue = minValue;
                 boolean ok = false;
                 switch (plusOrMinusMode) {
                     case MINUS_OPERATION: {
-                        newValue = currentValue - step;
+                        newValue = currentValue - newStep;
                         if (newValue < minValue) {
                             newValue = minValue;
                             stopTimer = true;
@@ -67,7 +69,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                     }
                     break;
                     case PLUS_OPERATION: {
-                        newValue = currentValue + step;
+                        newValue = currentValue + newStep;
                         if (newValue > maxValue) {
                             newValue = maxValue;
                             stopTimer = true;
@@ -393,6 +395,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         } else {
             return false;
         }
+        autoPushCount = 0;
         timerHandler.postDelayed(timerRunnable, 0);
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }

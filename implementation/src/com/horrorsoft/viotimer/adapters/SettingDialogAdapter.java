@@ -19,6 +19,10 @@ import java.util.List;
  */
 public class SettingDialogAdapter extends BaseAdapter {
 
+    static private final int SEPARATOR_TYPE = 0;
+    static private final int DATA_TYPE = 1;
+    static private final int DATA_COUNT = 2;
+
     Context ctx;
     LayoutInflater lInflater;
     List<ICommonData> objects;
@@ -46,24 +50,47 @@ public class SettingDialogAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return getData(position).isSeparator() ? SEPARATOR_TYPE : DATA_TYPE;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return DATA_COUNT; // separator and data
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         ICommonData data = getData(position);
+        int type = getItemViewType(position);
         if (data == null)
             return null;
         if (view == null) {
-            if (data.isSeparator()) {
+            ViewHolder viewHolder = new ViewHolder();
+            if (type == SEPARATOR_TYPE) {
                 view = lInflater.inflate(R.layout.settingseparatorview, parent, false);
-                ((TextView) view.findViewById(R.id.textViewSeparator)).setText(data.getDescription());
+                viewHolder.descriptionTextView = (TextView) view.findViewById(R.id.textViewSeparator);
             } else {
                 view = lInflater.inflate(R.layout.settingdataview, parent, false);
-                ((TextView) view.findViewById(R.id.textViewDescription)).setText(data.getDescription());
-                ((TextView) view.findViewById(R.id.textViewDataDescription)).setText(data.getDataDescription());
+                viewHolder.descriptionTextView = (TextView) view.findViewById(R.id.textViewDescription);
+                viewHolder.dataDescriptionTextView = (TextView) view.findViewById(R.id.textViewDataDescription);
+            }
+            view.setTag(viewHolder);
+        }
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+        if (viewHolder != null) {
+            viewHolder.descriptionTextView.setText(data.getDescription());
+            if (type == DATA_TYPE) {
+                viewHolder.dataDescriptionTextView.setText(data.getDataDescription());
             }
         }
 
-
         return view;
+    }
+
+    private static class ViewHolder {
+        TextView descriptionTextView, dataDescriptionTextView;
     }
 
     public ICommonData getData(int position) {
