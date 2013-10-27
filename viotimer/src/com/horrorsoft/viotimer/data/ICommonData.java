@@ -13,7 +13,7 @@ public interface ICommonData {
     public static final int TYPE_RADIOBUTTON = 3;
     public static final int TYPE_SEPARATOR = 4;
 
-    public boolean isSeparator();
+    public boolean isEditable();
     public int getPointer();
     public String getDescription();
     public String getDataDescription();

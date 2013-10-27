@@ -40,7 +40,7 @@ public class CommonData implements ICommonData {
     }
 
     @Override
-    public boolean isSeparator() {
+    public boolean isEditable() {
         return false;
     }
 

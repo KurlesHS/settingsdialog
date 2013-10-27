@@ -8,7 +8,7 @@ package com.horrorsoft.viotimer.data;
  */
 public class Separator extends CommonData {
     @Override
-    public boolean isSeparator() {
+    public boolean isEditable() {
         return true;
     }
 

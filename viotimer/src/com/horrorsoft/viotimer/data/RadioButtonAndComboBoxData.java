@@ -71,7 +71,7 @@ public class RadioButtonAndComboBoxData extends CommonData {
     }
 
     @Override
-    public boolean isSeparator() {
+    public boolean isEditable() {
         return false;
     }
 

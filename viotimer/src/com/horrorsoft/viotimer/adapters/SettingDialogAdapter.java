@@ -51,7 +51,7 @@ public class SettingDialogAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return getData(position).isSeparator() ? SEPARATOR_TYPE : DATA_TYPE;
+        return getData(position).isEditable() ? SEPARATOR_TYPE : DATA_TYPE;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class SettingDialogAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return !getData(position).isSeparator();
+        return !getData(position).isEditable();
     }
 }
 
