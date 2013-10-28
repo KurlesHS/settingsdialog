@@ -1,12 +1,13 @@
 package com.horrorsoft.viotimer;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
-import com.horrorsoft.viotimer.data.ICommonData;
-import com.horrorsoft.viotimer.data.NumericData;
-import com.horrorsoft.viotimer.data.RadioButtonAndComboBoxData;
-import com.horrorsoft.viotimer.data.Separator;
+import com.horrorsoft.viotimer.data.*;
+import com.horrorsoft.viotimer.json.JsonSetting;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
@@ -19,10 +20,27 @@ import java.util.Arrays;
  * -e class com.horrorsoft.viotimer.MyActivityTest \
  * com.horrorsoft.viotimer.tests/android.test_json.InstrumentationTestRunner
  */
-public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity> {
+public class MyActivityTest extends ActivityInstrumentationTestCase2<StartActivity> {
+
+    private String readTextFileFromRawResource(int resId) {
+        InputStream inputStream = getActivity().getApplicationContext().getResources().openRawResource(resId);
+        InputStreamReader inputReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputReader);
+        String line;
+        StringBuilder text = new StringBuilder();
+        try {
+            while (( line = bufferedReader.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+        } catch (IOException e) {
+            return "";
+        }
+        return text.toString();
+    }
 
     public MyActivityTest() {
-        super(MyActivity.class);
+        super(StartActivity.class);
 
     }
 
@@ -40,8 +58,8 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
     public void testNumeric() {
         String description = "I'm numeric 8-bit size data!";
         String dataDescription = "I'm a numeric 8 bit size data, and my value is %s";
-        String expectedDataDescription = "I'm a numeric 8 bit size data, and my value is x6,50s";
-        String expectedDataDescription2 = "I'm a numeric 8 bit size data, and my value is x6.50s";
+        String expectedDataDescription = "I'm a numeric 8 bit size data, and my value is x 6,50s";
+        String expectedDataDescription2 = "I'm a numeric 8 bit size data, and my value is x 6.50s";
 
         int size = 1;
         int step = 1;
@@ -52,7 +70,7 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         int minValue = 0;
         int maxValue = 255;
         String suffix = "s";
-        String prefix = "x";
+        String prefix = "x ";
         NumericData numericData = new NumericData();
         numericData.setDescription(description);
         numericData.setDataDescription(dataDescription);
@@ -64,14 +82,12 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         numericData.setSuffix(suffix);
         numericData.setPrefix(prefix);
         numericData.setPrecision(precision);
-        numericData.setMinValue(maxValue);
+        numericData.setMinValue(minValue);
         numericData.setMaxValue(maxValue);
 
-        ICommonData commonData = numericData;
-
         // Проверка описания занчения
-        boolean firstTry = expectedDataDescription.equals(commonData.getDataDescription());
-        boolean secondTry = expectedDataDescription2.equals(commonData.getDataDescription());
+        boolean firstTry = expectedDataDescription.equals(numericData.getDataDescription());
+        boolean secondTry = expectedDataDescription2.equals(numericData.getDataDescription());
         assertTrue(firstTry || secondTry);
 
         value = 0x123456;
@@ -146,5 +162,12 @@ public class MyActivityTest extends ActivityInstrumentationTestCase2<MyActivity>
         radioButtonAndComboBoxData.setDataDescription(dataDescription);
 
         assertEquals(expectedDataDescription, radioButtonAndComboBoxData.getDataDescription());
+    }
+
+    public void testAlgorithmJson() {
+        String json = readTextFileFromRawResource(R.raw.test_json);
+
+        AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(json);
+        assertEquals(3, algorithmData.getAlgorithmCount());
     }
 }

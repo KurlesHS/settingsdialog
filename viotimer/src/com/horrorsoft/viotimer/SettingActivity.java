@@ -12,19 +12,12 @@ import android.view.WindowManager;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.horrorsoft.viotimer.adapters.SettingDialogAdapter;
+import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.data.NumericData;
 import com.horrorsoft.viotimer.data.RadioButtonAndComboBoxData;
-import com.horrorsoft.viotimer.data.Separator;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.horrorsoft.viotimer.json.JsonSetting;
 
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +36,8 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     final static int PLUS_OPERATION = 1;
     final static int MINUS_OPERATION = 2;
 
+
     List<ICommonData> listOfData;
-    byte[] array;
-    String xmlData;
     ICommonData dataForDialog;
     int lastPosition;
     int lastComboboxOrRadiobuttonIndexSelected;
@@ -118,103 +110,11 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.settinglayout);
-        xmlData = getIntent().getStringExtra("jsonData");
-        array = getIntent().getByteArrayExtra("array");
         fillData();
         SettingDialogAdapter settingDialogAdapter = new SettingDialogAdapter(this, listOfData);
         ListView lv = (ListView) findViewById(R.id.listViewForSettingsDialog);
         lv.setAdapter(settingDialogAdapter);
         lv.setOnItemClickListener(this);
-    }
-
-    public static List<ICommonData> createListOfDataByJson(String jsonData) {
-        List<ICommonData> retList = new ArrayList<ICommonData>();
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            JSONArray mainJsonArray = jsonObject.getJSONArray("root");
-            for (int i = 0; i < mainJsonArray.length(); ++i) {
-                JSONObject jsonObjectType = mainJsonArray.getJSONObject(i);
-                int typeOfData = jsonObjectType.getInt("type");
-                switch (typeOfData) {
-                    case ICommonData.TYPE_NUMERIC: {
-                        handleNumericType(jsonObjectType, retList);
-                    }
-                    break;
-                    case ICommonData.TYPE_COMBOBOX:
-                    case ICommonData.TYPE_RADIOBUTTON: {
-                        handleComboboxOrRadiobuttonType(jsonObjectType, retList, typeOfData);
-                    }
-                    break;
-                    case ICommonData.TYPE_SEPARATOR: {
-                        handleSeparatorType(jsonObjectType, retList);
-                    }
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            retList = null;
-        }
-        return retList;
-    }
-
-    private static void handleSeparatorType(JSONObject jsonObjectType, List<ICommonData> retList) throws JSONException {
-        String desc = jsonObjectType.getString("desc");
-        Separator separator = new Separator();
-        separator.setDescription(desc);
-        retList.add(separator);
-    }
-
-    private static void handleComboboxOrRadiobuttonType(JSONObject jsonObjectType, List<ICommonData> retList, int type) throws JSONException {
-        int size = jsonObjectType.getInt("size");
-        int pointer = jsonObjectType.getInt("pointer");
-        int defValue = jsonObjectType.getInt("defValue");
-        String desc = jsonObjectType.getString("desc");
-        String formDesc = jsonObjectType.getString("formDesc");
-        JSONArray jsonArray = jsonObjectType.getJSONArray("data");
-
-        RadioButtonAndComboBoxData radioButtonAndComboBoxData = new RadioButtonAndComboBoxData(type);
-        radioButtonAndComboBoxData.setSize(size);
-        radioButtonAndComboBoxData.setPointer(pointer);
-        radioButtonAndComboBoxData.setCurrentValue(defValue);
-        radioButtonAndComboBoxData.setDescription(desc);
-        radioButtonAndComboBoxData.setDataDescription(formDesc);
-
-        for (int i = 0; i < jsonArray.length(); ++i) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            int value = jsonObject.getInt("value");
-            String description = jsonObject.getString("desc");
-            radioButtonAndComboBoxData.addItem(value, description);
-        }
-        retList.add(radioButtonAndComboBoxData);
-    }
-
-    private static void handleNumericType(JSONObject jsonObjectType, List<ICommonData> retList) throws JSONException {
-        int size = jsonObjectType.getInt("size");
-        int divider = jsonObjectType.getInt("divider");
-        int step = jsonObjectType.getInt("step");
-        int min = jsonObjectType.getInt("min");
-        int max = jsonObjectType.getInt("max");
-        int defValue = jsonObjectType.getInt("defValue");
-        int precision = jsonObjectType.getInt("precision");
-        int pointer = jsonObjectType.getInt("pointer");
-        String desc = jsonObjectType.getString("desc");
-        String formDesc = jsonObjectType.getString("formDesc");
-        String prefix = jsonObjectType.getString("prefix");
-        String suffix = jsonObjectType.getString("suffix");
-        NumericData numericData = new NumericData();
-        numericData.setSize(size);
-        numericData.setDivider(divider);
-        numericData.setStep(step);
-        numericData.setMinValue(min);
-        numericData.setMaxValue(max);
-        numericData.setCurrentValue(defValue);
-        numericData.setPrecision(precision);
-        numericData.setPointer(pointer);
-        numericData.setDescription(desc);
-        numericData.setDataDescription(formDesc);
-        numericData.setPrefix(prefix);
-        numericData.setSuffix(suffix);
-        retList.add(numericData);
     }
 
     @Override
@@ -386,26 +286,10 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         tv.setText(dataForDialog.getDataDescription());
     }
 
-    private String readTextFileFromRawResource(int resId) {
-        InputStream inputStream = getApplicationContext().getResources().openRawResource(resId);
-        InputStreamReader inputReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputReader);
-        String line;
-        StringBuilder text = new StringBuilder();
-        try {
-            while (( line = bufferedReader.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-        } catch (IOException e) {
-            return "";
-        }
-        return text.toString();
-    }
 
     private void fillData() {
-        String jsonString = readTextFileFromRawResource(R.raw.test_json);
-        listOfData = createListOfDataByJson(jsonString);
+        String jsonString = ApplicationData.getInstance().getJsonData();
+        listOfData = JsonSetting.createListOfDataByJson(jsonString);
         if (listOfData == null) {
             listOfData = new ArrayList<ICommonData>();
         }

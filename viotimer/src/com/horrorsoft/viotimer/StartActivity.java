@@ -2,6 +2,7 @@ package com.horrorsoft.viotimer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -17,6 +18,7 @@ public class StartActivity extends SherlockActivity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("DebugTag", "StartActivity");
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
@@ -54,12 +56,7 @@ public class StartActivity extends SherlockActivity implements OnClickListener {
     }
 
     private void handleProgramButtonPushed() {
-        Intent intent = new Intent(this, SettingActivity.class);
-        //TODO: заполнить правильными значемниями перед передачаей данных настроечной активити
-        byte[] array = new byte[0x10000];
-        String jsonData = "";
-        intent.putExtra("array", array);
-        intent.putExtra("jsonData", jsonData);
+        Intent intent = new Intent(this, SelectSettingActivity.class);
         startActivity(intent);
     }
 }

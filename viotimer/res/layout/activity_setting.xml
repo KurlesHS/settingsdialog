@@ -38,15 +38,8 @@
                 android:id="@+id/ImageView1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="58"
-                android:scaleType="fitXY"
-                android:src="@drawable/welcome"/>
-
-        <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7">
-        </FrameLayout>
+                android:layout_weight="65"
+                android:scaleType="fitXY"/>
 
     </LinearLayout>
 
@@ -81,16 +74,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="30">
 
-                <ImageButton
-                        android:id="@+id/GenSetButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/prg_scr"/>
-
-                android:text="@string/tele_butt"
-
                 <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -98,13 +81,21 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/SaveButton"
+                        android:id="@+id/GenSetButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="40"
                         android:scaleType="fitXY"
-                        android:src="@drawable/tel_scr"
-                        android:visibility="visible"/>
+                        android:src="@drawable/genset_scr"/>
+
+                android:text="@string/tele_butt"
+
+                <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6">
+
+                </FrameLayout>
 
             </LinearLayout>
 
@@ -119,14 +110,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="30">
 
-                <ImageButton
-                        android:id="@+id/FlightSetButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/grp_scr"/>
-
                 <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -134,12 +117,20 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/ReadButton"
+                        android:id="@+id/FlightSetButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="40"
                         android:scaleType="fitXY"
-                        android:src="@drawable/con_scr"/>
+                        android:src="@drawable/flightset_scr"
+                        android:focusableInTouchMode="false"/>
+
+                <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6">
+
+                </FrameLayout>
 
             </LinearLayout>
 
