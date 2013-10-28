@@ -178,16 +178,8 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     }
 
     private String intWithDividerAndPrecisionToString(int value, int divider, int precision) {
-        return doubleToString(value / 1.0 / divider, precision);
+        return ApplicationData.doubleToString(value / 1.0 / divider, precision);
     }
-
-    private String doubleToString(double value, int precision) {
-        String formatString = "%." + precision + "f";
-        String retStr = String.format(formatString, value);
-        retStr = retStr.replace(',', '.');
-        return retStr;
-    }
-
     private void createComboboxDialog(AlertDialog.Builder adb) {
         Spinner spinner = new Spinner(this);
 

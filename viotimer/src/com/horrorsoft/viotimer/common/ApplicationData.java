@@ -19,6 +19,31 @@ public class ApplicationData extends Application {
     private String jsonData;
     private byte[] binaryData;
 
+    public static String addZeros(String res, int numOfCharactersExpected) {
+        String retStr = res;
+        int countOfZeroToAdd = numOfCharactersExpected - retStr.length();
+        while (countOfZeroToAdd > 0){
+            retStr = "0" + retStr;
+            --countOfZeroToAdd;
+        }
+        return retStr;
+    }
+
+    public static String doubleToString(double value, int precision, int numOfCharactersExpected) {
+        String retStr = doubleToString(value, precision);
+        if (numOfCharactersExpected < 0)
+            return retStr;
+        return addZeros(retStr, numOfCharactersExpected);
+    }
+
+    public static String doubleToString(double value, int precision) {
+        String formatString = "%." + precision + "f";
+        String retStr = String.format(formatString, value);
+        retStr = retStr.replace(',', '.');
+        return retStr;
+    }
+
+
     public static String readTextFileFromRawResource(int resId, Context application) {
         InputStream inputStream = application.getResources().openRawResource(resId);
         InputStreamReader inputReader = new InputStreamReader(inputStream);
