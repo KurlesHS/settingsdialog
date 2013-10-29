@@ -65,7 +65,10 @@ public class FlightSettingActivity extends Activity implements View.OnClickListe
         TableRow tableRow = new TableRow(this);
         TableRow.LayoutParams tableLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         tableRow.setLayoutParams(tableLayoutParams);
-        int wightInPixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 8, getResources().getDisplayMetrics());
+        int wightInPixel = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_MM,
+                getResources().getInteger(R.integer.HeightRowOfTableWithAlgorithmInMm),
+                getResources().getDisplayMetrics());
 
         TextView textView = new TextView(this);
         textView.setGravity(Gravity.CENTER);
