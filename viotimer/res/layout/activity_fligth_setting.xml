@@ -70,7 +70,7 @@
             android:layout_height="match_parent" >
 
             <ScrollView
-                android:id="@+id/scrollView1"
+                android:id="@+id/scrollViewForAlgorithmTable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="35" >
@@ -157,41 +157,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" >
 
-                            <TableRow
-                                android:id="@+id/TableRow06"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"
-                                android:background="#fff094"
-                                android:baselineAligned="false">
-
-                                <TextView
-                                    android:id="@+id/TextView21"
-                                    android:layout_width="0dp"
-                                    android:layout_height="8mm"
-                                    android:layout_weight="2"
-                                    android:gravity="center"
-                                    android:text="1" />
-
-                                <TextView
-                                    android:id="@+id/TextView20"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="6"
-                                    android:gravity="center"
-                                    android:text="000.00" />
-
-                                <TextView
-                                    android:id="@+id/TextView22"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="3"
-                                    android:gravity="center"
-                                    android:text="200" />
-                            </TableRow>
-
                         </TableLayout>
                     </ScrollView>
                 </LinearLayout>
@@ -215,7 +180,7 @@
                     </FrameLayout>
 
                     <Button
-                        android:id="@+id/button6"
+                        android:id="@+id/buttonAddOnTop"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
