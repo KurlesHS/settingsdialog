@@ -133,21 +133,7 @@ public class FlightSettingActivity extends Activity implements View.OnClickListe
             }
             break;
             case ALGORITHM_ROW_ID: {
-                TableRow tableRow = (TableRow) v;
-                TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
-                if (tableLayout != null) {
-                    Object currentIndexObject = tableLayout.getTag(R.integer.CurrentIndexForAlgorithmTable);
-                    if (currentIndexObject != null) {
-                        int currentIndex = (Integer) currentIndexObject;
-                        TableRow currentRow = (TableRow) tableLayout.getChildAt(currentIndex);
-                        if (currentRow != null) {
-                            currentRow.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                    }
-                    int index = tableLayout.indexOfChild(tableRow);
-                    tableLayout.setTag(R.integer.CurrentIndexForAlgorithmTable, index);
-                    tableRow.setBackgroundColor(getResources().getColor(R.color.backgroundColorForSelectedRowInAlgorithmDataTable));
-                }
+                handleClickOnAlgorithmTableRow(v);
             }
             break;
             default:
@@ -155,5 +141,23 @@ public class FlightSettingActivity extends Activity implements View.OnClickListe
         }
         long deltaT = System.currentTimeMillis() - startMs;
         Log.d("MyTag", "deltaT on click = " + deltaT);
+    }
+
+    private void handleClickOnAlgorithmTableRow(View v) {
+        TableRow tableRow = (TableRow) v;
+        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
+        if (tableLayout != null) {
+            Object currentIndexObject = tableLayout.getTag(R.integer.CurrentIndexForAlgorithmTable);
+            if (currentIndexObject != null) {
+                int currentIndex = (Integer) currentIndexObject;
+                TableRow currentRow = (TableRow) tableLayout.getChildAt(currentIndex);
+                if (currentRow != null) {
+                    currentRow.setBackgroundColor(Color.TRANSPARENT);
+                }
+            }
+            int index = tableLayout.indexOfChild(tableRow);
+            tableLayout.setTag(R.integer.CurrentIndexForAlgorithmTable, index);
+            tableRow.setBackgroundColor(getResources().getColor(R.color.backgroundColorForSelectedRowInAlgorithmDataTable));
+        }
     }
 }
