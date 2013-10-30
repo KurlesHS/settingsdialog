@@ -180,15 +180,15 @@
                     </FrameLayout>
 
                     <Button
-                        android:id="@+id/buttonAddOnTop"
+                        android:id="@+id/buttonAdd"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
-                        android:text="Add\non top"
+                        android:text="Add"
                         android:textSize="12sp" />
 
                     <Button
-                        android:id="@+id/button7"
+                        android:id="@+id/buttonChange"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
@@ -197,11 +197,11 @@
                         android:textSize="12sp" />
 
                     <Button
-                        android:id="@+id/button8"
+                        android:id="@+id/buttonDelete"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
-                        android:text="Add\nbelow"
+                        android:text="Delete"
                         android:textSize="12sp" />
 
                     <FrameLayout

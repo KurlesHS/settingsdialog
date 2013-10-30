@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.*;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;
+import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
 /**
@@ -21,7 +24,7 @@ import com.horrorsoft.viotimer.json.JsonSetting;
  * Date: 28.10.13
  * Time: 20:57
  */
-public class FlightSettingActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
+public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener, View.OnLongClickListener, SelectItemPositionForAlgorithmTableDialog.ButtonClickedListener {
 
     private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
     private static final int ALGORITHM_ROW_ID = 2;
@@ -34,10 +37,13 @@ public class FlightSettingActivity extends Activity implements View.OnClickListe
         AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(ApplicationData.getInstance().getJsonData());
         FillAlgorithmButton(algorithmData);
         FillTestAlgorithmData();
-        Button addTop = (Button) findViewById(R.id.buttonAddOnTop);
-        addTop.setOnClickListener(new View.OnClickListener() {
+        Button add = (Button) findViewById(R.id.buttonAdd);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SelectItemPositionForAlgorithmTableDialog dlg = new SelectItemPositionForAlgorithmTableDialog();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                dlg.show(ft, "selitemdlg");
                 ensureAlgorithmTableRowVisible(33);
             }
         });
@@ -159,5 +165,10 @@ public class FlightSettingActivity extends Activity implements View.OnClickListe
             tableLayout.setTag(R.integer.CurrentIndexForAlgorithmTable, index);
             tableRow.setBackgroundColor(getResources().getColor(R.color.backgroundColorForSelectedRowInAlgorithmDataTable));
         }
+    }
+
+    @Override
+    public void onClick(int buttonId) {
+       Log.d("MyTag", "button pressed: " + buttonId);
     }
 }

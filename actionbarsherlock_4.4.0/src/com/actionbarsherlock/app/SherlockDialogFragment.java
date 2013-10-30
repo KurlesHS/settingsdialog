@@ -1,6 +1,7 @@
 package com.actionbarsherlock.app;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.support.v4.app.DialogFragment;
 import com.actionbarsherlock.internal.view.menu.MenuItemWrapper;
 import com.actionbarsherlock.internal.view.menu.MenuWrapper;
