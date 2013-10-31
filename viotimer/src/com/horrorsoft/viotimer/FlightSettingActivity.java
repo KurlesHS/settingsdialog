@@ -34,6 +34,10 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_fligth_setting);
+        ScrollView scrollView = (ScrollView) (findViewById(R.id.scrollViewForAlgorithmTable));
+        scrollView.setScrollbarFadingEnabled(false);
+        scrollView = (ScrollView) findViewById(R.id.scrollViewForAlgorithmButtons);
+        scrollView.setScrollbarFadingEnabled(false);
         AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(ApplicationData.getInstance().getJsonData());
         FillAlgorithmButton(algorithmData);
         FillTestAlgorithmData();
