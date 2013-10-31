@@ -16,12 +16,10 @@ import com.horrorsoft.viotimer.R;
  */
 
 
-public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFragment implements View.OnClickListener {
-    static public interface ButtonClickedListener {
-        static final int TOP_BUTTON = 0x01;
-        static final int BOTTOM_BUTTON = 0x02;
-        public void onClick(int buttonId);
-    }
+public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFragment implements  View.OnClickListener {
+
+    public static final int TOP_BUTTON = 1;
+    public static final int BOTTOM_BUTTON = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,14 +34,14 @@ public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFra
 
     @Override
     public void onClick(View v) {
-        if (getActivity() instanceof ButtonClickedListener) {
-            ButtonClickedListener listener = (ButtonClickedListener) getActivity();
+        if (getActivity() instanceof IDialogFragmentClickListener) {
+            IDialogFragmentClickListener listener = (IDialogFragmentClickListener) getActivity();
             switch (v.getId()) {
                 case R.id.button_top:
-                    listener.onClick(ButtonClickedListener.TOP_BUTTON);
+                    listener.onClick(TOP_BUTTON);
                     break;
                 case R.id.button_below:
-                    listener.onClick(ButtonClickedListener.BOTTOM_BUTTON);
+                    listener.onClick(BOTTOM_BUTTON);
                     break;
             }
         }

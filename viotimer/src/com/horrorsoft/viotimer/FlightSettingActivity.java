@@ -1,6 +1,5 @@
 package com.horrorsoft.viotimer;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;
+import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
@@ -24,7 +24,7 @@ import com.horrorsoft.viotimer.json.JsonSetting;
  * Date: 28.10.13
  * Time: 20:57
  */
-public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener, View.OnLongClickListener, SelectItemPositionForAlgorithmTableDialog.ButtonClickedListener {
+public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener, View.OnLongClickListener, IDialogFragmentClickListener {
 
     private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
     private static final int ALGORITHM_ROW_ID = 2;
