@@ -67,7 +67,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
 
     private void FillTestAlgorithmData() {
         for (int i = 1; i < 40; ++i) {
-            addRow(i, i * 1000, i * 3);
+            addRow(i, i * 20, i * 3);
         }
 
     }
@@ -78,7 +78,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             String description = algorithmData.getAlgorithmDescription(i);
             Button button = new Button(this);
             button.setText(description);
-            button.setTag(R.integer.AlgorithmNumberButton, i);
+            button.setTag(R.id.AlgorithmNumberButton, i);
             button.setId(ALGORITHM_NUMBER_BUTTON_ID);
             button.setOnClickListener(this);
             float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, getResources().getInteger(R.integer.HeightChangeAlgorithmButtonInMm),
@@ -157,7 +157,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         TableRow tableRow = (TableRow) v;
         TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
         if (tableLayout != null) {
-            Object currentIndexObject = tableLayout.getTag(R.integer.CurrentIndexForAlgorithmTable);
+            Object currentIndexObject = tableLayout.getTag(R.id.CurrentIndexForAlgorithmTable);
             if (currentIndexObject != null) {
                 int currentIndex = (Integer) currentIndexObject;
                 TableRow currentRow = (TableRow) tableLayout.getChildAt(currentIndex);
@@ -166,13 +166,22 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                 }
             }
             int index = tableLayout.indexOfChild(tableRow);
-            tableLayout.setTag(R.integer.CurrentIndexForAlgorithmTable, index);
+            tableLayout.setTag(R.id.CurrentIndexForAlgorithmTable, index);
             tableRow.setBackgroundColor(getResources().getColor(R.color.backgroundColorForSelectedRowInAlgorithmDataTable));
         }
     }
 
     @Override
     public void onClick(int buttonId) {
-       Log.d("MyTag", "button pressed: " + buttonId);
+        Log.d("MyTag", "button pressed: " + buttonId);
+        switch (buttonId) {
+            case R.id.InsertAlgorithmDataBelowCurrentItem: {
+                // обработать вставку ряда таблицы ниже текущего элемента
+            }
+            break;
+            case R.id.InsertAlgorithmDataUpperCurrentItem : {
+                // обработать вставку ряда таблицы выше текущего элемента
+            }
+        }
     }
 }

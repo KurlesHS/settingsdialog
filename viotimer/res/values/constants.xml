@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="AlgorithmNumberButton">1</integer>
-    <integer name="CurrentIndexForAlgorithmTable">2</integer>
     <integer name="HeightChangeAlgorithmButtonInMm">10</integer>
     <integer name="HeightRowOfTableWithAlgorithmInMm">8</integer>
+    <integer name="NumOfServos">5</integer>
 </resources>
