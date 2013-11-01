@@ -2,6 +2,7 @@ package com.horrorsoft.viotimer.common;
 
 import android.app.Application;
 import android.content.Context;
+import com.horrorsoft.viotimer.data.AlgorithmData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +19,19 @@ public class ApplicationData extends Application {
     private static ApplicationData instance;
     private String jsonData;
     private byte[] binaryData;
+    private AlgorithmData algorithmData;
+
+    public static void setInstance(ApplicationData instance) {
+        ApplicationData.instance = instance;
+    }
+
+    public AlgorithmData getAlgorithmData() {
+        return algorithmData;
+    }
+
+    public void setAlgorithmData(AlgorithmData algorithmData) {
+        this.algorithmData = algorithmData;
+    }
 
     public static String addZeros(String res, int numOfCharactersExpected) {
         String retStr = res;

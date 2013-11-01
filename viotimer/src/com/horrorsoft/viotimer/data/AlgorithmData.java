@@ -33,7 +33,7 @@ public class AlgorithmData {
         return listOfAlgorithms.get(i).getDescription();
     }
 
-    public class OneRowData {
+    public static class OneRowData {
         int delay;
         int position;
 
@@ -125,15 +125,22 @@ public class AlgorithmData {
 
         int valueBefore = 0;
         int valueAfter = 65535;
+        boolean hasBefore = false;
+        boolean hasNext = false;
         if (position > 0) {
+            hasBefore = true;
             valueBefore = algorithmDataList.get(position - 1).getDelay();
         }
         if (algorithmDataList.size() > position) {
             valueAfter = algorithmDataList.get(position).getDelay();
+            hasNext = true;
         }
-
-        int minValue = valueBefore + 1;
-        int maxValue = valueAfter - 1;
+        int minValue = valueBefore;
+        if (hasBefore)
+            ++valueBefore;
+        int maxValue = valueAfter;
+        if (hasNext)
+            --valueAfter;
         if (minValue > maxValue) {
             return null;
         }
@@ -141,7 +148,7 @@ public class AlgorithmData {
         return new InfoAboutInsertedRow(position, minValue, maxValue, medium);
     }
 
-    boolean insertNewRowIntoAlgorithm(int algorithmNumber, int servoNumber, int position, int delay, int servoPosition) {
+    public boolean insertNewRowIntoAlgorithm(int algorithmNumber, int servoNumber, int position, int delay, int servoPosition) {
         List<OneRowData> algorithmData = getAlgorithmData(algorithmNumber, servoNumber);
         if (algorithmData == null) {
             return false;

@@ -39,8 +39,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         scrollView = (ScrollView) findViewById(R.id.scrollViewForAlgorithmButtons);
         scrollView.setScrollbarFadingEnabled(false);
         AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(ApplicationData.getInstance().getJsonData());
+        ApplicationData.getInstance().setAlgorithmData(algorithmData);
         FillAlgorithmButton(algorithmData);
-        FillTestAlgorithmData();
+        //FillTestAlgorithmData();
         Button add = (Button) findViewById(R.id.buttonAdd);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +49,6 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                 SelectItemPositionForAlgorithmTableDialog dlg = new SelectItemPositionForAlgorithmTableDialog();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 dlg.show(ft, "selitemdlg");
-                ensureAlgorithmTableRowVisible(33);
             }
         });
     }
@@ -90,6 +90,26 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     }
 
     void addRow(int position, int delay, int value) {
+        TableRow tableRow = getTableRow(position, delay, value);
+        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
+        tableLayout.addView(tableRow);
+        tableRow.setOnClickListener(this);
+        tableRow.setOnLongClickListener(this);
+    }
+
+    void insertRow(int insertAtPosition, int position, int delay, int value, boolean makeItSelected) {
+        TableRow tableRow = getTableRow(position, delay, value);
+        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
+        tableLayout.addView(tableRow, insertAtPosition);
+        tableRow.setOnClickListener(this);
+        tableRow.setOnLongClickListener(this);
+        if (makeItSelected) {
+            tableRow.setBackgroundColor(getResources().getColor(R.color.backgroundColorForSelectedRowInAlgorithmDataTable));
+        }
+
+    }
+
+    private TableRow getTableRow(int position, int delay, int value) {
         TableRow tableRow = new TableRow(this);
         tableRow.setId(ALGORITHM_ROW_ID);
         TableRow.LayoutParams tableLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -119,13 +139,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         textLayoutParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 3f);
         textLayoutParams.gravity = Gravity.CENTER;
         tableRow.addView(textView, textLayoutParams);
-
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
-        tableLayout.addView(tableRow);
-        tableRow.setOnClickListener(this);
-        tableRow.setOnLongClickListener(this);
-
-
+        return tableRow;
     }
 
     @Override
@@ -177,10 +191,35 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         switch (buttonId) {
             case R.id.InsertAlgorithmDataBelowCurrentItem: {
                 // обработать вставку ряда таблицы ниже текущего элемента
+
             }
             break;
-            case R.id.InsertAlgorithmDataUpperCurrentItem : {
+            case R.id.InsertAlgorithmDataUpperCurrentItem: {
                 // обработать вставку ряда таблицы выше текущего элемента
+                AlgorithmData algorithmData = ApplicationData.getInstance().getAlgorithmData();
+                TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
+                Object currentIndexObject = tableLayout.getTag(R.id.CurrentIndexForAlgorithmTable);
+                int currentIndex = 0;
+                if (currentIndexObject != null) {
+                    currentIndex = (Integer) currentIndexObject;
+                }
+                TableRow currentRow = (TableRow) tableLayout.getChildAt(currentIndex);
+                if (currentIndex < 0) {
+                    currentIndex = 0;
+                }
+
+                AlgorithmData.InfoAboutInsertedRow infoAboutInsertedRow = algorithmData.prepareInfoAboutInsertingNewRowIntoAlgorithm(0, 0, currentIndex);
+                if (infoAboutInsertedRow != null) {
+                    if (currentRow != null) {
+                        currentRow.setBackgroundColor(Color.TRANSPARENT);
+                    }
+
+                    AlgorithmData.OneRowData oneRowData = new AlgorithmData.OneRowData(infoAboutInsertedRow.recommendedValue, 100);
+                    algorithmData.insertNewRowIntoAlgorithm(0, 0, currentIndex, infoAboutInsertedRow.recommendedValue, 100);
+                    insertRow(infoAboutInsertedRow.position, 10, infoAboutInsertedRow.recommendedValue, 100, true);
+                    tableLayout.setTag(R.id.CurrentIndexForAlgorithmTable, currentIndex);
+                    ensureAlgorithmTableRowVisible(currentIndex);
+                }
             }
         }
     }
