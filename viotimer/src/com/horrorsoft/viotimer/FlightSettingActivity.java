@@ -1,6 +1,7 @@
 package com.horrorsoft.viotimer;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -66,7 +67,6 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         add.setOnClickListener(onClickListener);
     }
 
-    /*
     private void ensureAlgorithmTableRowVisible(int row) {
         TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
         int rowCount = tableLayout.getChildCount();
@@ -78,7 +78,6 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             tableLayout.requestRectangleOnScreen(rect);
         }
     }
-    */
 
     private void FillAlgorithmButton(AlgorithmData algorithmData) {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layoutForChangeAlgorithmStep);
@@ -318,10 +317,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                 currentRow.setBackgroundColor(Color.TRANSPARENT);
             }
             algorithmData.insertNewRowIntoAlgorithm(currentAlgorithmNumber, currentServoNumber, currentIndex, infoAboutInsertedRow.delay, infoAboutInsertedRow.servoPos);
+            ensureAlgorithmTableRowVisible(currentIndex);
             insertRow(currentIndex, infoAboutInsertedRow.position, infoAboutInsertedRow.delay, infoAboutInsertedRow.servoPos, true);
             tableLayout.setTag(R.id.CurrentIndexForAlgorithmTable, currentIndex);
-            //TODO: каким-то макаром скроллирвать до свежесозданного айтема.
-            //ensureAlgorithmTableRowVisible(currentIndex);
             updateAlgorithmPositions();
         }
     }

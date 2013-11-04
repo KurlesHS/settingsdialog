@@ -22,7 +22,7 @@
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextDelay" android:layout_gravity="center_horizontal" android:minWidth="100dp"
+                    android:id="@+id/editTextDelay" android:layout_gravity="center_horizontal"
                     android:numeric="integer|decimal"/>
             <Button
                     android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextServoPos" android:layout_gravity="center_horizontal" android:minWidth="100dp"
+                    android:id="@+id/editTextServoPos" android:layout_gravity="center_horizontal"
                     android:numeric="integer"/>
             <Button
                     android:layout_width="wrap_content"

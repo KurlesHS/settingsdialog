@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
  * Time: 22:21
  */
 public class ApplicationData {
+    public static final String LOG_TAG = "com.horrorsoft.viotimer";
     private static ApplicationData instance;
     private String jsonData;
     private byte[] binaryData;
@@ -26,7 +27,7 @@ public class ApplicationData {
     private static int globalMaxDelay;
 
     public static void setDividerForAlgorithmDelay(float divider) {
-      dividerForAlgorithmDelay = divider;
+        dividerForAlgorithmDelay = divider;
     }
 
     public static void setGlobalMaxDelay(int delay) {
@@ -45,6 +46,11 @@ public class ApplicationData {
         this.algorithmData = algorithmData;
     }
 
+    public static int parseAlgorithmDelay(String delay) throws NumberFormatException {
+        float delayFloat = Float.parseFloat(delay);
+        return (int) (delayFloat * dividerForAlgorithmDelay);
+    }
+
     public static String addZeros(String res, int numOfCharactersExpected) {
         String retStr = res;
         int countOfZeroToAdd = numOfCharactersExpected - retStr.length();
@@ -56,11 +62,27 @@ public class ApplicationData {
     }
 
     public static String getDelayText(int delay) {
-        return ApplicationData.doubleToString(delay / dividerForAlgorithmDelay, 2, 6);
+        return getDelayText(delay, true);
     }
 
     public static String getServoPosString(int servoPos) {
-        return ApplicationData.doubleToString(servoPos / 1.0, 0, 3);
+        return getServoPosString(servoPos, true);
+    }
+
+    public static String getDelayText(int delay, boolean adjustSize) {
+        if (adjustSize) {
+            return ApplicationData.doubleToString(delay / dividerForAlgorithmDelay, 2, 6);
+        } else {
+            return ApplicationData.doubleToString(delay / dividerForAlgorithmDelay, 2);
+        }
+    }
+
+    public static String getServoPosString(int servoPos, boolean adjustSize) {
+        if (adjustSize) {
+            return ApplicationData.doubleToString(servoPos / 1.0, 0, 3);
+        } else {
+            return ApplicationData.doubleToString(servoPos / 1.0, 0);
+        }
     }
 
     public static String doubleToString(double value, int precision, int numOfCharactersExpected) {
