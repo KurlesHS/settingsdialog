@@ -38,10 +38,10 @@ public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFra
             IDialogFragmentClickListener listener = (IDialogFragmentClickListener) getActivity();
             switch (v.getId()) {
                 case R.id.button_top:
-                    listener.onClick(R.id.InsertAlgorithmDataUpperCurrentItem);
+                    listener.onClick(R.id.InsertAlgorithmDataUpperCurrentItem, null);
                     break;
                 case R.id.button_below:
-                    listener.onClick(R.id.InsertAlgorithmDataBelowCurrentItem);
+                    listener.onClick(R.id.InsertAlgorithmDataBelowCurrentItem, null);
                     break;
             }
         }

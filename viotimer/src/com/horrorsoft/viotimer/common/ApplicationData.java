@@ -2,6 +2,8 @@ package com.horrorsoft.viotimer.common;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+import com.horrorsoft.viotimer.R;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 
 import java.io.BufferedReader;
@@ -15,14 +17,24 @@ import java.io.InputStreamReader;
  * Date: 28.10.13
  * Time: 22:21
  */
-public class ApplicationData extends Application {
+public class ApplicationData {
     private static ApplicationData instance;
     private String jsonData;
     private byte[] binaryData;
     private AlgorithmData algorithmData;
+    private static float dividerForAlgorithmDelay;
+    private static int globalMaxDelay;
 
-    public static void setInstance(ApplicationData instance) {
-        ApplicationData.instance = instance;
+    public static void setDividerForAlgorithmDelay(float divider) {
+      dividerForAlgorithmDelay = divider;
+    }
+
+    public static void setGlobalMaxDelay(int delay) {
+        globalMaxDelay = delay;
+    }
+
+    public static int getGlobalMaxDelay() {
+        return globalMaxDelay;
     }
 
     public AlgorithmData getAlgorithmData() {
@@ -36,11 +48,19 @@ public class ApplicationData extends Application {
     public static String addZeros(String res, int numOfCharactersExpected) {
         String retStr = res;
         int countOfZeroToAdd = numOfCharactersExpected - retStr.length();
-        while (countOfZeroToAdd > 0){
+        while (countOfZeroToAdd > 0) {
             retStr = "0" + retStr;
             --countOfZeroToAdd;
         }
         return retStr;
+    }
+
+    public static String getDelayText(int delay) {
+        return ApplicationData.doubleToString(delay / dividerForAlgorithmDelay, 2, 6);
+    }
+
+    public static String getServoPosString(int servoPos) {
+        return ApplicationData.doubleToString(servoPos / 1.0, 0, 3);
     }
 
     public static String doubleToString(double value, int precision, int numOfCharactersExpected) {
@@ -65,7 +85,7 @@ public class ApplicationData extends Application {
         String line;
         StringBuilder text = new StringBuilder();
         try {
-            while (( line = bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 text.append(line);
                 text.append('\n');
             }
@@ -92,7 +112,11 @@ public class ApplicationData extends Application {
         this.binaryData = binaryData;
     }
 
-    private ApplicationData(){}
+    private ApplicationData() {
+        super();
+        if (instance == null)
+            instance = this;
+    }
 
     public static synchronized ApplicationData getInstance() {
         if (instance == null) {

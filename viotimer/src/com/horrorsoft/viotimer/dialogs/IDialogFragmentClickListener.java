@@ -1,5 +1,7 @@
 package com.horrorsoft.viotimer.dialogs;
 
+import android.os.Bundle;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Admin
@@ -8,5 +10,5 @@ package com.horrorsoft.viotimer.dialogs;
  * To change this template use File | Settings | File Templates.
  */
 public interface IDialogFragmentClickListener {
-    public void onClick(int buttonId);
+    public void onClick(int buttonId, Bundle bundle);
 }

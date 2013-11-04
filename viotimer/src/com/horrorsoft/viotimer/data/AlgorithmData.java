@@ -1,5 +1,7 @@
 package com.horrorsoft.viotimer.data;
 
+import com.horrorsoft.viotimer.common.ApplicationData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,17 +15,19 @@ import java.util.List;
 
 public class AlgorithmData {
 
-    public static class InfoAboutInsertedRow {
+    public static class InfoAboutRow {
+        public final int servoPos;
+        public final int maxDelay;
+        public final int minDelay;
+        public final int delay;
         public final int position;
-        public final int maxValue;
-        public final int minValue;
-        public final int recommendedValue;
 
-        public InfoAboutInsertedRow(int position, int minValue, int maxValue, int recommendedValue) {
+        public InfoAboutRow(int position, int servoPos, int minDelay, int maxDelay, int delay) {
             this.position = position;
-            this.maxValue = maxValue;
-            this.minValue = minValue;
-            this.recommendedValue = recommendedValue;
+            this.servoPos = servoPos;
+            this.maxDelay = maxDelay;
+            this.minDelay = minDelay;
+            this.delay = delay;
         }
     }
 
@@ -35,27 +39,27 @@ public class AlgorithmData {
 
     public static class OneRowData {
         int delay;
-        int position;
+        int servoPos;
 
-        public OneRowData(int delay, int position) {
+        public OneRowData(int delay, int servoPos) {
             this.delay = delay;
-            this.position = position;
+            this.servoPos = servoPos;
         }
 
         public int getDelay() {
             return delay;
         }
 
+        public int getServoPos() {
+            return servoPos;
+        }
+
         public void setDelay(int delay) {
             this.delay = delay;
         }
 
-        public int getPosition() {
-            return position;
-        }
-
-        public void setPosition(int position) {
-            this.position = position;
+        public void setServoPos(int servoPos) {
+            this.servoPos = servoPos;
         }
     }
 
@@ -114,8 +118,33 @@ public class AlgorithmData {
         return listOfAlgorithms.get(algorithmNumber);
     }
 
+
+    public InfoAboutRow getInfoAboutAlgorithm(int algorithmNumber, int servoNumber, int position) {
+        InfoAboutRow retVal = null;
+        List<OneRowData> algorithmDataList = getAlgorithmData(algorithmNumber, servoNumber);
+        if (position < algorithmDataList.size()) {
+            OneRowData oneRowData = algorithmDataList.get(position);
+            int minValue = position - 1 < 0 ? 0 : algorithmDataList.get(position - 1).getDelay() + 1;
+            int maxValue = position + 1 < algorithmDataList.size() ? algorithmDataList.get(position + 1).getDelay() - 1 : ApplicationData.getGlobalMaxDelay();
+            retVal = new InfoAboutRow(position, oneRowData.getServoPos(), minValue, maxValue, oneRowData.getDelay());
+        }
+        return retVal;
+    }
+
+    public boolean updateAlgorithmData(int algorithmNumber, int servoNumber, int position, int delay, int servoPos) {
+        boolean retVal = false;
+        List<OneRowData> dataList = getAlgorithmData(algorithmNumber, servoNumber);
+        if (position < dataList.size()) {
+            retVal = true;
+            OneRowData oneRowData = dataList.get(position);
+            oneRowData.setDelay(delay);
+            oneRowData.setServoPos(servoPos);
+        }
+        return retVal;
+    }
+
     // возвращает информацию о предпологаемом вставленном значении
-    public InfoAboutInsertedRow prepareInfoAboutInsertingNewRowIntoAlgorithm(int algorithmNumber, int servoNumber, int position) {
+    public InfoAboutRow prepareInfoAboutInsertingNewRowIntoAlgorithm(int algorithmNumber, int servoNumber, int position) {
         List<OneRowData> algorithmDataList = getAlgorithmData(algorithmNumber, servoNumber);
         if (position < 0) {
             position = 0;
@@ -124,16 +153,24 @@ public class AlgorithmData {
         }
 
         int valueBefore = 0;
-        int valueAfter = 65535;
+        int valueAfter = ApplicationData.getGlobalMaxDelay();
+        int servoPos = -1;
         boolean hasBefore = false;
         boolean hasNext = false;
         if (position > 0) {
             hasBefore = true;
             valueBefore = algorithmDataList.get(position - 1).getDelay();
+            servoPos = algorithmDataList.get(position - 1).getServoPos();
         }
         if (algorithmDataList.size() > position) {
             valueAfter = algorithmDataList.get(position).getDelay();
             hasNext = true;
+            if (servoPos >= 0) {
+                servoPos = algorithmDataList.get(position).getServoPos();
+            }
+        }
+        if (servoPos < 0) {
+            servoPos = 0;
         }
         int minValue = valueBefore;
         if (hasBefore)
@@ -145,7 +182,7 @@ public class AlgorithmData {
             return null;
         }
         int medium = minValue + ((maxValue - minValue) / 2);
-        return new InfoAboutInsertedRow(position, minValue, maxValue, medium);
+        return new InfoAboutRow(position, servoPos, minValue, maxValue, medium);
     }
 
     public boolean insertNewRowIntoAlgorithm(int algorithmNumber, int servoNumber, int position, int delay, int servoPosition) {
@@ -155,9 +192,9 @@ public class AlgorithmData {
         }
         OneRowData oneRowData = new OneRowData(delay, servoPosition);
         try {
-        algorithmData.add(position, oneRowData);
+            algorithmData.add(position, oneRowData);
         } catch (Exception e) {
-             return false;
+            return false;
         }
         return true;
     }

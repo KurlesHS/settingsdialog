@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/editTextSpinBox"
         android:layout_gravity="center_horizontal|top"
-        android:numeric="integer|decimal"
+        android:numeric="integer|signed|decimal"
         android:minWidth="100dp"/>
 
     <TextView
