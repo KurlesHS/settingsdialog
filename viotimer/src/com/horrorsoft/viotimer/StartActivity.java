@@ -1,34 +1,24 @@
 package com.horrorsoft.viotimer;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.ImageButton;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.lamerman.FileDialog;
-import com.lamerman.SelectionMode;
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Click;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.Fullscreen;
 
-public class StartActivity extends SherlockActivity implements OnClickListener {
+@Fullscreen
+@EActivity(R.layout.activity_main)
+public class StartActivity extends SherlockActivity {
     /**
      * Called when the activity is first created.
      */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d("DebugTag", "StartActivity");
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
+    @AfterViews
+    public void init() {
 
-        ImageButton settingButton = (ImageButton) findViewById(R.id.GenSetButton);
-        settingButton.setOnClickListener(this);
-        // how to open file dialog
-        //openFileDialog();
     }
 
+    /*
     private void openFileDialog() {
         Intent intent = new Intent(getBaseContext(), FileDialog.class);
         intent.putExtra(FileDialog.START_PATH, "/sdcard");
@@ -41,21 +31,10 @@ public class StartActivity extends SherlockActivity implements OnClickListener {
         //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
         startActivityForResult(intent, 123);
     }
+    */
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.GenSetButton: {
-                // program button
-                handleProgramButtonPushed();
-            }
-            break;
-            default:
-                break;
-        }
-    }
-
-    private void handleProgramButtonPushed() {
+    @Click(R.id.GenSetButton)
+    public void handleProgramButtonPushed() {
         Intent intent = new Intent(this, SelectSettingActivity.class);
         startActivity(intent);
     }
