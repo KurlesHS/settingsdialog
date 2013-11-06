@@ -35,7 +35,7 @@ public class StartActivity extends SherlockActivity {
 
     @Click(R.id.GenSetButton)
     public void handleProgramButtonPushed() {
-        Intent intent = new Intent(this, SelectSettingActivity.class);
+        Intent intent = new Intent(this, SelectSettingActivity_.class);
         startActivity(intent);
     }
 }

@@ -3,14 +3,13 @@ package com.horrorsoft.viotimer;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.googlecode.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.adapters.SettingDialogAdapter;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.ICommonData;
@@ -28,7 +27,8 @@ import java.util.List;
  * Time: 23:16
  */
 
-
+@Fullscreen
+@EActivity(R.layout.settinglayout)
 public class SettingActivity extends SherlockActivity implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener, View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
 
     //private static String LOG_TAG = "MyTag";
@@ -36,11 +36,13 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     final static int PLUS_OPERATION = 1;
     final static int MINUS_OPERATION = 2;
 
+    @ViewById
+    ListView listViewForSettingsDialog;
 
     List<ICommonData> listOfData;
     ICommonData dataForDialog;
     int lastPosition;
-    int lastComboboxOrRadiobuttonIndexSelected;
+    int lastComboBoxOrRadioButtonIndexSelected;
     View viewForSpinBoxDialog;
     int plusOrMinusMode;
     int autoPushCount = 0;
@@ -105,6 +107,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         }
     };
 
+    /*
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -115,6 +118,14 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         ListView lv = (ListView) findViewById(R.id.listViewForSettingsDialog);
         lv.setAdapter(settingDialogAdapter);
         lv.setOnItemClickListener(this);
+    }
+    */
+    @AfterViews
+    public void init() {
+        fillData();
+        SettingDialogAdapter settingDialogAdapter = new SettingDialogAdapter(this, listOfData);
+        listViewForSettingsDialog.setAdapter(settingDialogAdapter);
+        listViewForSettingsDialog.setOnItemClickListener(this);
     }
 
     @Override
@@ -180,6 +191,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     private String intWithDividerAndPrecisionToString(int value, int divider, int precision) {
         return ApplicationData.doubleToString(value / 1.0 / divider, precision);
     }
+
     private void createComboboxDialog(AlertDialog.Builder adb) {
         Spinner spinner = new Spinner(this);
 
@@ -197,7 +209,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             spinner.setAdapter(adapter);
             spinner.setSelection(currentIndex);
             spinner.setOnItemSelectedListener(myItemClickListener);
-            lastComboboxOrRadiobuttonIndexSelected = currentIndex;
+            lastComboBoxOrRadioButtonIndexSelected = currentIndex;
             adb.setView(spinner);
         }
     }
@@ -205,7 +217,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     AdapterView.OnItemSelectedListener myItemClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            lastComboboxOrRadiobuttonIndexSelected = position;
+            lastComboBoxOrRadioButtonIndexSelected = position;
         }
 
         @Override
@@ -245,11 +257,11 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                 timerHandler.removeCallbacks(timerRunnable);
                 switch (dataForDialog.getType()) {
                     case ICommonData.TYPE_RADIOBUTTON: {
-                        updateRadiobuttonAndComboboxData(lastComboboxOrRadiobuttonIndexSelected);
+                        updateRadiobuttonAndComboboxData(lastComboBoxOrRadioButtonIndexSelected);
                     }
                     break;
                     case ICommonData.TYPE_COMBOBOX: {
-                        updateRadiobuttonAndComboboxData(lastComboboxOrRadiobuttonIndexSelected);
+                        updateRadiobuttonAndComboboxData(lastComboBoxOrRadioButtonIndexSelected);
                     }
                     break;
                     case ICommonData.TYPE_NUMERIC: {
@@ -257,7 +269,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                     }
                 }
             } else {
-                lastComboboxOrRadiobuttonIndexSelected = which;
+                lastComboBoxOrRadioButtonIndexSelected = which;
             }
         }
     };

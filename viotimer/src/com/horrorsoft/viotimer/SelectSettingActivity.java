@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.googlecode.androidannotations.annotations.Click;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.Fullscreen;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,8 +16,12 @@ import com.actionbarsherlock.app.SherlockActivity;
  * Date: 28.10.13
  * Time: 20:39
  */
-public class SelectSettingActivity extends SherlockActivity implements View.OnClickListener {
+@Fullscreen
+@EActivity(R.layout.activity_setting)
+public class SelectSettingActivity extends SherlockActivity {
+    /*
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -26,28 +33,17 @@ public class SelectSettingActivity extends SherlockActivity implements View.OnCl
         settingButton = (ImageButton) findViewById(R.id.FlightSetButton);
         settingButton.setOnClickListener(this);
     }
+    */
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.GenSetButton:
-                handleCommonSettings();
-                break;
-            case R.id.FlightSetButton:
-                 handleFlightSettings();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void handleFlightSettings() {
+    @Click(R.id.FlightSetButton)
+    public void handleFlightSettings() {
         Intent intent = new Intent(this, FlightSettingActivity.class);
         startActivity(intent);
     }
 
-    private void handleCommonSettings() {
-        Intent intent = new Intent(this, SettingActivity.class);
+    @Click(R.id.GenSetButton)
+    public void handleCommonSettings() {
+        Intent intent = new Intent(this, SettingActivity_.class);
         startActivity(intent);
     }
 }
