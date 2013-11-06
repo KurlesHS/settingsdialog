@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.EFragment;
 import com.horrorsoft.viotimer.R;
 import com.horrorsoft.viotimer.common.ApplicationData;
 
@@ -19,6 +21,7 @@ import com.horrorsoft.viotimer.common.ApplicationData;
  * Date: 04.11.13
  * Time: 0:06
  */
+@EFragment(R.layout.edit_algoritm_item)
 public class EditAlgorithmDataDialog extends SherlockDialogFragment implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, TextView.OnEditorActionListener {
 
     private int delay;
@@ -26,6 +29,9 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements V
     private int minDelay;
     private int maxDelay;
     private int position;
+
+    Bundle lastBundle;
+
     private View currentView;
 
     public static final String keyDelay = "delay";
@@ -142,9 +148,14 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements V
         super.onSaveInstanceState(outState);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        currentView = inflater.inflate(R.layout.edit_algoritm_item, container);
+        //currentView = inflater.inflate(R.layout.edit_algoritm_item, container);
+        lastBundle = savedInstanceState;
+        return null;
+        /*
+        currentView = getView();
         getDialog().setTitle("Edit algorithm data");
         Button buttonDelayUp = (Button) currentView.findViewById(R.id.buttonDelayUp);
         Button buttonDelayDown = (Button) currentView.findViewById(R.id.buttonDelayDown);
@@ -178,7 +189,47 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements V
         servoPosTextEdit.setText(getServoPosString());
         delayTextEdit.setOnEditorActionListener(this);
         servoPosTextEdit.setOnEditorActionListener(this);
-        return currentView;
+        //return currentView;
+        return null;
+        */
+    }
+
+    @AfterViews
+    void init() {
+        currentView = getView();
+        getDialog().setTitle("Edit algorithm data");
+        Button buttonDelayUp = (Button) currentView.findViewById(R.id.buttonDelayUp);
+        Button buttonDelayDown = (Button) currentView.findViewById(R.id.buttonDelayDown);
+        Button buttonServoPosUp = (Button) currentView.findViewById(R.id.buttonServoPosUp);
+        Button buttonServoPosDown = (Button) currentView.findViewById(R.id.buttonServoPosDown);
+        Button buttonOk = (Button) currentView.findViewById(R.id.buttonOk);
+        buttonDelayDown.setOnClickListener(this);
+        buttonDelayDown.setOnLongClickListener(this);
+        buttonDelayDown.setOnTouchListener(this);
+        buttonDelayUp.setOnClickListener(this);
+        buttonDelayUp.setOnLongClickListener(this);
+        buttonDelayUp.setOnTouchListener(this);
+        buttonServoPosDown.setOnClickListener(this);
+        buttonServoPosDown.setOnLongClickListener(this);
+        buttonServoPosDown.setOnTouchListener(this);
+        buttonServoPosUp.setOnClickListener(this);
+        buttonServoPosUp.setOnLongClickListener(this);
+        buttonServoPosUp.setOnTouchListener(this);
+        buttonOk.setOnClickListener(this);
+
+        Bundle agrBundle = lastBundle != null ? lastBundle : getArguments();
+        setDelay(agrBundle.getInt(keyDelay));
+        setServoPos(agrBundle.getInt(keyServoPos));
+        setMinDelay(agrBundle.getInt(keyMinDelay));
+        setMaxDelay(agrBundle.getInt(keyMaxDelay));
+        setPosition(agrBundle.getInt(keyPosition));
+
+        EditText delayTextEdit = (EditText) currentView.findViewById(R.id.editTextDelay);
+        EditText servoPosTextEdit = (EditText) currentView.findViewById(R.id.editTextServoPos);
+        delayTextEdit.setText(getDelayText());
+        servoPosTextEdit.setText(getServoPosString());
+        delayTextEdit.setOnEditorActionListener(this);
+        servoPosTextEdit.setOnEditorActionListener(this);
     }
 
     private String getDelayText() {

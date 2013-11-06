@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
+import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
 import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
 import com.horrorsoft.viotimer.json.JsonSetting;
@@ -163,7 +164,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         if (position >= 0) {
             AlgorithmData.InfoAboutRow infoAboutRow = ApplicationData.getInstance().getAlgorithmData().getInfoAboutAlgorithm(currentAlgorithmNumber, currentServoNumber, position);
             if (infoAboutRow != null) {
-                EditAlgorithmDataDialog dlg = new EditAlgorithmDataDialog();
+                EditAlgorithmDataDialog_ dlg = new EditAlgorithmDataDialog_();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 int maxDelay = infoAboutRow.maxDelay;
                 int minDelay = infoAboutRow.minDelay;
