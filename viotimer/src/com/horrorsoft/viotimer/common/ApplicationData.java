@@ -3,6 +3,8 @@ package com.horrorsoft.viotimer.common;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.api.Scope;
 import com.horrorsoft.viotimer.R;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 
@@ -17,6 +19,7 @@ import java.io.InputStreamReader;
  * Date: 28.10.13
  * Time: 22:21
  */
+@EBean(scope = Scope.Singleton)
 public class ApplicationData {
     public static final String LOG_TAG = "com.horrorsoft.viotimer";
     private static ApplicationData instance;
@@ -32,6 +35,10 @@ public class ApplicationData {
 
     public static void setGlobalMaxDelay(int delay) {
         globalMaxDelay = delay;
+    }
+
+    public static int getGlobalMinDelay() {
+        return 1;
     }
 
     public static int getGlobalMaxDelay() {
@@ -132,18 +139,5 @@ public class ApplicationData {
 
     public void setBinaryData(byte[] binaryData) {
         this.binaryData = binaryData;
-    }
-
-    private ApplicationData() {
-        super();
-        if (instance == null)
-            instance = this;
-    }
-
-    public static synchronized ApplicationData getInstance() {
-        if (instance == null) {
-            instance = new ApplicationData();
-        }
-        return instance;
     }
 }

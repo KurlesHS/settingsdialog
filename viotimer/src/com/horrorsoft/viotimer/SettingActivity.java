@@ -31,13 +31,15 @@ import java.util.List;
 @EActivity(R.layout.settinglayout)
 public class SettingActivity extends SherlockActivity implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener, View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
 
-    //private static String LOG_TAG = "MyTag";
     final static int EDIT_SETTING_DIALOG = 1;
     final static int PLUS_OPERATION = 1;
     final static int MINUS_OPERATION = 2;
 
     @ViewById
     ListView listViewForSettingsDialog;
+
+    @Bean
+    ApplicationData applicationData;
 
     List<ICommonData> listOfData;
     ICommonData dataForDialog;
@@ -292,7 +294,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
 
     private void fillData() {
-        String jsonString = ApplicationData.getInstance().getJsonData();
+        String jsonString = applicationData.getJsonData();
         listOfData = JsonSetting.createListOfDataByJson(jsonString);
         if (listOfData == null) {
             listOfData = new ArrayList<ICommonData>();

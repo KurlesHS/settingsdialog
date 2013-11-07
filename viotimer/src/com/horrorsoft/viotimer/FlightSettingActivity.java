@@ -9,11 +9,14 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.googlecode.androidannotations.annotations.*;
+import com.horrorsoft.viotimer.adapters.AlgorithmAdapter;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;
+import com.horrorsoft.viotimer.data.AlgorithmHandler;
+import com.horrorsoft.viotimer.data.AlgorithmRowData;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
 import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
@@ -26,6 +29,8 @@ import com.horrorsoft.viotimer.json.JsonSetting;
  * Date: 28.10.13
  * Time: 20:57
  */
+@Fullscreen
+@EActivity(R.layout.activity_fligth_setting)
 public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener, View.OnLongClickListener, IDialogFragmentClickListener {
 
     private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
@@ -33,39 +38,44 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     private static final int POSITION_OF_DATA_ID = 3;
     private static final int DELAY_OF_DATA_ID = 4;
     private static final int SERVO_POSITION_OF_DATA_ID = 5;
-    private float dividerForAlgorithmDelay;
 
+    private float dividerForAlgorithmDelay;
     private int currentAlgorithmNumber;
     private int currentServoNumber;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @Bean
+    AlgorithmHandler algorithmHandler;
 
+    @Bean
+    protected ApplicationData applicationData;
+    @Bean
+    protected AlgorithmAdapter algorithmAdapter;
+
+    @ViewById(R.id.listViewForAlgorithm)
+    ListView algorithmListView;
+
+    @AfterViews
+    void init() {
         currentAlgorithmNumber = 0;
         currentServoNumber = 0;
-
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         dividerForAlgorithmDelay = (float) getResources().getInteger(R.integer.DividerForAlgorithmDelay);
-        setContentView(R.layout.activity_fligth_setting);
         ScrollView scrollView = (ScrollView) (findViewById(R.id.scrollViewForAlgorithmTable));
         scrollView.setScrollbarFadingEnabled(false);
         scrollView = (ScrollView) findViewById(R.id.scrollViewForAlgorithmButtons);
         scrollView.setScrollbarFadingEnabled(false);
-        AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(ApplicationData.getInstance().getJsonData());
-        ApplicationData.getInstance().setAlgorithmData(algorithmData);
+        AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(applicationData.getJsonData());
+        applicationData.setAlgorithmData(algorithmData);
         FillAlgorithmButton(algorithmData);
-        //FillTestAlgorithmData();
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectItemPositionForAlgorithmTableDialog dlg = new SelectItemPositionForAlgorithmTableDialog();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                dlg.show(ft, "selitemdlg");
-            }
-        };
-        Button add = (Button) findViewById(R.id.buttonAdd);
-        add.setOnClickListener(onClickListener);
+        algorithmAdapter.setAlgorithmHandler(algorithmHandler);
+        algorithmListView.setAdapter(algorithmAdapter);
+         //FillTestAlgorithmData();
+    }
+
+    @Click(R.id.buttonAdd)
+    protected void onAddButtonClicked() {
+        SelectItemPositionForAlgorithmTableDialog dlg = new SelectItemPositionForAlgorithmTableDialog();
+        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        dlg.show(getSupportFragmentManager(), "selitemdlg");
     }
 
     private void ensureAlgorithmTableRowVisible(int row) {
@@ -97,19 +107,8 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         }
     }
 
-    //TODO: К удалению
-    /*
-    void addRow(int position, int delay, int value) {
-        TableRow tableRow = createTableRow(position, delay, value);
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithmData);
-        tableLayout.addView(tableRow);
-        tableRow.setOnClickListener(this);
-        tableRow.setOnLongClickListener(this);
-    }
-      */
     void insertRow(int insertAtPosition, int position, int delay, int servoPos, boolean makeItSelected) {
         TableRow tableRow = createTableRow(position, delay, servoPos);
-
         TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
         tableLayout.addView(tableRow, insertAtPosition);
         tableRow.setOnClickListener(this);
@@ -117,7 +116,6 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         if (makeItSelected) {
             tableRow.setBackgroundColor(getResources().getColor(R.color.backgroundColorForSelectedRowInAlgorithmDataTable));
         }
-
     }
 
     private TableRow createTableRow(int position, int delay, int value) {
@@ -162,7 +160,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
         int position = tableLayout.indexOfChild(v);
         if (position >= 0) {
-            AlgorithmData.InfoAboutRow infoAboutRow = ApplicationData.getInstance().getAlgorithmData().getInfoAboutAlgorithm(currentAlgorithmNumber, currentServoNumber, position);
+            AlgorithmData.InfoAboutRow infoAboutRow = applicationData.getAlgorithmData().getInfoAboutAlgorithm(currentAlgorithmNumber, currentServoNumber, position);
             if (infoAboutRow != null) {
                 EditAlgorithmDataDialog_ dlg = new EditAlgorithmDataDialog_();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -201,6 +199,12 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         }
         long deltaT = System.currentTimeMillis() - startMs;
         Log.d("MyTag", "deltaT on click = " + deltaT);
+    }
+
+    @Override
+    protected void onDestroy() {
+        algorithmAdapter.setAlgorithmHandler(null);
+        super.onDestroy();
     }
 
     private void updateAlgorithmPositions() {
@@ -252,7 +256,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                     int servoPos = bundle.getInt(EditAlgorithmDataDialog.keyServoPos);
                     int delay = bundle.getInt(EditAlgorithmDataDialog.keyDelay);
                     int position = bundle.getInt(EditAlgorithmDataDialog.keyPosition);
-                    AlgorithmData algorithmData = ApplicationData.getInstance().getAlgorithmData();
+                    AlgorithmData algorithmData = applicationData.getAlgorithmData();
                     if (algorithmData.updateAlgorithmData(currentAlgorithmNumber, currentServoNumber, position, delay, servoPos)) {
                         updateAlgorithmTableRow(position, delay, servoPos);
                     }
@@ -273,6 +277,12 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             }
         }
     }
+
+    @ItemClick(R.id.listViewForAlgorithm)
+    void personListItemClicked(AlgorithmRowData data) {
+        //makeText(this, data.getPosition() + " " + data.getPosition() + " " + data.getServoPos(), LENGTH_SHORT).show();
+        algorithmAdapter.setCurrentRow(data.getPosition() - 1);
+}
 
     private void insertAlgorithmDataBellowCurrentItem() {
         TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
@@ -311,7 +321,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     }
 
     private void insertAlgorithmData(TableLayout tableLayout, int currentIndex, TableRow currentRow) {
-        AlgorithmData algorithmData = ApplicationData.getInstance().getAlgorithmData();
+        AlgorithmData algorithmData = applicationData.getAlgorithmData();
         AlgorithmData.InfoAboutRow infoAboutInsertedRow = algorithmData.prepareInfoAboutInsertingNewRowIntoAlgorithm(currentAlgorithmNumber, currentServoNumber, currentIndex);
         if (infoAboutInsertedRow != null) {
             if (currentRow != null) {

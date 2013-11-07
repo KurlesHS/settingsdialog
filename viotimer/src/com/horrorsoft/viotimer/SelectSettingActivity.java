@@ -19,25 +19,10 @@ import com.googlecode.androidannotations.annotations.Fullscreen;
 @Fullscreen
 @EActivity(R.layout.activity_setting)
 public class SelectSettingActivity extends SherlockActivity {
-    /*
-    @Override
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_setting);
-
-        ImageButton settingButton = (ImageButton) findViewById(R.id.GenSetButton);
-        settingButton.setOnClickListener(this);
-        settingButton = (ImageButton) findViewById(R.id.FlightSetButton);
-        settingButton.setOnClickListener(this);
-    }
-    */
 
     @Click(R.id.FlightSetButton)
     public void handleFlightSettings() {
-        Intent intent = new Intent(this, FlightSettingActivity.class);
+        Intent intent = new Intent(this, FlightSettingActivity_.class);
         startActivity(intent);
     }
 
