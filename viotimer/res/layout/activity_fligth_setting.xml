@@ -196,25 +196,6 @@
                         android:layout_height="0dp"
                         android:layout_weight="5" >
                     </FrameLayout>
-                    <ScrollView
-                        android:id="@+id/scrollViewForAlgorithmTable"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="40"
-                        android:clickable="true"
-                        android:fitsSystemWindows="true"
-                        android:scrollbarAlwaysDrawVerticalTrack="true"
-                        android:scrollbarStyle="insideOverlay"
-                        android:scrollbars="vertical"
-                        android:visibility="invisible" >
-
-                        <TableLayout
-                            android:id="@+id/TableLayoutForAlgorithData"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" android:visibility="invisible">
-
-                        </TableLayout>
-                    </ScrollView>
                 </LinearLayout>
 
             </LinearLayout>

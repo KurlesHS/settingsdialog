@@ -26,7 +26,7 @@ public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFra
         View v = inflater.inflate(R.layout.selectitempositionforalgorithmdata, container);
         getDialog().setTitle("Add item");
         Button buttonUp = (Button) v.findViewById(R.id.button_top);
-        Button buttonDown = (Button) v.findViewById(R.id.button_below);
+        Button buttonDown = (Button) v.findViewById(R.id.button_bottom);
         buttonDown.setOnClickListener(this);
         buttonUp.setOnClickListener(this);
         return v;
@@ -40,8 +40,8 @@ public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFra
                 case R.id.button_top:
                     listener.onClick(R.id.InsertAlgorithmDataUpperCurrentItem, null);
                     break;
-                case R.id.button_below:
-                    listener.onClick(R.id.InsertAlgorithmDataBelowCurrentItem, null);
+                case R.id.button_bottom:
+                    listener.onClick(R.id.InsertAlgorithmDataBottomCurrentItem, null);
                     break;
             }
         }

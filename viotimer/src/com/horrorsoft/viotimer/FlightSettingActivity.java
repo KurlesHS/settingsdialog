@@ -33,9 +33,9 @@ import com.horrorsoft.viotimer.json.JsonSetting;
 public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener,  IDialogFragmentClickListener {
 
     private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
-    private static final int POSITION_OF_DATA_ID = 2;
-    private static final int DELAY_OF_DATA_ID = 3;
-    private static final int SERVO_POSITION_OF_DATA_ID = 4;
+    //private static final int POSITION_OF_DATA_ID = 2;
+    //private static final int DELAY_OF_DATA_ID = 3;
+    //private static final int SERVO_POSITION_OF_DATA_ID = 4;
 
     private float dividerForAlgorithmDelay;
     private int currentAlgorithmNumber;
@@ -52,15 +52,16 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @ViewById(R.id.listViewForAlgorithm)
     ListView algorithmListView;
 
+    @ViewById(R.id.scrollViewForAlgorithmButtons)
+    ScrollView scrollViewForAlgorithmButtons;
+
     @AfterViews
     void init() {
         currentAlgorithmNumber = 0;
         currentServoNumber = 0;
         dividerForAlgorithmDelay = (float) getResources().getInteger(R.integer.DividerForAlgorithmDelay);
-        ScrollView scrollView = (ScrollView) (findViewById(R.id.scrollViewForAlgorithmTable));
-        scrollView.setScrollbarFadingEnabled(false);
-        scrollView = (ScrollView) findViewById(R.id.scrollViewForAlgorithmButtons);
-        scrollView.setScrollbarFadingEnabled(false);
+        algorithmListView.setScrollbarFadingEnabled(false);
+        scrollViewForAlgorithmButtons.setScrollbarFadingEnabled(false);
         AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(applicationData.getJsonData());
         applicationData.setAlgorithmData(algorithmData);
         FillAlgorithmButton(algorithmData);
@@ -72,7 +73,6 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @Click(R.id.buttonAdd)
     protected void onAddButtonClicked() {
         SelectItemPositionForAlgorithmTableDialog dlg = new SelectItemPositionForAlgorithmTableDialog();
-        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         dlg.show(getSupportFragmentManager(), "selitemdlg");
     }
 
@@ -147,9 +147,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     public void onClick(int buttonId, Bundle bundle) {
         Log.d("MyTag", "button pressed: " + buttonId);
         switch (buttonId) {
-            case R.id.InsertAlgorithmDataBelowCurrentItem: {
+            case R.id.InsertAlgorithmDataBottomCurrentItem: {
                 // обработать вставку ряда таблицы ниже текущего элемента
-                insertAlgorithmDataBellowCurrentItem();
+                insertAlgorithmDataBottomCurrentItem();
             }
             break;
             case R.id.InsertAlgorithmDataUpperCurrentItem: {
@@ -168,11 +168,10 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             break;
             default:
                 break;
-
         }
     }
 
-    private void insertAlgorithmDataBellowCurrentItem() {
+    private void insertAlgorithmDataBottomCurrentItem() {
         int currentPos = algorithmAdapter.getSelectedRow();
         if (currentPos < 0)
             currentPos = 0;

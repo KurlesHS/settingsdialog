@@ -38,13 +38,15 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     @InstanceState
     protected Integer instanceObject;
 
-    @ViewById(R.id.buttonDelayUp)
-    protected Button button123;
-
     @ViewById(R.id.editTextDelay)
     EditText delayTextEdit;
     @ViewById(R.id.editTextServoPos)
     EditText servoPosTextEdit;
+    @ViewById(R.id.editTextServoPos)
+    EditText editTextServoPos;
+    @ViewById(R.id.editTextDelay)
+    EditText editTextDelay;
+
 
 
     public static final String keyDelay = "delay";
@@ -62,7 +64,6 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
 
     @UiThread(delay = 50)
     protected void autoPushButtonCallback() {
-
         int stepMultiplier = ++autoPushCount / 20 + 1;
         int newStep = stepMultiplier * stepMultiplier;
         switch (autoPushButtonMode) {
@@ -150,7 +151,7 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     void init() {
         getDialog().setTitle("Edit algorithm data");
         if (instanceObject == null) {
-            instanceObject = new Integer(1);
+            instanceObject = 1;
             Bundle agrBundle = getArguments();
             setDelay(agrBundle.getInt(keyDelay));
             setServoPos(agrBundle.getInt(keyServoPos));
@@ -162,7 +163,6 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
         servoPosTextEdit.setText(getServoPosString());
         delayTextEdit.setOnEditorActionListener(this);
         servoPosTextEdit.setOnEditorActionListener(this);
-        Log.d(ApplicationData.LOG_TAG, "init(), servo = " + getServoPos() + ", delay = " + getDelay() + " " + button123);
     }
 
     private String getDelayText() {
@@ -179,12 +179,10 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     }
 
     private void updateTextServoPos() {
-        EditText editTextServoPos = (EditText) getView().findViewById(R.id.editTextServoPos);
         editTextServoPos.setText((getServoPosString()));
     }
 
     private void updateTextDelay() {
-        EditText editTextDelay = (EditText) getView().findViewById(R.id.editTextDelay);
         editTextDelay.setText(getDelayText());
     }
 
@@ -253,6 +251,7 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
             updateTextServoPos();
         }
     }
+
     @Click(R.id.buttonServoPosUp)
     void onButtonServoPosUpPushed() {
         if (increaseServoPos(1)) {

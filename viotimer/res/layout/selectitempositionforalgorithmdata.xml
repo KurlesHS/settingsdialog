@@ -14,6 +14,6 @@
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="on below"
-            android:id="@+id/button_below"/>
+            android:text="on bottom"
+            android:id="@+id/button_bottom"/>
 </LinearLayout>
