@@ -89,7 +89,7 @@ public class AlgorithmHandler {
         }
     }
 
-    InfoAboutRow getInfoAboutRow(int row) {
+    public InfoAboutRow getInfoAboutRow(int row) {
         int maxDelay = ApplicationData.getGlobalMaxDelay();
         int minDelay = ApplicationData.getGlobalMinDelay();
         InfoAboutRow infoAboutRow = null;
@@ -110,7 +110,7 @@ public class AlgorithmHandler {
         return infoAboutRow;
     }
 
-    InfoAboutRow getInfoInsertingAboutRow(int row) {
+    public InfoAboutRow getInfoInsertingAboutRow(int row) {
         int maxDelay = ApplicationData.getGlobalMaxDelay();
         int minDelay = ApplicationData.getGlobalMinDelay();
         int servoPos = -1;
@@ -121,8 +121,8 @@ public class AlgorithmHandler {
                 minDelay = algorithmRowData.getDelay() + 1;
                 servoPos = algorithmRowData.getServoPos();
             }
-            if (row < getSize() + 1) {
-                AlgorithmRowData algorithmRowData = getAlgorithmRowData(row);
+            if (row + 1 < getSize()) {
+                AlgorithmRowData algorithmRowData = getAlgorithmRowData(row + 1);
                 maxDelay = algorithmRowData.getDelay() - 1;
                 if (servoPos < 0) {
                     servoPos = algorithmRowData.getServoPos();

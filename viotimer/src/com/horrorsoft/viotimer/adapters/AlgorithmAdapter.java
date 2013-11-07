@@ -39,8 +39,12 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
     }
 
     @UiThread
-    private void notifyDataSetChangedInUi() {
+    protected void notifyDataSetChangedInUi() {
         notifyDataSetChanged();
+    }
+
+    public int getSelectedRow() {
+        return selectedRow;
     }
 
     public AlgorithmHandler getAlgorithmHandler() {

@@ -68,7 +68,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         FillAlgorithmButton(algorithmData);
         algorithmAdapter.setAlgorithmHandler(algorithmHandler);
         algorithmListView.setAdapter(algorithmAdapter);
-         //FillTestAlgorithmData();
+        //FillTestAlgorithmData();
     }
 
     @Click(R.id.buttonAdd)
@@ -238,6 +238,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         }
     }
 
+
     @Override
     public void onClick(int buttonId, Bundle bundle) {
         Log.d("MyTag", "button pressed: " + buttonId);
@@ -251,6 +252,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                 // обработать вставку ряда таблицы выше текущего элемента
                 insertAlgorithmDataUpperCurrentItem();
             }
+            break;
             case R.id.AlgorithmDataChanged: {
                 if (bundle != null) {
                     int servoPos = bundle.getInt(EditAlgorithmDataDialog.keyServoPos);
@@ -262,6 +264,10 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                     }
                 }
             }
+            break;
+            default:
+                break;
+
         }
     }
 
@@ -282,42 +288,30 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     void personListItemClicked(AlgorithmRowData data) {
         //makeText(this, data.getPosition() + " " + data.getPosition() + " " + data.getServoPos(), LENGTH_SHORT).show();
         algorithmAdapter.setCurrentRow(data.getPosition() - 1);
-}
+    }
 
     private void insertAlgorithmDataBellowCurrentItem() {
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
-        Object currentIndexObject = tableLayout.getTag(R.id.CurrentIndexForAlgorithmTable);
-        int currentIndex = 0;
-        if (currentIndexObject != null) {
-            currentIndex = (Integer) currentIndexObject;
+        int currentPos = algorithmAdapter.getSelectedRow();
+        if (currentPos < 0)
+            currentPos = 0;
+        ++currentPos;
+        if (currentPos > algorithmAdapter.getCount()) {
+            currentPos = algorithmAdapter.getCount();
         }
-        TableRow currentRow = (TableRow) tableLayout.getChildAt(currentIndex);
-        if (currentIndex <= 0) {
-            currentIndex = 1;
-        } else {
-            ++currentIndex;
+        AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoInsertingAboutRow(currentPos);
+        if (infoAboutRow != null) {
+            algorithmHandler.insertRow(currentPos, infoAboutRow.delay, infoAboutRow.servoPos);
         }
-
-        int childCount = tableLayout.getChildCount();
-        if (currentIndex > childCount) {
-            currentIndex = childCount;
-        }
-        insertAlgorithmData(tableLayout, currentIndex, currentRow);
     }
 
     private void insertAlgorithmDataUpperCurrentItem() {
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.TableLayoutForAlgorithData);
-        Object currentIndexObject = tableLayout.getTag(R.id.CurrentIndexForAlgorithmTable);
-        int currentIndex = 0;
-        if (currentIndexObject != null) {
-            currentIndex = (Integer) currentIndexObject;
+        int currentPos = algorithmAdapter.getSelectedRow();
+        if (currentPos < 0)
+            currentPos = 0;
+        AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoInsertingAboutRow(currentPos);
+        if (infoAboutRow != null) {
+            algorithmHandler.insertRow(currentPos, infoAboutRow.delay, infoAboutRow.servoPos);
         }
-        TableRow currentRow = (TableRow) tableLayout.getChildAt(currentIndex);
-        if (currentIndex < 0) {
-            currentIndex = 0;
-        }
-
-        insertAlgorithmData(tableLayout, currentIndex, currentRow);
     }
 
     private void insertAlgorithmData(TableLayout tableLayout, int currentIndex, TableRow currentRow) {
