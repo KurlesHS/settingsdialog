@@ -102,7 +102,7 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
         return algorithmDataRowView;
     }
 
-    public void setCurrentRow(int row) {
+    public void setSelectedRow(int row) {
         selectedRow = row;
         notifyDataSetChanged();
     }

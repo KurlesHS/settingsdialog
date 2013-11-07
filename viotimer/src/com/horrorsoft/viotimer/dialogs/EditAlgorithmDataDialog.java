@@ -242,7 +242,7 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
 
     @Click(R.id.buttonDelayUp)
     void onButtonDelayUpPushed() {
-        if (decreaseDelay(1)) {
+        if (increaseDelay(1)) {
             updateTextDelay();
         }
     }
