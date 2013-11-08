@@ -181,7 +181,8 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         }
         AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoInsertingAboutRow(currentPos);
         if (infoAboutRow != null) {
-            algorithmHandler.insertRow(currentPos, infoAboutRow.delay, infoAboutRow.servoPos);
+            algorithmHandler.insertRow(currentPos, infoAboutRow.delay, infoAboutRow.servoPos, false);
+            algorithmAdapter.setSelectedRow(currentPos);
         }
     }
 
