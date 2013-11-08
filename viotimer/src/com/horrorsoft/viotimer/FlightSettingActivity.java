@@ -104,7 +104,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         algorithmAdapter.setSelectedRow(position);
         AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoAboutRow(position);
         if (infoAboutRow != null) {
-            EditAlgorithmDataDialog_ dlg = new EditAlgorithmDataDialog_();
+            EditAlgorithmDataDialog dlg = new EditAlgorithmDataDialog_();
             int maxDelay = infoAboutRow.maxDelay;
             int minDelay = infoAboutRow.minDelay;
             int delay = infoAboutRow.delay;
