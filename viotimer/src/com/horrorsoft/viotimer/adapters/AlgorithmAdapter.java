@@ -85,15 +85,12 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
         AlgorithmDataRowView algorithmDataRowView;
         if (convertView == null) {
             algorithmDataRowView = AlgorithmDataRowView_.build(parent.getContext());
-            //algorithmDataRowView.copyLayoutParams();
         } else {
             algorithmDataRowView = (AlgorithmDataRowView) convertView;
-            //algorithmDataRowView.restoreLayoutParams();
         }
         AlgorithmRowData algorithmRowData = getItem(position);
 
         if (position == selectedRow) {
-            //Log.d(ApplicationData.LOG_TAG, "position: " + position + ", selectedRow = " + selectedRow);
             algorithmDataRowView.setBackgroundColor(backgroundColorForSelectedRowInAlgorithmDataTable);
         } else {
             algorithmDataRowView.setBackgroundColor(Color.TRANSPARENT);

@@ -5,7 +5,6 @@ package com.horrorsoft.viotimer.data;
  * User: Alexey
  * Date: 07.11.13
  * Time: 0:07
- * To change this template use File | Settings | File Templates.
  */
 public class AlgorithmRowData {
 

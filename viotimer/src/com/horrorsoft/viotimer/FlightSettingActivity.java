@@ -22,6 +22,9 @@ import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Admin
@@ -30,9 +33,14 @@ import com.horrorsoft.viotimer.json.JsonSetting;
  */
 @Fullscreen
 @EActivity(R.layout.activity_fligth_setting)
-public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener,  IDialogFragmentClickListener {
+public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener, IDialogFragmentClickListener {
 
     private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
+    private static final int SERVO_NUMBER_BUTTON_ID = 2;
+
+    private static final String CURRENT_ALGORITHM_NUMBER = "currentAlgorithmNumber";
+    private static final String CURRENT_SERVO_NUMBER = "currentServoNumber";
+
     //private static final int POSITION_OF_DATA_ID = 2;
     //private static final int DELAY_OF_DATA_ID = 3;
     //private static final int SERVO_POSITION_OF_DATA_ID = 4;
@@ -55,10 +63,29 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @ViewById(R.id.scrollViewForAlgorithmButtons)
     ScrollView scrollViewForAlgorithmButtons;
 
+    @ViewById(R.id.linearLayoutForServoButtons)
+    LinearLayout linearLayoutForServoButtons;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            currentServoNumber = savedInstanceState.getInt(CURRENT_SERVO_NUMBER, 0);
+            currentAlgorithmNumber = savedInstanceState.getInt(CURRENT_ALGORITHM_NUMBER, 0);
+        } else {
+            currentAlgorithmNumber = currentServoNumber = 0;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_ALGORITHM_NUMBER, currentAlgorithmNumber);
+        outState.putInt(CURRENT_SERVO_NUMBER, currentServoNumber);
+    }
+
     @AfterViews
     void init() {
-        currentAlgorithmNumber = 0;
-        currentServoNumber = 0;
         dividerForAlgorithmDelay = (float) getResources().getInteger(R.integer.DividerForAlgorithmDelay);
         algorithmListView.setScrollbarFadingEnabled(false);
         scrollViewForAlgorithmButtons.setScrollbarFadingEnabled(false);
@@ -67,6 +94,21 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         FillAlgorithmButton(algorithmData);
         algorithmAdapter.setAlgorithmHandler(algorithmHandler);
         algorithmListView.setAdapter(algorithmAdapter);
+        int servoNum = 0;
+        for (int r = 0; r < linearLayoutForServoButtons.getChildCount(); ++r) {
+            View v = linearLayoutForServoButtons.getChildAt(r);
+            if (v instanceof Button) {
+                Button button = (Button) linearLayoutForServoButtons.getChildAt(r);
+                if (button != null) {
+                    if (servoNum == currentServoNumber) {
+                        button.setSelected(true);
+                    }
+                    button.setTag(R.id.ServoNumberButton, servoNum++);
+                    button.setId(SERVO_NUMBER_BUTTON_ID);
+                    button.setOnClickListener(this);
+                }
+            }
+        }
         //FillTestAlgorithmData();
     }
 
@@ -81,6 +123,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         for (int i = 0; i < algorithmData.getAlgorithmCount(); ++i) {
             String description = algorithmData.getAlgorithmDescription(i);
             Button button = new Button(this);
+            button.setBackgroundResource(R.drawable.selected_button);
             button.setText(description);
             button.setTag(R.id.AlgorithmNumberButton, i);
             button.setId(ALGORITHM_NUMBER_BUTTON_ID);
@@ -89,8 +132,21 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                     getResources().getDisplayMetrics());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) px);
             button.setLayoutParams(layoutParams);
+            if (i == currentAlgorithmNumber) {
+                button.setSelected(true);
+            }
             linearLayout.addView(button);
         }
+    }
+
+    private void unCheckAlgorithmButton(LinearLayout linearLayout) {
+        for (int r = 0; r < linearLayout.getChildCount(); ++r) {
+            View v = linearLayout.getChildAt(r);
+            if (v != null && v.isSelected()) {
+                v.setSelected(false);
+            }
+        }
+
     }
 
     @ItemClick(R.id.listViewForAlgorithm)
@@ -98,6 +154,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         //makeText(this, data.getPosition() + " " + data.getPosition() + " " + data.getServoPos(), LENGTH_SHORT).show();
         algorithmAdapter.setSelectedRow(data.getPosition() - 1);
     }
+
     @ItemLongClick(R.id.listViewForAlgorithm)
     public boolean onItemLongClick1(AlgorithmRowData data) {
         int position = data.getPosition() - 1;
@@ -124,17 +181,41 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @Override
     public void onClick(View v) {
         long startMs = System.currentTimeMillis();
+        boolean changeAlgorithm = false;
         switch (v.getId()) {
             case ALGORITHM_NUMBER_BUTTON_ID: {
                 //TODO: хендлить переключение режимов алгоритма здесь
-
+                Button button = (Button) v;
+                if (button != null) {
+                    int algorithmNumber = (Integer) v.getTag(R.id.AlgorithmNumberButton);
+                    if (algorithmNumber != currentAlgorithmNumber) {
+                        unCheckAlgorithmButton((LinearLayout) findViewById(R.id.layoutForChangeAlgorithmStep));
+                        button.setSelected(true);
+                        changeAlgorithm = true;
+                        Log.d("MyTag", "ALGORITHM_NUMBER_BUTTON_ID: " + algorithmNumber);
+                    }
+                }
             }
             break;
+            case SERVO_NUMBER_BUTTON_ID: {
+                Button button = (Button) v;
+                if (button != null) {
+                    int servoNumber = (Integer) v.getTag(R.id.ServoNumberButton);
+                    if (servoNumber != currentServoNumber) {
+                        unCheckAlgorithmButton(linearLayoutForServoButtons);
+                        button.setSelected(true);
+                        Log.d("MyTag", "SERVO_NUMBER_BUTTON_ID: " + servoNumber);
+                    }
+                }
+            }
+            break;
+
             default:
                 break;
         }
-        long deltaT = System.currentTimeMillis() - startMs;
-        Log.d("MyTag", "deltaT on click = " + deltaT);
+        if (changeAlgorithm) {
+
+        }
     }
 
     @Override

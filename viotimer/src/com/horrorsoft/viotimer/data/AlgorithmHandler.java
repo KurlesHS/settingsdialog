@@ -49,6 +49,8 @@ public class AlgorithmHandler {
         }
     }
 
+
+
     public void addListener(IListener listener) {
         if (!iListeners.contains(listener)) {
             iListeners.add(listener);
@@ -59,6 +61,11 @@ public class AlgorithmHandler {
         if(iListeners.contains(listener)) {
             iListeners.remove(listener);
         }
+    }
+
+    public void setAlgorithmRowDataList(List<AlgorithmRowData> algorithmRowDataList) {
+        this.algorithmRowDataList = algorithmRowDataList;
+        notifyAboutDataChange();
     }
 
     List<AlgorithmRowData> algorithmRowDataList = new ArrayList<AlgorithmRowData>();
