@@ -58,7 +58,7 @@ public class AlgorithmHandler {
     }
 
     public void removeListener(IListener listener) {
-        if(iListeners.contains(listener)) {
+        if (iListeners.contains(listener)) {
             iListeners.remove(listener);
         }
     }
@@ -83,13 +83,19 @@ public class AlgorithmHandler {
     }
 
     public void insertRow(int row, int delay, int servoPos) {
+        insertRow(row, delay, servoPos, true);
+    }
+
+    public void insertRow(int row, int delay, int servoPos, boolean updateChanges) {
         if (row < 0)
             row = 0;
         else if (row >= getSize())
             row = getSize();
         algorithmRowDataList.add(row, new AlgorithmRowData(0, delay, servoPos));
         recalculatePositions();
-        notifyAboutDataChange();
+        if (updateChanges) {
+            notifyAboutDataChange();
+        }
     }
 
     public void removeRow(int row) {
