@@ -41,10 +41,6 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
         notifyDataSetChanged();
     }
 
-    public AlgorithmHandler getAlgorithmHandler() {
-        return algorithmHandler;
-    }
-
     public void setAlgorithmHandler(AlgorithmHandler algorithmHandler) {
         if (this.algorithmHandler != null) {
             this.algorithmHandler.removeListener(this);

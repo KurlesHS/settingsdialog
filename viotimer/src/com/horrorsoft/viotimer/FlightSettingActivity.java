@@ -20,10 +20,6 @@ import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
 import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
-import com.horrorsoft.viotimer.json.JsonSetting;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,16 +34,14 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
     private static final int SERVO_NUMBER_BUTTON_ID = 2;
 
-    private static final String CURRENT_ALGORITHM_NUMBER = "currentAlgorithmNumber";
-    private static final String CURRENT_SERVO_NUMBER = "currentServoNumber";
-
     //private static final int POSITION_OF_DATA_ID = 2;
     //private static final int DELAY_OF_DATA_ID = 3;
     //private static final int SERVO_POSITION_OF_DATA_ID = 4;
 
-    private float dividerForAlgorithmDelay;
-    private int currentAlgorithmNumber;
-    private int currentServoNumber;
+    @InstanceState
+    protected int currentAlgorithmNumber;
+    @InstanceState
+    protected int currentServoNumber;
 
     @Bean
     protected ApplicationData applicationData;
@@ -68,27 +62,10 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            currentServoNumber = savedInstanceState.getInt(CURRENT_SERVO_NUMBER, 0);
-            currentAlgorithmNumber = savedInstanceState.getInt(CURRENT_ALGORITHM_NUMBER, 0);
-        } else {
-            currentAlgorithmNumber = currentServoNumber = 0;
-        }
-        Log.d("MyTag", "on create s: " + currentServoNumber + "a: " + currentAlgorithmNumber);
-
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(CURRENT_ALGORITHM_NUMBER, currentAlgorithmNumber);
-        outState.putInt(CURRENT_SERVO_NUMBER, currentServoNumber);
-        Log.d("MyTag", "on save s: " + currentServoNumber + "a: " + currentAlgorithmNumber);
     }
 
     @AfterViews
     void init() {
-        dividerForAlgorithmDelay = (float) getResources().getInteger(R.integer.DividerForAlgorithmDelay);
         algorithmListView.setScrollbarFadingEnabled(false);
         scrollViewForAlgorithmButtons.setScrollbarFadingEnabled(false);
         FillAlgorithmButton(applicationData.getAlgorithmData());
@@ -181,45 +158,35 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
 
     @Override
     public void onClick(View v) {
-        long startMs = System.currentTimeMillis();
-        boolean changeAlgorithm = false;
         switch (v.getId()) {
             case ALGORITHM_NUMBER_BUTTON_ID: {
                 //TODO: хендлить переключение режимов алгоритма здесь
                 Button button = (Button) v;
-                if (button != null) {
-                    int algorithmNumber = (Integer) v.getTag(R.id.AlgorithmNumberButton);
-                    if (algorithmNumber != currentAlgorithmNumber) {
-                        unCheckAlgorithmButton((LinearLayout) findViewById(R.id.layoutForChangeAlgorithmStep));
-                        button.setSelected(true);
-                        changeAlgorithm = true;
-                        Log.d("MyTag", "ALGORITHM_NUMBER_BUTTON_ID: " + algorithmNumber);
-                        currentAlgorithmNumber = algorithmNumber;
-                        algorithmHandler.setCurrentAlgorithmNum(algorithmNumber);
-                    }
+                int algorithmNumber = (Integer) v.getTag(R.id.AlgorithmNumberButton);
+                if (algorithmNumber != currentAlgorithmNumber) {
+                    unCheckAlgorithmButton((LinearLayout) findViewById(R.id.layoutForChangeAlgorithmStep));
+                    button.setSelected(true);
+                    Log.d("MyTag", "ALGORITHM_NUMBER_BUTTON_ID: " + algorithmNumber);
+                    currentAlgorithmNumber = algorithmNumber;
+                    algorithmHandler.setCurrentAlgorithmNum(algorithmNumber);
                 }
             }
             break;
             case SERVO_NUMBER_BUTTON_ID: {
                 Button button = (Button) v;
-                if (button != null) {
-                    int servoNumber = (Integer) v.getTag(R.id.ServoNumberButton);
-                    if (servoNumber != currentServoNumber) {
-                        unCheckAlgorithmButton(linearLayoutForServoButtons);
-                        button.setSelected(true);
-                        Log.d("MyTag", "SERVO_NUMBER_BUTTON_ID: " + servoNumber);
-                        currentServoNumber = servoNumber;
-                        algorithmHandler.setCurrentServoNum(servoNumber);
-                    }
+                int servoNumber = (Integer) v.getTag(R.id.ServoNumberButton);
+                if (servoNumber != currentServoNumber) {
+                    unCheckAlgorithmButton(linearLayoutForServoButtons);
+                    button.setSelected(true);
+                    Log.d("MyTag", "SERVO_NUMBER_BUTTON_ID: " + servoNumber);
+                    currentServoNumber = servoNumber;
+                    algorithmHandler.setCurrentServoNum(servoNumber);
                 }
             }
             break;
 
             default:
                 break;
-        }
-        if (changeAlgorithm) {
-
         }
     }
 

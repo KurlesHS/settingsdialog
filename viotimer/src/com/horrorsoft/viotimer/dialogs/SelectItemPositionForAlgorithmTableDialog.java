@@ -17,10 +17,6 @@ import com.horrorsoft.viotimer.R;
 
 
 public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFragment implements  View.OnClickListener {
-
-    public static final int TOP_BUTTON = 1;
-    public static final int BOTTOM_BUTTON = 2;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.selectitempositionforalgorithmdata, container);

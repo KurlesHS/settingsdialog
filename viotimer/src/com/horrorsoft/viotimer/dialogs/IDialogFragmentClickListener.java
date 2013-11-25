@@ -7,7 +7,6 @@ import android.os.Bundle;
  * User: Admin
  * Date: 31.10.13
  * Time: 12:39
- * To change this template use File | Settings | File Templates.
  */
 public interface IDialogFragmentClickListener {
     public void onClick(int buttonId, Bundle bundle);

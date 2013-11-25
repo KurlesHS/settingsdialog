@@ -1,11 +1,8 @@
 package com.horrorsoft.viotimer.common;
 
-import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.api.Scope;
-import com.horrorsoft.viotimer.R;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 
 import java.io.BufferedReader;
@@ -22,7 +19,6 @@ import java.io.InputStreamReader;
 @EBean(scope = Scope.Singleton)
 public class ApplicationData {
     public static final String LOG_TAG = "com.horrorsoft.viotimer";
-    private static ApplicationData instance;
     private String jsonData;
     private byte[] binaryData;
     private AlgorithmData algorithmData;

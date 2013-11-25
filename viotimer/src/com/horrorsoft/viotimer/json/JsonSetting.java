@@ -39,7 +39,7 @@ public class JsonSetting {
 
     public static AlgorithmData createAlgorithmDataByJson(String json) {
         AlgorithmData algorithmData = new AlgorithmData();
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
             JSONArray mainJsonArray = jsonObject.getJSONArray(ALGORITHM_SETTING_ROOT_JSON_TAG);
