@@ -50,10 +50,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     private int currentServoNumber;
 
     @Bean
-    AlgorithmHandler algorithmHandler;
-
-    @Bean
     protected ApplicationData applicationData;
+    @Bean
+    AlgorithmHandler algorithmHandler;
     @Bean
     protected AlgorithmAdapter algorithmAdapter;
 
@@ -75,6 +74,8 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         } else {
             currentAlgorithmNumber = currentServoNumber = 0;
         }
+        Log.d("MyTag", "on create s: " + currentServoNumber + "a: " + currentAlgorithmNumber);
+
     }
 
     @Override
@@ -82,6 +83,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_ALGORITHM_NUMBER, currentAlgorithmNumber);
         outState.putInt(CURRENT_SERVO_NUMBER, currentServoNumber);
+        Log.d("MyTag", "on save s: " + currentServoNumber + "a: " + currentAlgorithmNumber);
     }
 
     @AfterViews
@@ -89,9 +91,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         dividerForAlgorithmDelay = (float) getResources().getInteger(R.integer.DividerForAlgorithmDelay);
         algorithmListView.setScrollbarFadingEnabled(false);
         scrollViewForAlgorithmButtons.setScrollbarFadingEnabled(false);
-        AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(applicationData.getJsonData());
-        applicationData.setAlgorithmData(algorithmData);
-        FillAlgorithmButton(algorithmData);
+        FillAlgorithmButton(applicationData.getAlgorithmData());
         algorithmAdapter.setAlgorithmHandler(algorithmHandler);
         algorithmListView.setAdapter(algorithmAdapter);
         int servoNum = 0;
@@ -193,6 +193,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                         button.setSelected(true);
                         changeAlgorithm = true;
                         Log.d("MyTag", "ALGORITHM_NUMBER_BUTTON_ID: " + algorithmNumber);
+                        currentAlgorithmNumber = algorithmNumber;
                     }
                 }
             }
@@ -205,6 +206,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                         unCheckAlgorithmButton(linearLayoutForServoButtons);
                         button.setSelected(true);
                         Log.d("MyTag", "SERVO_NUMBER_BUTTON_ID: " + servoNumber);
+                        currentServoNumber = servoNumber;
                     }
                 }
             }

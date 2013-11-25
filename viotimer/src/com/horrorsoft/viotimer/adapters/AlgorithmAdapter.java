@@ -53,16 +53,12 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
 
     public void setAlgorithmHandler(AlgorithmHandler algorithmHandler) {
         if (this.algorithmHandler != null) {
-            algorithmHandler.removeListener(this);
+            this.algorithmHandler.removeListener(this);
         }
         if (algorithmHandler != null) {
             algorithmHandler.addListener(this);
             this.algorithmHandler = algorithmHandler;
         }
-    }
-
-    protected void finalize() {
-
     }
 
     @Override

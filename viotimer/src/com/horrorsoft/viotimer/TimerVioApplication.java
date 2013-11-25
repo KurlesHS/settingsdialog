@@ -4,6 +4,8 @@ import android.app.Application;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EApplication;
 import com.horrorsoft.viotimer.common.ApplicationData;
+import com.horrorsoft.viotimer.data.AlgorithmData;
+import com.horrorsoft.viotimer.json.JsonSetting;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,5 +27,7 @@ public class TimerVioApplication extends Application {
         commonData.setBinaryData(new byte[0x10000]);
         // for testing purposes
         commonData.setJsonData(ApplicationData.readTextFileFromRawResource(R.raw.test_json, this));
+        AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(commonData.getJsonData());
+        commonData.setAlgorithmData(algorithmData);
     }
 }
