@@ -1,5 +1,7 @@
 package com.horrorsoft.viotimer.data;
 
+import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.horrorsoft.viotimer.common.ApplicationData;
 
@@ -12,16 +14,43 @@ import java.util.List;
  * Date: 07.11.13
  * Time: 3:28
  */
+
+
 @EBean
 public class AlgorithmHandler {
+
+    @Bean
+    protected
+    ApplicationData applicationData;
+
+    private AlgorithmData algorithmData;
+
+    private int currentServoNum;
+    private int currentAlgorithmNum;
+
+    public void setCurrentServoNum(int currentServoNum) {
+        this.currentServoNum = currentServoNum;
+        notifyAboutDataChange();
+    }
+
+    public void setCurrentAlgorithmNum(int currentAlgorithmNum) {
+        this.currentAlgorithmNum = currentAlgorithmNum;
+        notifyAboutDataChange();
+    }
+
+    public void setCurrentAlgorithmAndServoNum(int algorithmNum, int servoNum) {
+        this.currentAlgorithmNum = algorithmNum;
+        this.currentServoNum = servoNum;
+        notifyAboutDataChange();
+    }
 
     public boolean updateAlgorithmData(int row, int position, int delay, int servoPos) {
         boolean success = false;
         if (row < getSize()) {
             success = true;
-            algorithmRowDataList.get(row).setPosition(position);
-            algorithmRowDataList.get(row).setDelay(delay);
-            algorithmRowDataList.get(row).setServoPos(servoPos);
+            getCurrentListOfAlgorithmRows().get(row).setPosition(position);
+            getCurrentListOfAlgorithmRows().get(row).setDelay(delay);
+            getCurrentListOfAlgorithmRows().get(row).setServoPos(servoPos);
             notifyAboutDataChange();
         }
         return success;
@@ -29,6 +58,15 @@ public class AlgorithmHandler {
 
     public interface IListener {
         void dataChanged();
+    }
+
+    AlgorithmHandler() {
+        currentAlgorithmNum = currentServoNum = 0;
+    }
+
+    @AfterInject
+    void init() {
+        algorithmData = applicationData.getAlgorithmData();
     }
 
     private List<IListener> iListeners = new ArrayList<IListener>();
@@ -49,7 +87,14 @@ public class AlgorithmHandler {
         }
     }
 
+    public int getSelectedRow() {
+        return algorithmData.getAlgorithm(currentAlgorithmNum).getSelectedRow(currentServoNum);
+    }
 
+    public void setSelectedRow(int selectedRow) {
+        algorithmData.getAlgorithm(currentAlgorithmNum).setSelectedRow(currentServoNum, selectedRow);
+        notifyAboutDataChange();
+    }
 
     public void addListener(IListener listener) {
         if (!iListeners.contains(listener)) {
@@ -63,21 +108,17 @@ public class AlgorithmHandler {
         }
     }
 
-    public void setAlgorithmRowDataList(List<AlgorithmRowData> algorithmRowDataList) {
-        this.algorithmRowDataList = algorithmRowDataList;
-        notifyAboutDataChange();
-    }
-
-    List<AlgorithmRowData> algorithmRowDataList = new ArrayList<AlgorithmRowData>();
-
     public int getSize() {
+        /*
         return algorithmRowDataList.size();
+         */
+        return algorithmData.getAlgorithm(currentAlgorithmNum).getAlgorithmForServoNum(currentServoNum).size();
     }
 
     public AlgorithmRowData getAlgorithmRowData(int position) {
         AlgorithmRowData algorithmRowData = null;
         if (position >= 0 && position < getSize()) {
-            algorithmRowData = algorithmRowDataList.get(position);
+            algorithmRowData = getCurrentListOfAlgorithmRows().get(position);
         }
         return algorithmRowData;
     }
@@ -86,12 +127,16 @@ public class AlgorithmHandler {
         insertRow(row, delay, servoPos, true);
     }
 
+    private List<AlgorithmRowData> getCurrentListOfAlgorithmRows() {
+         return   algorithmData.getAlgorithm(currentAlgorithmNum).getAlgorithmForServoNum(currentServoNum);
+    }
+
     public void insertRow(int row, int delay, int servoPos, boolean updateChanges) {
         if (row < 0)
             row = 0;
         else if (row >= getSize())
             row = getSize();
-        algorithmRowDataList.add(row, new AlgorithmRowData(0, delay, servoPos));
+        getCurrentListOfAlgorithmRows().add(row, new AlgorithmRowData(0, delay, servoPos));
         recalculatePositions();
         if (updateChanges) {
             notifyAboutDataChange();
@@ -100,7 +145,7 @@ public class AlgorithmHandler {
 
     public void removeRow(int row) {
         if (row >= 0 && row < getSize()) {
-            algorithmRowDataList.remove(row);
+            getCurrentListOfAlgorithmRows().remove(row);
             recalculatePositions();
             notifyAboutDataChange();
         }
@@ -108,7 +153,7 @@ public class AlgorithmHandler {
 
     private void recalculatePositions() {
         int pos = 0;
-        for (AlgorithmRowData algorithmRowData : algorithmRowDataList) {
+        for (AlgorithmRowData algorithmRowData : getCurrentListOfAlgorithmRows()) {
             algorithmRowData.setPosition(++pos);
         }
     }

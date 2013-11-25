@@ -109,6 +109,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                 }
             }
         }
+        algorithmHandler.setCurrentAlgorithmAndServoNum(currentAlgorithmNumber, currentServoNumber);
         //FillTestAlgorithmData();
     }
 
@@ -152,13 +153,13 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @ItemClick(R.id.listViewForAlgorithm)
     void personListItemClicked(AlgorithmRowData data) {
         //makeText(this, data.getPosition() + " " + data.getPosition() + " " + data.getServoPos(), LENGTH_SHORT).show();
-        algorithmAdapter.setSelectedRow(data.getPosition() - 1);
+        algorithmHandler.setSelectedRow(data.getPosition() - 1);
     }
 
     @ItemLongClick(R.id.listViewForAlgorithm)
     public boolean onItemLongClick1(AlgorithmRowData data) {
         int position = data.getPosition() - 1;
-        algorithmAdapter.setSelectedRow(position);
+        algorithmHandler.setSelectedRow(position);
         AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoAboutRow(position);
         if (infoAboutRow != null) {
             EditAlgorithmDataDialog dlg = new EditAlgorithmDataDialog_();
@@ -194,6 +195,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                         changeAlgorithm = true;
                         Log.d("MyTag", "ALGORITHM_NUMBER_BUTTON_ID: " + algorithmNumber);
                         currentAlgorithmNumber = algorithmNumber;
+                        algorithmHandler.setCurrentAlgorithmNum(algorithmNumber);
                     }
                 }
             }
@@ -207,6 +209,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                         button.setSelected(true);
                         Log.d("MyTag", "SERVO_NUMBER_BUTTON_ID: " + servoNumber);
                         currentServoNumber = servoNumber;
+                        algorithmHandler.setCurrentServoNum(servoNumber);
                     }
                 }
             }
@@ -245,7 +248,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                     int servoPos = bundle.getInt(EditAlgorithmDataDialog.keyServoPos);
                     int delay = bundle.getInt(EditAlgorithmDataDialog.keyDelay);
                     int position = bundle.getInt(EditAlgorithmDataDialog.keyPosition);
-                    algorithmHandler.updateAlgorithmData(algorithmAdapter.getSelectedRow(), position + 1, delay, servoPos);
+                    algorithmHandler.updateAlgorithmData(algorithmHandler.getSelectedRow(), position + 1, delay, servoPos);
                 }
             }
             break;
@@ -255,22 +258,22 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     }
 
     private void insertAlgorithmDataBottomCurrentItem() {
-        int currentPos = algorithmAdapter.getSelectedRow();
+        int currentPos = algorithmHandler.getSelectedRow();
         if (currentPos < 0)
             currentPos = 0;
         ++currentPos;
-        if (currentPos > algorithmAdapter.getCount()) {
-            currentPos = algorithmAdapter.getCount();
+        if (currentPos > algorithmHandler.getSize()) {
+            currentPos = algorithmHandler.getSize();
         }
         AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoInsertingAboutRow(currentPos);
         if (infoAboutRow != null) {
             algorithmHandler.insertRow(currentPos, infoAboutRow.delay, infoAboutRow.servoPos, false);
-            algorithmAdapter.setSelectedRow(currentPos);
+            algorithmHandler.setSelectedRow(currentPos);
         }
     }
 
     private void insertAlgorithmDataUpperCurrentItem() {
-        int currentPos = algorithmAdapter.getSelectedRow();
+        int currentPos = algorithmHandler.getSelectedRow();
         if (currentPos < 0)
             currentPos = 0;
         AlgorithmHandler.InfoAboutRow infoAboutRow = algorithmHandler.getInfoInsertingAboutRow(currentPos);

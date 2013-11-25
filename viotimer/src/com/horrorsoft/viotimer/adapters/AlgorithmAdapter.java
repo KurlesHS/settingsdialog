@@ -31,8 +31,6 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
     @RootContext
     Context context;
 
-    private int selectedRow;
-
     @Override
     public void dataChanged() {
         notifyDataSetChangedInUi();
@@ -41,10 +39,6 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
     @UiThread
     protected void notifyDataSetChangedInUi() {
         notifyDataSetChanged();
-    }
-
-    public int getSelectedRow() {
-        return selectedRow;
     }
 
     public AlgorithmHandler getAlgorithmHandler() {
@@ -86,17 +80,12 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
         }
         AlgorithmRowData algorithmRowData = getItem(position);
 
-        if (position == selectedRow) {
+        if (position == algorithmHandler.getSelectedRow()) {
             algorithmDataRowView.setBackgroundColor(backgroundColorForSelectedRowInAlgorithmDataTable);
         } else {
             algorithmDataRowView.setBackgroundColor(Color.TRANSPARENT);
         }
         algorithmDataRowView.bind(algorithmRowData.getPosition(), algorithmRowData.getDelay(), algorithmRowData.getServoPos());
         return algorithmDataRowView;
-    }
-
-    public void setSelectedRow(int row) {
-        selectedRow = row;
-        notifyDataSetChanged();
     }
 }
