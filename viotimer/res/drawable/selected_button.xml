@@ -2,18 +2,24 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- default -->
     <item android:state_pressed="false" android:state_focused="false" android:state_selected="false">
+        
+        
         <shape >
+            
             <solid
+                	
                     android:color="#444444" />
             <stroke
                     android:width="5dp"
                     android:color="#000000ff" />
             <corners
+                	android:src="@drawable/ic_launcher"
                     android:bottomLeftRadius="8dip"
                     android:topRightRadius="8dip"
                     android:topLeftRadius="8dip"
                     android:bottomRightRadius="8dip"/>
             <padding
+                
                     android:left="10dp"
                     android:right="10dp"
                     android:top="10dp"
@@ -47,7 +53,8 @@
     <item android:state_pressed="true" android:state_focused="false">
         <shape >
             <solid
-                    android:color="#00ff00" />
+                	android:src="@drawable/ic_launcher"
+                    android:color="#0000ff" />
             <stroke
                     android:width="5dp"
                     android:color="#000000ff" />
@@ -57,6 +64,7 @@
                     android:topLeftRadius="12dip"
                     android:bottomRightRadius="12dip"/>
             <padding
+                
                     android:left="10dp"
                     android:right="10dp"
                     android:top="10dp"

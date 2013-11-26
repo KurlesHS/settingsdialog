@@ -29,42 +29,43 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
+            android:background="@drawable/selected_servo_1_button"
             android:editable="false"
             android:password="false"
-            android:text="Servo\n1"
-            android:background="@drawable/selected_button"/>
+            android:text="Servo\n1" />
 
         <Button
             android:id="@+id/Button2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:text="Servo\n2"
-            android:background="@drawable/selected_button"/>
+            android:background="@drawable/selected_servo_1_button"
+            android:text="Servo\n2" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:text="Servo\n3"
-            android:background="@drawable/selected_button"/>
+            android:background="@drawable/selected_servo_1_button"
+            android:text="Servo\n3" />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:text="Servo\n4"
-            android:background="@drawable/selected_button"/>
+            android:background="@drawable/selected_servo_1_button"
+            android:text="Servo\n4" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:text="Servo\n5"
-            android:background="@drawable/selected_button"/>
+            android:background="@drawable/selected_servo_1_button"
+            android:text="Servo\n5" />
+
     </LinearLayout>
 
     <LinearLayout
