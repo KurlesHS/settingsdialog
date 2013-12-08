@@ -24,10 +24,10 @@ public class TimerVioApplication extends Application {
         super.onCreate();
         ApplicationData.setGlobalMaxDelay(getResources().getInteger(R.integer.GlobalMaxDelay));
         ApplicationData.setDividerForAlgorithmDelay((float) getResources().getInteger(R.integer.DividerForAlgorithmDelay));
-        commonData.setBinaryData(new byte[0x10000]);
         // for testing purposes
         commonData.setJsonData(ApplicationData.readTextFileFromRawResource(R.raw.test_json, this));
         AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(commonData.getJsonData());
+        commonData.setGlobalSettingData(JsonSetting.createListOfDataByJson(commonData.getJsonData()));
         commonData.setAlgorithmData(algorithmData);
     }
 }

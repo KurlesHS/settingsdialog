@@ -84,7 +84,7 @@ public class CommonData implements ICommonData {
     public void setCurrentValueByBinaryData(byte[] binaryData) {
         int value = 0;
         for (int i = 0; i < binaryData.length; ++i) {
-            value += binaryData[i] << (i * 8);
+            value += (binaryData[i] % 0xff) << (i * 8);
         }
         setCurrentValue(value);
     }

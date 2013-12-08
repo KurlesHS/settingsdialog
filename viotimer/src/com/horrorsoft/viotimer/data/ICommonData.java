@@ -15,9 +15,11 @@ public interface ICommonData {
 
     public boolean isEditable();
     public int getPointer();
+    public int getSize();
     public String getDescription();
     public String getDataDescription();
     public byte[] getBinaryData();
+    public void setCurrentValueByBinaryData(byte[] binaryData);
     public int getCurrentValue();
     public int getType();
 }

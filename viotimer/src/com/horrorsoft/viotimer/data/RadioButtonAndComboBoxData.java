@@ -66,11 +66,6 @@ public class RadioButtonAndComboBoxData extends CommonData {
     }
 
     @Override
-    public byte[] getBinaryData() {
-        return new byte[0];
-    }
-
-    @Override
     public boolean isEditable() {
         return false;
     }

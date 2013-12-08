@@ -6,17 +6,38 @@ package com.horrorsoft.viotimer.data;
  * Date: 07.11.13
  * Time: 0:07
  */
-public class AlgorithmRowData {
+public class AlgorithmRowData implements Comparable {
 
     private int delay;
     private int servoPos;
     private int position;
+    private byte servoNumber;
 
-    public AlgorithmRowData(int position, int delay, int servoPos) {
+    public AlgorithmRowData(byte servoNumber, int position, int delay, int servoPos) {
         this.position = position;
         this.delay = delay;
         this.servoPos = servoPos;
+        this.servoNumber = servoNumber;
 
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        AlgorithmRowData other = (AlgorithmRowData)another;
+        int retVal = 0;
+        if (getDelay() < other.getDelay())
+            retVal = -1;
+        else if (getDelay() > other.getDelay())
+            retVal = 1;
+        return retVal;
+    }
+
+    public byte getServoNumber() {
+        return servoNumber;
+    }
+
+    public void setServoNumber(byte servoNumber) {
+        this.servoNumber = servoNumber;
     }
 
     public int getDelay() {

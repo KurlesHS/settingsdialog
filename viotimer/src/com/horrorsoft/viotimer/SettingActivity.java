@@ -35,6 +35,9 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     final static int PLUS_OPERATION = 1;
     final static int MINUS_OPERATION = 2;
 
+    @Bean
+    protected ApplicationData commonData;
+
     @ViewById
     ListView listViewForSettingsDialog;
 
@@ -294,8 +297,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
 
     private void fillData() {
-        String jsonString = applicationData.getJsonData();
-        listOfData = JsonSetting.createListOfDataByJson(jsonString);
+        listOfData = commonData.getGlobalSettingData();
         if (listOfData == null) {
             listOfData = new ArrayList<ICommonData>();
         }

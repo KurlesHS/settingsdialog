@@ -136,7 +136,7 @@ public class AlgorithmHandler {
             row = 0;
         else if (row >= getSize())
             row = getSize();
-        getCurrentListOfAlgorithmRows().add(row, new AlgorithmRowData(0, delay, servoPos));
+        getCurrentListOfAlgorithmRows().add(row, new AlgorithmRowData((byte)(currentServoNum + 1), 0, delay, servoPos));
         recalculatePositions();
         if (updateChanges) {
             notifyAboutDataChange();

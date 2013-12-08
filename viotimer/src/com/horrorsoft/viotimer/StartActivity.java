@@ -18,24 +18,9 @@ public class StartActivity extends SherlockActivity {
 
     }
 
-    /*
-    private void openFileDialog() {
-        Intent intent = new Intent(getBaseContext(), FileDialog.class);
-        intent.putExtra(FileDialog.START_PATH, "/sdcard");
-        intent.putExtra(FileDialog.SELECTION_MODE, SelectionMode.MODE_OPEN);
-
-        //can user select directories or not
-        intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
-
-        //alternatively you can set file filter
-        //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
-        startActivityForResult(intent, 123);
-    }
-    */
-
     @Click(R.id.GenSetButton)
     public void handleProgramButtonPushed() {
-        Intent intent = new Intent(this, SelectSettingActivity_.class);
+        Intent intent = new Intent(this, ProgramActivity_.class);
         startActivity(intent);
     }
 }

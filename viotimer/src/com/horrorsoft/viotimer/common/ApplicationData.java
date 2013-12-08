@@ -2,13 +2,14 @@ package com.horrorsoft.viotimer.common;
 
 import android.content.Context;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
 import com.horrorsoft.viotimer.data.AlgorithmData;
+import com.horrorsoft.viotimer.data.ICommonData;
+import com.horrorsoft.viotimer.json.JsonSetting;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,12 +19,166 @@ import java.io.InputStreamReader;
  */
 @EBean(scope = Scope.Singleton)
 public class ApplicationData {
+
+    @RootContext
+    protected Context context;
+
     public static final String LOG_TAG = "com.horrorsoft.viotimer";
     private String jsonData;
+    private String firmwareId = "";
     private byte[] binaryData;
+    private int firstFreeAddress;
     private AlgorithmData algorithmData;
+    List<ICommonData> globalSettingData;
     private static float dividerForAlgorithmDelay;
     private static int globalMaxDelay;
+
+    public List<ICommonData> getGlobalSettingData() {
+        return globalSettingData;
+    }
+
+    public void setGlobalSettingData(List<ICommonData> globalSettingData) {
+        this.globalSettingData = globalSettingData;
+    }
+
+    public int getFirstFreeAddress() {
+        return firstFreeAddress;
+    }
+
+    public void setFirstFreeAddress(int firstFreeAddress) {
+        this.firstFreeAddress = firstFreeAddress;
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public boolean loadConfigFromFile(String fileName) {
+        boolean success = true;
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(new File(fileName));
+            byte[] read = new byte[0x20];
+            // читаем название прошивки
+            inputStream.read(read, 0, 0x20);
+            firmwareId = new String(read);
+            inputStream.read(read, 0, 2);
+            int xmlLength = byteToInt(read[0]) + byteToInt(read[1]) * 0x100;
+            read = new byte[xmlLength];
+            inputStream.read(read, 0, xmlLength);
+            setJsonData(new String(read));
+            initBinaryData();
+            inputStream.read(getBinaryData());
+            AlgorithmData algorithmDataByJson = JsonSetting.createAlgorithmDataByJson(getJsonData());
+            List<ICommonData> listOfDataByJson = JsonSetting.createListOfDataByJson(getJsonData());
+            if (algorithmDataByJson.getAlgorithmCount() > 0) {
+                setAlgorithmData(algorithmDataByJson);
+                setGlobalSettingData(listOfDataByJson);
+                for (ICommonData commonData : getGlobalSettingData()) {
+                    byte[] data = getByteArrayFromBinaryData(commonData.getPointer(), commonData.getSize());
+                    if (data != null) {
+                        commonData.setCurrentValueByBinaryData(data);
+                    }
+                }
+                algorithmData.deserializeFromBinaryDat(new AlgorithmData.Deserealize() {
+                    @Override
+                    public byte[] getAlgorithmByteArrayFromPointer(int pointer) {
+                        byte[] retVal = null;
+                        pointer *= 2;
+                        if (getBinaryData().length > pointer + 1) {
+                            int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+                            int len = 0;
+                            while (getBinaryData().length > realAddr + len && getBinaryData()[realAddr + len] != 0) {
+                                len += 4;
+                            }
+                            if (getBinaryData().length < realAddr + len){
+                                len -= 4;
+                            }
+                            if (len > 0) {
+                                retVal = new byte[len];
+                                System.arraycopy(getBinaryData(), realAddr, retVal, 0, len);
+                            }
+                        }
+                        return retVal;
+                    }
+                });
+            } else {
+                success = false;
+            }
+        } catch (Exception e) {
+            success = false;
+        }
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // фигня какая-то
+            }
+        }
+        freeBinaryData();
+        return success;
+    }
+
+    public boolean saveConfigToFile(String fileName) {
+        prepareBinaryDataToSaveOrUpload();
+        boolean success = true;
+        try {
+            FileOutputStream outputStream = new FileOutputStream(new File(fileName));
+            byte[] bToW = new byte[0x20];
+            if (firmwareId.length() > 0) {
+                byte[] fw = firmwareId.getBytes();
+                for (int i = 0; i < fw.length && i < 0x20; ++i) {
+                    bToW[i] = fw[i];
+                }
+            }
+            // пишем номер (версию, идентификатор) прошивки
+            outputStream.write(bToW);
+            bToW = new byte[0x02];
+            int lenJson = getJsonData().getBytes().length;
+            bToW[0] = (byte) (lenJson % 0x100);
+            bToW[1] = (byte) ((lenJson >> 8) % 0x100);
+            outputStream.write(bToW);
+            outputStream.write(getJsonData().getBytes());
+            outputStream.write(getBinaryData(), 0, 0x2f00);
+            outputStream.close();
+        } catch (Exception e) {
+            success = false;
+        }
+        freeBinaryData();
+        return success;
+    }
+
+    static public int byteToInt(byte b) {
+        return b & 0xff;
+    }
+
+    private void prepareBinaryDataToSaveOrUpload() {
+        initBinaryData();
+        for (ICommonData commonData : getGlobalSettingData()) {
+            int pointer = commonData.getPointer();
+            writeBytesToBinaryData(pointer, commonData.getBinaryData());
+        }
+        getAlgorithmData().serializeToByteArray(new AlgorithmData.Serialize() {
+            @Override
+            public void serializeToByteArray(int pointer, byte[] value) {
+                writeBytesToBinaryData(pointer, value);
+            }
+        });
+    }
+
+    public ApplicationData() {
+
+    }
+
+    private void initBinaryData() {
+        setFirstFreeAddress(0x0100);
+        setBinaryData(new byte[0x3000]);
+        for (int i = 0; i < getBinaryData().length; ++i) {
+            getBinaryData()[i] = 0x00;
+        }
+    }
+
+    private void freeBinaryData() {
+        setBinaryData(null);
+    }
+
 
     public static void setDividerForAlgorithmDelay(float divider) {
         dividerForAlgorithmDelay = divider;
@@ -135,5 +290,79 @@ public class ApplicationData {
 
     public void setBinaryData(byte[] binaryData) {
         this.binaryData = binaryData;
+    }
+
+    public int readIntFromBinaryData(int address, int size) {
+        int retValue = -1;
+        if (address >= 0 && address <= 0x100 && size > 0 && size <= 4) {
+            int realAddr = getBinaryData()[address] + getBinaryData()[address + 1] * 0x100;
+            if (realAddr >= 0 && realAddr < 0x2f00) {
+                retValue = readIntFromByteArray(getBinaryData(), realAddr, size);
+            }
+        }
+        return retValue;
+    }
+
+    private int readIntFromByteArray(byte[] byteArray, int offset, int size) {
+        int value = -1;
+        if (byteArray.length >= offset + size) {
+            for (int i = 0; i < size; ++i) {
+                value += byteToInt(byteArray[offset + i]) << (8 * i);
+            }
+        }
+        return value;
+    }
+
+    public boolean writeBytesToBinaryData(int pointer, byte[] value) {
+        boolean success = false;
+        pointer *= 2;
+        if (pointer >= 0 && pointer < 0x100 && value.length > 0) {
+            success = true;
+            int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+            if (realAddr < 0x0100) {
+                realAddr = getFirstFreeAddress();
+                setFirstFreeAddress(realAddr + value.length);
+                success = writeIntToByteArray(getBinaryData(), pointer, 2, realAddr);
+            }
+            if (success) {
+                success = writeBytesToByteArray(getBinaryData(), realAddr, value);
+            }
+        }
+        return success;
+    }
+
+    private boolean writeBytesToByteArray(byte[] byteArray, int offset, byte[] bytes) {
+        boolean success = false;
+        if (byteArray.length >= offset + bytes.length) {
+            success = true;
+            System.arraycopy(bytes, 0, byteArray, offset, bytes.length);
+        }
+        return success;
+    }
+
+    private boolean writeIntToByteArray(byte[] byteArray, int offset, int size, int value) {
+        boolean success = false;
+        if (byteArray.length >= offset + size) {
+            success = true;
+            for (int i = 0; i < size; ++i) {
+                byteArray[offset + i] = (byte) ((value >> (i * 8)) % 0x100);
+            }
+        }
+        return success;
+    }
+
+    private byte[] getByteArrayFromBinaryData(int pointer, int size) {
+        byte[] retVal = null;
+        pointer *= 2;
+        if (getBinaryData().length > pointer + 1) {
+            int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+            if (getBinaryData().length >= realAddr + size) {
+                retVal = new byte[size];
+                for (int i = 0; i < size; ++i) {
+                    retVal[i] = getBinaryData()[realAddr + i];
+                }
+            }
+        }
+        return retVal;
     }
 }

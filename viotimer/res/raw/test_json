@@ -8,7 +8,7 @@
         "max": 876234,
         "defValue": 23,
         "precision": 2,
-        "pointer": 12,
+        "pointer": 01,
         "desc": "Привет! Я число!",
         "formDesc": "Мое значение: %s",
         "prefix": "перед",
@@ -20,7 +20,7 @@
         "formDesc": "выбранное значение: %s",
         "size": 2,
         "defValue": 44,
-        "pointer": 66,
+        "pointer": 02,
         "data": [
             {
                 "value": 23,
@@ -38,7 +38,7 @@
         "formDesc": "выбранное значение: %s",
         "size": 2,
         "defValue": 44,
-        "pointer": 66,
+        "pointer": 03,
         "data": [
             {
                 "value": 23,
@@ -59,14 +59,14 @@
     "alg": [
         {
             "desc": "Первое положение",
-            "pointer": 23
+            "pointer": 04
         },
         {
             "desc": "Второе положение",
-            "pointer": 55
+            "pointer": 05
         },
         {
             "desc": "Третье положене",
-            "pointer": 33
+            "pointer": 06
         }
     ]}
