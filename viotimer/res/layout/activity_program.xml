@@ -2,19 +2,19 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="#000000"
-              android:orientation="vertical">
+              android:orientation="vertical" >
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="20">
+            android:layout_weight="20" >
 
         <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="35"
-                android:orientation="vertical">
+                android:orientation="vertical" >
 
             <ImageView
                     android:id="@+id/imageViewBluetoothStatus"
@@ -22,7 +22,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="16"
                     android:scaleType="fitXY"
-                    android:src="@drawable/bt_discon"/>
+                    android:src="@drawable/bt_discon" />
 
             <ImageView
                     android:id="@+id/imageView2"
@@ -30,7 +30,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="16"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ant_10"/>
+                    android:src="@drawable/ant_10" />
 
         </LinearLayout>
 
@@ -39,14 +39,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="65"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY" />
 
     </LinearLayout>
 
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8">
+            android:layout_weight="8" >
 
     </FrameLayout>
 
@@ -54,12 +54,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="65">
+            android:layout_weight="65" >
 
         <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7">
+                android:layout_weight="7" >
 
         </FrameLayout>
 
@@ -67,158 +67,92 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="86"
-                android:orientation="vertical">
+                android:orientation="vertical" >
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="30">
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
-                </FrameLayout>
+                    android:layout_weight="19" >
 
                 <ImageButton
                         android:id="@+id/loadFileButtonId"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="40"
+                        android:onClick="open_butt_click"
                         android:scaleType="fitXY"
-                        android:src="@drawable/openfile_scr"/>
-
-                android:text="@string/tele_butt"
+                        android:src="@drawable/openfile_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="6">
-
+                        android:layout_weight="6" >
                 </FrameLayout>
+
+                <ImageButton
+                        android:id="@+id/ReadButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="40"
+                        android:onClick="read_butt_click"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/read_scr" />
 
             </LinearLayout>
 
             <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="5">
+                    android:layout_weight="4" >
+
             </FrameLayout>
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="30">
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
-                </FrameLayout>
+                    android:layout_weight="19" >
 
                 <ImageButton
                         android:id="@+id/saveFileButtonId"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="40"
+                        android:onClick="save_butt_click"
                         android:scaleType="fitXY"
-                        android:src="@drawable/savefile_scr"
-                        android:focusableInTouchMode="false"/>
+                        android:src="@drawable/savefile_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="6">
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5">
-            </FrameLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="30">
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
+                        android:layout_weight="6" >
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/readFromTimerButtonId"
+                        android:id="@+id/GenSetButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="40"
+                        android:onClick="write_butt_click"
                         android:scaleType="fitXY"
-                        android:src="@drawable/read_scr"
-                        android:focusableInTouchMode="false"/>
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
-
-                </FrameLayout>
+                        android:src="@drawable/write_scr" />
 
             </LinearLayout>
 
             <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="5">
+                    android:layout_weight="4" >
             </FrameLayout>
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="30">
+                    android:layout_weight="19" >
 
                 <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="6">
-                </FrameLayout>
-
-                <ImageButton
-                        android:id="@+id/writeInTimerButtonId"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/write_scr"
-                        android:focusableInTouchMode="false"/>
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5">
-            </FrameLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="30">
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
+                        android:layout_weight="23" >
                 </FrameLayout>
 
                 <ImageButton
@@ -226,15 +160,14 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="40"
+                        android:onClick="sett_butt_click"
                         android:scaleType="fitXY"
-                        android:src="@drawable/sett_scr"
-                        android:focusableInTouchMode="false"/>
+                        android:src="@drawable/sett_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="6">
-
+                        android:layout_weight="23" >
                 </FrameLayout>
 
             </LinearLayout>
@@ -244,7 +177,7 @@
         <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7">
+                android:layout_weight="7" >
 
         </FrameLayout>
 
@@ -253,7 +186,7 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7">
+            android:layout_weight="7" >
 
     </FrameLayout>
 
