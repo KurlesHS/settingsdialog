@@ -36,6 +36,12 @@ public class AlgorithmData {
         }
     }
 
+    public void recalculatePositions() {
+        for (Algorithm algorithm: listOfAlgorithms) {
+            algorithm.recalculatePositions();
+        }
+    }
+
     public void deserializeFromBinaryDat(Deserealize deserealize) {
 
         for (Algorithm algorithm : listOfAlgorithms) {
@@ -60,6 +66,16 @@ public class AlgorithmData {
             setPointer(pointer);
         }
 
+        public void recalculatePositions() {
+            for (List<AlgorithmRowData> algorithmRowDatas : algorithmData) {
+                int pos = 0;
+                for (AlgorithmRowData algorithmRowData : algorithmRowDatas) {
+                    algorithmRowData.setPosition(++pos);
+                }
+            }
+
+        }
+
         public void deserializeFromByteArray(Deserealize deserealize) {
             byte[] data = deserealize.getAlgorithmByteArrayFromPointer(getPointer());
             if (data != null) {
@@ -73,7 +89,8 @@ public class AlgorithmData {
                     int servoCount = algorithmData.size();
                     if (servoNum >= 0 && servoNum < servoCount) {
                         getArrayOfAlgorithmData().get(servoNum).add(new AlgorithmRowData((byte) (servoNum + 1),
-                                position++, currentDelay + deltaT, servoPos));
+                                position, currentDelay + deltaT, servoPos));
+                        ++position;
                     }
                     currentDelay += deltaT;
                 }
@@ -96,7 +113,7 @@ public class AlgorithmData {
                     int deltaDelay = delay - currentDelay;
                     currentDelay += deltaDelay;
                     // номер сервы
-                    bytesToSave[currentOffset + 0] = algorithmRowData.getServoNumber();
+                    bytesToSave[currentOffset] = algorithmRowData.getServoNumber();
                     // задержка относительно предыдущего шага
                     bytesToSave[currentOffset + 1] = (byte) (deltaDelay % 0x100);
                     bytesToSave[currentOffset + 2] = (byte) (deltaDelay >> 8);
@@ -161,33 +178,5 @@ public class AlgorithmData {
 
     public Algorithm getAlgorithm(int algorithmNumber) {
         return listOfAlgorithms.get(algorithmNumber);
-    }
-
-    public boolean insertNewRowIntoAlgorithm(int algorithmNumber, int servoNumber, int position, int delay, int servoPosition) {
-        List<AlgorithmRowData> algorithmData = getAlgorithmData(algorithmNumber, servoNumber);
-        if (algorithmData == null) {
-            return false;
-        }
-        AlgorithmRowData oneRowData = new AlgorithmRowData((byte) (servoNumber + 1), position, delay, servoPosition);
-        try {
-            algorithmData.add(position, oneRowData);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    private List<AlgorithmRowData> getAlgorithmData(int algorithmNumber, int servoNumber) {
-        if (servoNumber < 0 || servoNumber >= 5) {
-            return null;
-        }
-        if (algorithmNumber >= getAlgorithmCount() || algorithmNumber < 0) {
-            return null;
-        }
-        Algorithm algorithm = getAlgorithm(algorithmNumber);
-        if (algorithm == null) {
-            return null;
-        }
-        return algorithm.getArrayOfAlgorithmData().get(algorithmNumber);
     }
 }

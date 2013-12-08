@@ -20,8 +20,7 @@ import java.util.List;
 public class AlgorithmHandler {
 
     @Bean
-    protected
-    ApplicationData applicationData;
+    protected ApplicationData applicationData;
 
     private AlgorithmData algorithmData;
 

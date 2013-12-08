@@ -102,6 +102,7 @@ public class ApplicationData {
             } else {
                 success = false;
             }
+            algorithmData.recalculatePositions();
         } catch (Exception e) {
             success = false;
         }
@@ -290,27 +291,6 @@ public class ApplicationData {
 
     public void setBinaryData(byte[] binaryData) {
         this.binaryData = binaryData;
-    }
-
-    public int readIntFromBinaryData(int address, int size) {
-        int retValue = -1;
-        if (address >= 0 && address <= 0x100 && size > 0 && size <= 4) {
-            int realAddr = getBinaryData()[address] + getBinaryData()[address + 1] * 0x100;
-            if (realAddr >= 0 && realAddr < 0x2f00) {
-                retValue = readIntFromByteArray(getBinaryData(), realAddr, size);
-            }
-        }
-        return retValue;
-    }
-
-    private int readIntFromByteArray(byte[] byteArray, int offset, int size) {
-        int value = -1;
-        if (byteArray.length >= offset + size) {
-            for (int i = 0; i < size; ++i) {
-                value += byteToInt(byteArray[offset + i]) << (8 * i);
-            }
-        }
-        return value;
     }
 
     public boolean writeBytesToBinaryData(int pointer, byte[] value) {

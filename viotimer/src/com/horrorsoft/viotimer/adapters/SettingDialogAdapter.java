@@ -70,19 +70,27 @@ public class SettingDialogAdapter extends BaseAdapter {
             ViewHolder viewHolder = new ViewHolder();
             if (type == SEPARATOR_TYPE) {
                 view = lInflater.inflate(R.layout.settingseparatorview, parent, false);
-                viewHolder.descriptionTextView = (TextView) view.findViewById(R.id.textViewSeparator);
+                if (view != null) {
+                    viewHolder.descriptionTextView = (TextView) view.findViewById(R.id.textViewSeparator);
+                }
             } else {
                 view = lInflater.inflate(R.layout.settingdataview, parent, false);
-                viewHolder.descriptionTextView = (TextView) view.findViewById(R.id.textViewDescription);
-                viewHolder.dataDescriptionTextView = (TextView) view.findViewById(R.id.textViewDataDescription);
+                if (view != null) {
+                    viewHolder.descriptionTextView = (TextView) view.findViewById(R.id.textViewDescription);
+                    viewHolder.dataDescriptionTextView = (TextView) view.findViewById(R.id.textViewDataDescription);
+                }
             }
-            view.setTag(viewHolder);
+            if (view != null) {
+                view.setTag(viewHolder);
+            }
         }
-        ViewHolder viewHolder = (ViewHolder) view.getTag();
-        if (viewHolder != null) {
-            viewHolder.descriptionTextView.setText(data.getDescription());
-            if (type == DATA_TYPE) {
-                viewHolder.dataDescriptionTextView.setText(data.getDataDescription());
+        if (view != null) {
+            ViewHolder viewHolder = (ViewHolder) view.getTag();
+            if (viewHolder != null) {
+                viewHolder.descriptionTextView.setText(data.getDescription());
+                if (type == DATA_TYPE) {
+                    viewHolder.dataDescriptionTextView.setText(data.getDataDescription());
+                }
             }
         }
         return view;

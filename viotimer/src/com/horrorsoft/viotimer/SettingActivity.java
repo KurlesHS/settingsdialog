@@ -15,7 +15,6 @@ import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.data.NumericData;
 import com.horrorsoft.viotimer.data.RadioButtonAndComboBoxData;
-import com.horrorsoft.viotimer.json.JsonSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,29 +167,31 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
     private void createNumericDialog(AlertDialog.Builder adb) {
         View view = getLayoutInflater().inflate(R.layout.editnumbers, null);
-        viewForSpinBoxDialog = view;
-        EditText editText = (EditText) view.findViewById(R.id.editTextSpinBox);
-        NumericData numericData = (NumericData) dataForDialog;
-        int currentValue = numericData.getCurrentValue();
-        int precision = numericData.getPrecision();
-        int divider = numericData.getDivider();
-        editText.setText(intWithDividerAndPrecisionToString(currentValue, divider, precision));
-        editText.setOnEditorActionListener(this);
-        TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
-        TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
-        textViewPrefix.setText(numericData.getPrefix());
-        textViewSuffix.setText(numericData.getSuffix());
-        Button plus = (Button) view.findViewById(R.id.buttonSpinBoxPlus);
-        Button minus = (Button) view.findViewById(R.id.buttonSpinBoxMinus);
-        plus.setLongClickable(true);
-        plus.setOnClickListener(this);
-        plus.setOnLongClickListener(this);
-        plus.setOnTouchListener(this);
-        minus.setLongClickable(true);
-        minus.setOnClickListener(this);
-        minus.setOnLongClickListener(this);
-        minus.setOnTouchListener(this);
-        adb.setView(view);
+        if (view != null) {
+            viewForSpinBoxDialog = view;
+            EditText editText = (EditText) view.findViewById(R.id.editTextSpinBox);
+            NumericData numericData = (NumericData) dataForDialog;
+            int currentValue = numericData.getCurrentValue();
+            int precision = numericData.getPrecision();
+            int divider = numericData.getDivider();
+            editText.setText(intWithDividerAndPrecisionToString(currentValue, divider, precision));
+            editText.setOnEditorActionListener(this);
+            TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
+            TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
+            textViewPrefix.setText(numericData.getPrefix());
+            textViewSuffix.setText(numericData.getSuffix());
+            Button plus = (Button) view.findViewById(R.id.buttonSpinBoxPlus);
+            Button minus = (Button) view.findViewById(R.id.buttonSpinBoxMinus);
+            plus.setLongClickable(true);
+            plus.setOnClickListener(this);
+            plus.setOnLongClickListener(this);
+            plus.setOnTouchListener(this);
+            minus.setLongClickable(true);
+            minus.setOnClickListener(this);
+            minus.setOnLongClickListener(this);
+            minus.setOnTouchListener(this);
+            adb.setView(view);
+        }
     }
 
     private String intWithDividerAndPrecisionToString(int value, int divider, int precision) {
@@ -245,11 +246,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     }
 
     @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
-        super.onPrepareDialog(id, dialog);
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         dataForDialog = listOfData.get(position);
         lastPosition = position;
@@ -291,8 +287,10 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         // поиск вьюхи по позиции. Подходит только для видимых элементов
         ListView lvs = (ListView) findViewById(R.id.listViewForSettingsDialog);
         View v = lvs.getChildAt(lastPosition - lvs.getFirstVisiblePosition());
-        TextView tv = (TextView) v.findViewById(R.id.textViewDataDescription);
-        tv.setText(dataForDialog.getDataDescription());
+        if (v != null) {
+            TextView tv = (TextView) v.findViewById(R.id.textViewDataDescription);
+            tv.setText(dataForDialog.getDataDescription());
+        }
     }
 
 
@@ -308,15 +306,18 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
         if (event == null) {
             NumericData numericData = (NumericData) dataForDialog;
-            double dValue = Double.parseDouble(v.getText().toString());
-            int value = (int) (dValue * numericData.getDivider());
-            if (value < numericData.getMinValue()) {
-                value = numericData.getMinValue();
-            } else if (value > numericData.getMaxValue()) {
-                value = numericData.getMaxValue();
+            CharSequence charSequence = v.getText();
+            if (charSequence != null) {
+                double dValue = Double.parseDouble(charSequence.toString());
+                int value = (int) (dValue * numericData.getDivider());
+                if (value < numericData.getMinValue()) {
+                    value = numericData.getMinValue();
+                } else if (value > numericData.getMaxValue()) {
+                    value = numericData.getMaxValue();
+                }
+                numericData.setCurrentValue(value);
+                v.setText(intWithDividerAndPrecisionToString(value, numericData.getDivider(), numericData.getPrecision()));
             }
-            numericData.setCurrentValue(value);
-            v.setText(intWithDividerAndPrecisionToString(value, numericData.getDivider(), numericData.getPrecision()));
         }
         return false;
     }

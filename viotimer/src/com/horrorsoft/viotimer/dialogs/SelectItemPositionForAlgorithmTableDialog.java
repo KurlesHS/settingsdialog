@@ -16,15 +16,21 @@ import com.horrorsoft.viotimer.R;
  */
 
 
-public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFragment implements  View.OnClickListener {
+public class SelectItemPositionForAlgorithmTableDialog extends SherlockDialogFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.selectitempositionforalgorithmdata, container);
-        getDialog().setTitle("Add item");
-        Button buttonUp = (Button) v.findViewById(R.id.button_top);
-        Button buttonDown = (Button) v.findViewById(R.id.button_bottom);
-        buttonDown.setOnClickListener(this);
-        buttonUp.setOnClickListener(this);
+        if (v != null) {
+            getDialog().setTitle("Add item");
+            Button buttonUp = (Button) v.findViewById(R.id.button_top);
+            Button buttonDown = (Button) v.findViewById(R.id.button_bottom);
+            if (buttonDown != null) {
+                buttonDown.setOnClickListener(this);
+            }
+            if (buttonUp != null) {
+                buttonUp.setOnClickListener(this);
+            }
+        }
         return v;
     }
 

@@ -47,7 +47,6 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     EditText editTextDelay;
 
 
-
     public static final String keyDelay = "delay";
     public static final String keyServoPos = "servoPos";
     public static final String keyMinDelay = "minDelay";
@@ -316,11 +315,17 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             switch (v.getId()) {
                 case R.id.editTextDelay: {
-                    handleTextDelayChanged(v.getText().toString());
+                    CharSequence charSequence = v.getText();
+                    if (charSequence != null) {
+                        handleTextDelayChanged(charSequence.toString());
+                    }
                 }
                 break;
                 case R.id.editTextServoPos: {
-                    handleTextServoPosChanged(v.getText().toString());
+                    CharSequence charSequence = v.getText();
+                    if (charSequence != null) {
+                        handleTextServoPosChanged(charSequence.toString());
+                    }
                 }
                 break;
                 default:

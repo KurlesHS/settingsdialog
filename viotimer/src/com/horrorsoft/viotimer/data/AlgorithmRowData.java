@@ -36,10 +36,6 @@ public class AlgorithmRowData implements Comparable {
         return servoNumber;
     }
 
-    public void setServoNumber(byte servoNumber) {
-        this.servoNumber = servoNumber;
-    }
-
     public int getDelay() {
         return delay;
     }
