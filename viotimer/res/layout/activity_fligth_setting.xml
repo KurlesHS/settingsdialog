@@ -24,47 +24,45 @@
             android:layout_weight="35"
             android:src="@drawable/ic_launcher" />
 
-        <Button
+        <ImageButton
             android:id="@+id/Button01"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:background="@drawable/selected_servo_1_button"
-            android:editable="false"
-            android:password="false"
-            android:text="Servo\n1" />
+            android:scaleType="centerInside"
+            android:src="@drawable/selected_servo_1_button" />
 
-        <Button
+        <ImageButton
             android:id="@+id/Button2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:background="@drawable/selected_servo_1_button"
-            android:text="Servo\n2" />
+			android:scaleType="centerInside"
+            android:src="@drawable/selected_servo_2_button" />            
 
-        <Button
+        <ImageButton
             android:id="@+id/button3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:background="@drawable/selected_servo_1_button"
-            android:text="Servo\n3" />
+            android:scaleType="centerInside"
+            android:src="@drawable/selected_servo_3_button" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:background="@drawable/selected_servo_1_button"
-            android:text="Servo\n4" />
+            android:scaleType="centerInside"
+            android:src="@drawable/selected_servo_4_button" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button5"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-            android:background="@drawable/selected_servo_1_button"
-            android:text="Servo\n5" />
+            android:scaleType="centerInside"
+            android:src="@drawable/selected_servo_5_button" />
 
     </LinearLayout>
 
