@@ -5,10 +5,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.adapters.AlgorithmAdapter;
@@ -17,8 +14,6 @@ import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.data.AlgorithmHandler;
 import com.horrorsoft.viotimer.data.AlgorithmRowData;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
-
-
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
 import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
@@ -76,8 +71,8 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         int servoNum = 0;
         for (int r = 0; r < linearLayoutForServoButtons.getChildCount(); ++r) {
             View v = linearLayoutForServoButtons.getChildAt(r);
-            if (v instanceof Button) {
-                Button button = (Button) linearLayoutForServoButtons.getChildAt(r);
+            if (v instanceof ImageButton) {
+                ImageButton button = (ImageButton) linearLayoutForServoButtons.getChildAt(r);
                 if (button != null) {
                     if (servoNum == currentServoNumber) {
                         button.setSelected(true);
@@ -173,7 +168,6 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     public void onClick(View v) {
         switch (v.getId()) {
             case ALGORITHM_NUMBER_BUTTON_ID: {
-                //TODO: хендлить переключение режимов алгоритма здесь
                 Button button = (Button) v;
                 Integer i = (Integer) v.getTag(R.id.AlgorithmNumberButton);
                 if (i != null) {
@@ -189,7 +183,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             }
             break;
             case SERVO_NUMBER_BUTTON_ID: {
-                Button button = (Button) v;
+                ImageButton button = (ImageButton) v;
                 Integer i = (Integer) v.getTag(R.id.ServoNumberButton);
                 if (i != null) {
                     int servoNumber = i;
