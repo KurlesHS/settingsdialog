@@ -200,7 +200,7 @@
                         android:layout_weight="5" >
                     </FrameLayout>
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/buttonAdd"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -209,7 +209,7 @@
                         android:text="Add"
                         android:textSize="12sp" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/buttonChange"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -219,7 +219,7 @@
                         android:text="Change"
                         android:textSize="12sp" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/buttonDelete"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"

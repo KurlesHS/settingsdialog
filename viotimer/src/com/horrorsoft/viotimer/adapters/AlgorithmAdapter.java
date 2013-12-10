@@ -77,9 +77,9 @@ public class AlgorithmAdapter extends BaseAdapter implements AlgorithmHandler.IL
         AlgorithmRowData algorithmRowData = getItem(position);
 
         if (position == algorithmHandler.getSelectedRow()) {
-        	algorithmDataRowView.setselect(true, Color.parseColor("#000000"));
+        	algorithmDataRowView.setSelected(true, Color.parseColor("#000000"));
         } else {
-        	algorithmDataRowView.setselect(false, Color.parseColor("#ffffff"));
+        	algorithmDataRowView.setSelected(false, Color.parseColor("#ffffff"));
         }
         algorithmDataRowView.bind(algorithmRowData.getPosition(), algorithmRowData.getDelay(), algorithmRowData.getServoPos());
         return algorithmDataRowView;
