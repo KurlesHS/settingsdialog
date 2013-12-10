@@ -11,10 +11,14 @@
             android:layout_weight="20" >
 
         <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="35"
-                android:orientation="vertical" >
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="3dp" >
 
             <ImageView
                     android:id="@+id/imageViewBluetoothStatus"
@@ -75,13 +79,14 @@
                     android:layout_weight="19" >
 
                 <ImageButton
-                        android:id="@+id/loadFileButtonId"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:onClick="open_butt_click"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/openfile_scr" />
+                    android:id="@+id/loadFileButtonId"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:onClick="open_butt_click"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/openfile_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"
@@ -90,13 +95,14 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/ReadButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:onClick="read_butt_click"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/read_scr" />
+                    android:id="@+id/ReadButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:onClick="read_butt_click"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/read_scr" />
 
             </LinearLayout>
 
@@ -113,13 +119,14 @@
                     android:layout_weight="19" >
 
                 <ImageButton
-                        android:id="@+id/saveFileButtonId"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:onClick="save_butt_click"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/savefile_scr" />
+                    android:id="@+id/saveFileButtonId"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:onClick="save_butt_click"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/savefile_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"
@@ -128,13 +135,14 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/GenSetButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:onClick="write_butt_click"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/write_scr" />
+                    android:id="@+id/GenSetButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:onClick="write_butt_click"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/write_scr" />
 
             </LinearLayout>
 
@@ -156,13 +164,14 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/settingButtonId"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:onClick="sett_butt_click"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/sett_scr" />
+                    android:id="@+id/settingButtonId"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:onClick="sett_butt_click"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sett_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"

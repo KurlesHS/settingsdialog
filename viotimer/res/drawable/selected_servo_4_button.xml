@@ -29,7 +29,7 @@
     </item>
 
     <!-- button focused -->
-    <item android:state_pressed="false" android:state_focused="true" android:drawable="@drawable/servo_color_4">
+    <item android:state_pressed="false" android:state_focused="true" android:drawable="@drawable/servo_gray_4">
         
         <shape >
      <!--       <solid
@@ -53,7 +53,7 @@
     </item>
 
     <!-- button pressed -->
-    <item android:state_pressed="true" android:state_focused="false" android:drawable="@drawable/servo_color_4">
+    <item android:state_pressed="true" android:state_focused="false" android:drawable="@drawable/servo_gray_4">
        
         <shape >
        <!--      <solid

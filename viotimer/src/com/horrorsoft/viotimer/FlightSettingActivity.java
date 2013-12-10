@@ -14,6 +14,9 @@ import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.data.AlgorithmHandler;
 import com.horrorsoft.viotimer.data.AlgorithmRowData;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
+
+
+
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
 import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;

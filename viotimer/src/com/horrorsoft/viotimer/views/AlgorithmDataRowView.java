@@ -18,6 +18,8 @@ import com.horrorsoft.viotimer.common.ApplicationData;
 @EViewGroup(R.layout.algoritm_data_row_layout)
 public class AlgorithmDataRowView extends LinearLayout {
 
+	@ViewById(R.id.linearLayout)
+	LinearLayout linlay;
     @ViewById(R.id.positionTextView)
     TextView positionTextView;
     @ViewById(R.id.delayTextView)
@@ -42,5 +44,12 @@ public class AlgorithmDataRowView extends LinearLayout {
         delayTextView.setText(ApplicationData.getDelayText(delay));
         servoPosTextView.setText(ApplicationData.getServoPosString(servoPos));
     }
+	
+	public void setselect(boolean selected, int color) {
+		this.linlay.setSelected(selected);
+		this.positionTextView.setTextColor(color);
+		this.delayTextView.setTextColor(color);
+		this.servoPosTextView.setTextColor(color);
+	}
 }
 

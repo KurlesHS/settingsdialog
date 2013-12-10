@@ -11,10 +11,14 @@
             android:layout_weight="20">
 
         <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="35"
-                android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="3dp" >
 
             <ImageView
                     android:id="@+id/imageViewBluetoothStatus"
@@ -82,12 +86,13 @@
                     android:layout_weight="30">
 
                 <ImageButton
-                        android:id="@+id/GenSetButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/prg_scr"/>
+                    android:id="@+id/GenSetButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/prg_scr" />
 
                 android:text="@string/tele_butt"
 
@@ -98,13 +103,14 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/SaveButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/tel_scr"
-                        android:visibility="visible"/>
+                    android:id="@+id/SaveButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/tel_scr"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -120,12 +126,13 @@
                     android:layout_weight="30">
 
                 <ImageButton
-                        android:id="@+id/FlightSetButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/grp_scr"/>
+                    android:id="@+id/FlightSetButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/grp_scr" />
 
                 <FrameLayout
                         android:layout_width="0dp"
@@ -134,12 +141,13 @@
                 </FrameLayout>
 
                 <ImageButton
-                        android:id="@+id/ReadButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/con_scr"/>
+                    android:id="@+id/ReadButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="40"
+                    android:background="@drawable/style_button"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/con_scr" />
 
             </LinearLayout>
 

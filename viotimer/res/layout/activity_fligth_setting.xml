@@ -3,11 +3,8 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
     <LinearLayout
@@ -17,18 +14,38 @@
         android:id="@+id/linearLayoutForServoButtons"
         android:focusableInTouchMode="false">
 
-        <ImageView
-            android:id="@+id/imageView1"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="35"
-            android:src="@drawable/ic_launcher" />
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="3dp" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="16"
+                android:background="@drawable/bt_discon" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="16"
+                android:background="@drawable/ant_10" />
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/Button01"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
+            android:background="@drawable/style_button"
             android:scaleType="centerInside"
             android:src="@drawable/selected_servo_1_button" />
 
@@ -37,14 +54,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
-			android:scaleType="centerInside"
-            android:src="@drawable/selected_servo_2_button" />            
+            android:background="@drawable/style_button"
+            android:scaleType="centerInside"
+            android:src="@drawable/selected_servo_2_button" />
 
         <ImageButton
             android:id="@+id/button3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
+            android:background="@drawable/style_button"
             android:scaleType="centerInside"
             android:src="@drawable/selected_servo_3_button" />
 
@@ -53,6 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
+            android:background="@drawable/style_button"
             android:scaleType="centerInside"
             android:src="@drawable/selected_servo_4_button" />
 
@@ -61,6 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="13"
+            android:background="@drawable/style_button"
             android:scaleType="centerInside"
             android:src="@drawable/selected_servo_5_button" />
 
@@ -126,7 +147,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:gravity="center"
-                            android:text="№" android:layout_gravity="top"/>
+                            android:text="№" android:layout_gravity="top"
+                            android:textColor="#ffffff"/>
 
                         <TextView
                             android:id="@+id/TextView01"
@@ -134,7 +156,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="6"
                             android:gravity="center"
-                            android:text="Time" android:layout_gravity="top"/>
+                            android:text="Time" android:layout_gravity="top"
+                            android:textColor="#ffffff"/>
 
                         <TextView
                             android:id="@+id/TextView1"
@@ -142,16 +165,21 @@
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:gravity="center"
-                            android:text="State" android:layout_gravity="top">
+                            android:text="State" android:layout_gravity="top"
+                            android:textColor="#ffffff">
 
                             <requestFocus />
                         </TextView>
                     </LinearLayout>
 
                     <ListView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:id="@+id/listViewForAlgorithm" android:layout_weight="40"/>
+                        android:id="@+id/listViewForAlgorithm"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="40"
+                        android:cacheColorHint="#000000"
+                        android:listSelector="#000000" />
+
                 </LinearLayout>
 
                 <FrameLayout
@@ -177,6 +205,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
+                        android:background="@drawable/style_button"
                         android:text="Add"
                         android:textSize="12sp" />
 
@@ -185,6 +214,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
+                        android:background="@drawable/style_button"
                         android:singleLine="true"
                         android:text="Change"
                         android:textSize="12sp" />
@@ -194,6 +224,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="10"
+                        android:background="@drawable/style_button"
                         android:text="Delete"
                         android:textSize="12sp" />
 
