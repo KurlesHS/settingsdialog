@@ -47,4 +47,3 @@ public class AlgorithmDataRowView extends LinearLayout {
 		this.servoPosTextView.setTextColor(color);
 	}
 }
-

@@ -57,7 +57,7 @@ public class ProgramActivity extends SherlockActivity {
         intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
 
         //alternatively you can set file filter
-        intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vts"});
+        intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vts", "vts_json"});
         startActivityForResult(intent, LOAD_FILE_ID);
     }
 

@@ -51,54 +51,71 @@ public class ApplicationData {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public boolean loadConfigFromFile(String fileName) {
+        boolean rawJson = fileName.endsWith(".vts_json");
         boolean success = true;
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(new File(fileName));
-            byte[] read = new byte[0x20];
-            // читаем название прошивки
-            inputStream.read(read, 0, 0x20);
-            firmwareId = new String(read);
-            inputStream.read(read, 0, 2);
-            int xmlLength = byteToInt(read[0]) + byteToInt(read[1]) * 0x100;
-            read = new byte[xmlLength];
-            inputStream.read(read, 0, xmlLength);
-            setJsonData(new String(read));
+            String jsonData;
+            byte[] read;
+            if (rawJson) {
+                int size = inputStream.available();
+                read = new byte[size];
+                inputStream.read(read, 0, size);
+                jsonData = new String(read);
+            } else {
+                read = new byte[0x20];
+                // читаем название прошивки
+                inputStream.read(read, 0, 0x20);
+                firmwareId = new String(read);
+                inputStream.read(read, 0, 2);
+                int xmlLength = byteToInt(read[0]) + byteToInt(read[1]) * 0x100;
+                read = new byte[xmlLength];
+                inputStream.read(read, 0, xmlLength);
+                jsonData = new String(read);
+            }
+
             initBinaryData();
-            inputStream.read(getBinaryData());
-            AlgorithmData algorithmDataByJson = JsonSetting.createAlgorithmDataByJson(getJsonData());
-            List<ICommonData> listOfDataByJson = JsonSetting.createListOfDataByJson(getJsonData());
+            if (!rawJson) {
+                inputStream.read(getBinaryData());
+            }
+            AlgorithmData algorithmDataByJson = JsonSetting.createAlgorithmDataByJson(jsonData);
+            List<ICommonData> listOfDataByJson = JsonSetting.createListOfDataByJson(jsonData);
             if (algorithmDataByJson.getAlgorithmCount() > 0) {
+                setJsonData(jsonData);
                 setAlgorithmData(algorithmDataByJson);
                 setGlobalSettingData(listOfDataByJson);
-                for (ICommonData commonData : getGlobalSettingData()) {
-                    byte[] data = getByteArrayFromBinaryData(commonData.getPointer(), commonData.getSize());
-                    if (data != null) {
-                        commonData.setCurrentValueByBinaryData(data);
-                    }
-                }
-                algorithmData.deserializeFromBinaryDat(new AlgorithmData.Deserealize() {
-                    @Override
-                    public byte[] getAlgorithmByteArrayFromPointer(int pointer) {
-                        byte[] retVal = null;
-                        pointer *= 2;
-                        if (getBinaryData().length > pointer + 1) {
-                            int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
-                            int len = 0;
-                            while (getBinaryData().length > realAddr + len && getBinaryData()[realAddr + len] != 0) {
-                                len += 4;
-                            }
-                            if (getBinaryData().length < realAddr + len){
-                                len -= 4;
-                            }
-                            if (len > 0) {
-                                retVal = new byte[len];
-                                System.arraycopy(getBinaryData(), realAddr, retVal, 0, len);
-                            }
+                // если читаем чистый json, то не надо из бинарных данных ничего доставать
+                if (!rawJson) {
+                    for (ICommonData commonData : getGlobalSettingData()) {
+                        byte[] data = getByteArrayFromBinaryData(commonData.getPointer(), commonData.getSize());
+                        if (data != null) {
+                            commonData.setCurrentValueByBinaryData(data);
                         }
-                        return retVal;
                     }
-                });
+                    algorithmData.deserializeFromBinaryDat(new AlgorithmData.Deserealize() {
+                        @Override
+                        public byte[] getAlgorithmByteArrayFromPointer(int pointer) {
+                            byte[] retVal = null;
+                            pointer *= 2;
+                            if (getBinaryData().length > pointer + 1) {
+                                int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+                                int len = 0;
+                                while (getBinaryData().length > realAddr + len && getBinaryData()[realAddr + len] != 0) {
+                                    len += 4;
+                                }
+                                if (getBinaryData().length < realAddr + len) {
+                                    len -= 4;
+                                }
+                                if (len > 0) {
+                                    retVal = new byte[len];
+                                    System.arraycopy(getBinaryData(), realAddr, retVal, 0, len);
+                                }
+                            }
+                            return retVal;
+                        }
+                    });
+                }
             } else {
                 success = false;
             }
