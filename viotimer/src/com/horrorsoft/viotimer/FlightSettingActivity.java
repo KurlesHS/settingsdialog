@@ -1,5 +1,7 @@
 package com.horrorsoft.viotimer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -14,7 +16,6 @@ import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.data.AlgorithmHandler;
 import com.horrorsoft.viotimer.data.AlgorithmRowData;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
-
 
 
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
@@ -99,12 +100,28 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @Click(R.id.buttonChange)
     protected void onChangeButtonClicked() {
         AlgorithmRowData algorithmRowData = algorithmHandler.getAlgorithmRowData(algorithmHandler.getSelectedRow());
-        onItemLongClick1(algorithmRowData);
+        if (algorithmRowData != null) {
+            onItemLongClick1(algorithmRowData);
+        }
     }
 
     @Click(R.id.buttonDelete)
     protected void onDeleteButtonPushed() {
-        algorithmHandler.removeRow(algorithmHandler.getSelectedRow());
+        int selectedRow = algorithmHandler.getSelectedRow();
+        if (selectedRow >= 0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Really?");
+            alertDialogBuilder.setMessage("Are you sure to delete selected row?");
+            //null should be your on click listener
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    algorithmHandler.removeRow(algorithmHandler.getSelectedRow());
+                }
+            });
+            alertDialogBuilder.setNegativeButton("Cancel", null);
+            alertDialogBuilder.create().show();
+        }
     }
 
     private void FillAlgorithmButton(AlgorithmData algorithmData) {

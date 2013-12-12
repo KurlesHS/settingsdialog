@@ -140,7 +140,11 @@ public class AlgorithmData {
         }
 
         public int getSelectedRow(int servoNum) {
-            return selectedRows.get(servoNum);
+            int selectedRow = selectedRows.get(servoNum);
+            if (algorithmData.get(servoNum).size() <= selectedRow) {
+                selectedRow = -1;
+            }
+            return selectedRow;
         }
 
         public int getPointer() {
