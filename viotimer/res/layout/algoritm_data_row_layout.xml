@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout"
+    
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/alg_data_row_style"
+    
     android:orientation="horizontal" >
 
-    <TextView
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="95"
+        android:background="@drawable/alg_data_row_style" >
+
+        <TextView
+            android:id="@+id/positionTextView"
+            android:layout_width="0dp"
             android:layout_height="8mm"
             android:layout_weight="2"
             android:gravity="center"
-            android:textColor="#ffffff"
-            android:id="@+id/positionTextView"
             android:text="00"
-            />
-    <TextView
-            android:layout_width="wrap_content"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/delayTextView"
+            android:layout_width="0dp"
             android:layout_height="8mm"
             android:layout_weight="6"
             android:gravity="center"
-            android:textColor="#ffffff"
-            android:id="@+id/delayTextView"
             android:text="000.00"
-            />
-    <TextView
-            android:layout_width="wrap_content"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/servoPosTextView"
+            android:layout_width="0dp"
             android:layout_height="8mm"
             android:layout_weight="3"
             android:gravity="center"
-            android:textColor="#ffffff"
-            android:id="@+id/servoPosTextView"
             android:text="000"
-            />
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5" >
+
+    </FrameLayout>
+
 </LinearLayout>

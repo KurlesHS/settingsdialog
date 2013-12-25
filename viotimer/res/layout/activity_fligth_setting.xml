@@ -90,7 +90,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="80" >
+        android:layout_weight="77" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +121,7 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="50" >
+                    android:layout_weight="32" >
                 </FrameLayout>
 
                 <LinearLayout
@@ -133,44 +133,65 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0" >
+                        android:layout_weight="1" >
                     </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="5" android:layout_gravity="top">
+                        android:layout_gravity="top"
+                        android:layout_weight="5" >
 
                         <TextView
                             android:id="@+id/TextView02"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_gravity="top"
+                            android:layout_weight="4"
+                            android:background="@drawable/alg_data_row_style"
                             android:gravity="center"
-                            android:text="№" android:layout_gravity="top"
-                            android:textColor="#ffffff"/>
+                            android:text="№"
+                            android:textColor="#ffffff" />
 
                         <TextView
                             android:id="@+id/TextView01"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="6"
+                            android:layout_gravity="top"
+                            android:layout_weight="12"
+                            android:background="@drawable/alg_data_row_style"
                             android:gravity="center"
-                            android:text="Time" android:layout_gravity="top"
-                            android:textColor="#ffffff"/>
+                            android:text="Time"
+                            android:textColor="#ffffff" />
 
                         <TextView
                             android:id="@+id/TextView1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="3"
+                            android:layout_gravity="top"
+                            android:layout_weight="6"
+                            android:background="@drawable/alg_data_row_style"
                             android:gravity="center"
-                            android:text="State" android:layout_gravity="top"
-                            android:textColor="#ffffff">
+                            android:text="State"
+                            android:textColor="#ffffff" >
 
                             <requestFocus />
                         </TextView>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" >
+
+                        </FrameLayout>
+
                     </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" >
+                    </FrameLayout>
 
                     <ListView
                         android:id="@+id/listViewForAlgorithm"
@@ -185,13 +206,13 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="50" >
+                    android:layout_weight="20" >
                 </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="100"
+                    android:layout_weight="85"
                     android:orientation="vertical" >
 
                     <FrameLayout
@@ -206,6 +227,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="10"
                         android:background="@drawable/style_button"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/add_button"
                         android:text="Add"
                         android:textSize="12sp" />
 
@@ -215,7 +238,9 @@
                         android:layout_height="0dp"
                         android:layout_weight="10"
                         android:background="@drawable/style_button"
+                        android:scaleType="centerInside"
                         android:singleLine="true"
+                        android:src="@drawable/change_button"
                         android:text="Change"
                         android:textSize="12sp" />
 
@@ -225,6 +250,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="10"
                         android:background="@drawable/style_button"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/delete_button"
                         android:text="Delete"
                         android:textSize="12sp" />
 
@@ -238,5 +265,12 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" >
+
+    </FrameLayout>
 
 </LinearLayout>
