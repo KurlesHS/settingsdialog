@@ -27,8 +27,8 @@
         <activity
                 android:name="com.horrorsoft.viotimer.bluetooth.DeviceListActivity"
                 android:configChanges="orientation|keyboardHidden"
-                android:label="@string/select_device">
-        </activity>
+                android:label="@string/select_device"
+                android:theme="@android:style/Theme.Dialog" />
         <activity
                 android:name=".SettingActivity_"
                 android:label="@string/app_name"

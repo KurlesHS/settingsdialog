@@ -1,10 +1,16 @@
 package com.horrorsoft.viotimer;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.googlecode.androidannotations.annotations.*;
+import com.horrorsoft.viotimer.bluetooth.BlueToothListener;
+import com.horrorsoft.viotimer.bluetooth.DeviceListActivity;
 import com.horrorsoft.viotimer.common.ApplicationData;
 
 
@@ -12,7 +18,12 @@ import com.horrorsoft.viotimer.common.ApplicationData;
 @EActivity(R.layout.activity_main)
 public class StartActivity extends SherlockActivity {
 
-    private static final int REQUEST_CONNECT_DEVICE = 1;
+    private static final int REQUEST_CONNECT_DEVICE = 0x01;
+    private static final int REQUEST_ENABLE_BLUETOOTH = 0x02;
+    private static final String BLUETOOTH_LISTENER_UUID = "0d534e8c-c092-4eea-8425-da9a344d48de";
+    private Context applicationContext = null;
+
+    private BlueToothListener mBlueToothListener = null;
 
     /**
      * Called when the activity is first created.
@@ -23,11 +34,49 @@ public class StartActivity extends SherlockActivity {
     @Bean
     protected ApplicationData commonData;
 
+    protected void finalize() {
+        try {
+            super.finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        if (mBlueToothListener != null) {
+            commonData.removeBlueToothListener(mBlueToothListener);
+            mBlueToothListener = null;
+        }
+
+    }
+
     @AfterViews
     public void init() {
+        applicationContext = getApplicationContext();
         boolean btStatus = commonData.getBlueToothConnectionStatus();
         int resId = btStatus ? R.drawable.bt_con : R.drawable.bt_discon;
         imageViewBluetoothStatus.setImageResource(resId);
+        initBlueToothListener();
+    }
+
+    private void initBlueToothListener() {
+        if (mBlueToothListener == null) {
+            mBlueToothListener = new BlueToothListener() {
+                @Override
+                public void bluetoothStatusChanged(boolean status) {
+                    int resId = status ? R.drawable.bt_con : R.drawable.bt_discon;
+                    imageViewBluetoothStatus.setImageResource(resId);
+                }
+
+                @Override
+                public void dataFromBluetooth(byte[] buffer) {
+                    commonData.writeDataIntoBlueTooth(buffer);
+                }
+
+                @Override
+                public String id() {
+                    return BLUETOOTH_LISTENER_UUID;
+                }
+            };
+        }
+        commonData.addBlueToothListener(mBlueToothListener);
     }
 
     @Click(R.id.ProgrammButton)
@@ -39,15 +88,71 @@ public class StartActivity extends SherlockActivity {
     @Click(R.id.ConnectButton)
     public void handleConnectButtonPushed() {
         if (!commonData.isBlueToothSupported()) {
-            Toast.makeText(getApplicationContext(),
-                    "Device doesn't support Bluetooth", Toast.LENGTH_LONG)
-                    .show();
+            if (applicationContext != null) {
+                Toast.makeText(applicationContext,
+                        "Device doesn't support Bluetooth", Toast.LENGTH_LONG)
+                        .show();
+            }
             return;
         }
+
+        if (!commonData.isBlueToothEnabled()) {
+            Intent enableBtIntent = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLUETOOTH);
+            if (applicationContext != null) {
+                Toast.makeText(applicationContext, "Enabling Bluetooth!!",
+                        Toast.LENGTH_LONG).show();
+            }
+        } else {
+            if (!commonData.getBlueToothConnectionStatus()) {
+                connect();
+            } else {
+                commonData.disconnect();
+            }
+
+        }
+    }
+
+    private void connect() {
+        // Launch the DeviceListActivity to see devices and do scan
+        Intent serverIntent = new Intent(this, DeviceListActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CONNECT_DEVICE: {
+                if (resultCode == Activity.RESULT_OK) {
+                    //
+                    // Get the device MAC address
+                    Bundle extras = data.getExtras();
+                    if (extras != null) {
+                        String deviceAddress = extras.getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                        Toast.makeText(this, deviceAddress, Toast.LENGTH_SHORT).show();
+                        commonData.connect(deviceAddress, this);
 
+                    } else {
+                        // Failure retrieving MAC address
+                        Toast.makeText(this, R.string.macFailed, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Failure retrieving MAC address
+                    Toast.makeText(this, R.string.macFailed, Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+            case REQUEST_ENABLE_BLUETOOTH: {
+                if (resultCode == Activity.RESULT_OK) {
+                    connect();
+                } else {
+                    Toast.makeText(this, R.string.cancelButtonPressed, Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+            default:
+                break;
+        }
     }
 }

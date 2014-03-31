@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -23,7 +23,6 @@ import com.horrorsoft.viotimer.json.JsonSetting;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,27 +50,31 @@ public class ApplicationData {
 
     //  bluetooth stuff
     private BluetoothAdapter mBluetoothAdapter = null;
-    private BluetoothSocket btSocket = null;
     private Handler mHandler = null;
     private BlueToothConnectionThread mConnectThread = null;
-    Integer REQ_BT_ENABLE=1;
-
-    private OutputStream outputStream = null;
-    private InputStream inputStream = null;
     private boolean mConnectionStatus = false;
     private ArrayList<BlueToothListener> listeners = new ArrayList<BlueToothListener>();
 
-    private static final int NEW_DATA_ARRIVED = 3;
-    private static final int CONNECTION_ESTABLISHED = 4;
-    private static final int CONNECTION_FAILED = 5;
-    private static final int EXIT_CONNECTION_THREAD = 6;
-
-    // Well known SPP UUID (will *probably* map to RFCOMM channel 1 (default) if not in use);
-    private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    public static final int NEW_DATA_ARRIVED = 3;
+    public static final int CONNECTION_ESTABLISHED = 4;
+    public static final int CONNECTION_FAILED = 5;
+    public static final int EXIT_CONNECTION_THREAD = 6;
 
     public void addBlueToothListener(BlueToothListener listener) {
         if (!listeners.contains(listener)) {
+            for (BlueToothListener l: listeners) {
+                if (l.id().equals(listener.id())) {
+                    removeBlueToothListener(l);
+                    break;
+                }
+            }
             listeners.add(listener);
+        }
+    }
+
+    public void writeDataIntoBlueTooth(byte[] array) {
+        if (mConnectThread != null) {
+            mConnectThread.writeIntoBlueTooth(array);
         }
     }
 
@@ -85,6 +88,10 @@ public class ApplicationData {
 
     public boolean isBlueToothSupported() {
         return mBluetoothAdapter != null;
+    }
+
+    public boolean isBlueToothEnabled() {
+        return isBlueToothSupported() && mBluetoothAdapter.isEnabled();
     }
 
     private void emitBlueToothStatusChanged(boolean status) {
@@ -220,7 +227,7 @@ public class ApplicationData {
             bToW[1] = (byte) ((lenJson >> 8) % 0x100);
             outputStream.write(bToW);
             outputStream.write(getJsonData().getBytes());
-            outputStream.write(getBinaryData(), 0, 0x2f00);
+            outputStream.write(getBinaryData(), 0, getBinaryData().length);
             outputStream.close();
         } catch (Exception e) {
             success = false;
@@ -261,8 +268,11 @@ public class ApplicationData {
                 switch (msg.what) {
                     case NEW_DATA_ARRIVED:
                     {
-                        byte array[] = msg.getData().getByteArray("data");
-                        emitBlueToothIncomingData(array);
+                        Bundle data = msg.getData();
+                        if(data != null) {
+                            byte[] array = data.getByteArray("data");
+                            emitBlueToothIncomingData(array);
+                        }
                     }
                     break;
                     case EXIT_CONNECTION_THREAD:
@@ -270,22 +280,25 @@ public class ApplicationData {
                         if (context != null)
                             Toast.makeText(context, "exit from thread", Toast.LENGTH_SHORT).show();
                         mConnectionStatus = false;
-                        emitBlueToothStatusChanged(mConnectionStatus);
+                        mConnectThread = null;
+                        emitBlueToothStatusChanged(false);
+
                     }
                     break;
                     case CONNECTION_ESTABLISHED:
                     {
                         closeProgressDialog();
                         mConnectionStatus = true;
-                        emitBlueToothStatusChanged(mConnectionStatus);
-
+                        emitBlueToothStatusChanged(true);
                     }
                     break;
                     case CONNECTION_FAILED:
                     {
                         closeProgressDialog();
                         mConnectionStatus = false;
-                        emitBlueToothStatusChanged(mConnectionStatus);
+                        mConnectThread = null;
+                        emitBlueToothStatusChanged(false);
+
                     }
                     break;
 
@@ -304,28 +317,23 @@ public class ApplicationData {
     }
 
     public void connect(String macAddress, Activity activity) {
+        if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled())
         myProgressDialog = ProgressDialog.show(activity, activity.getResources().getString(R.string.pleaseWait), activity.getResources().getString(R.string.makingConnectionString), true);
-        mConnectThread = new BlueToothConnectionThread(macAddress);
+        mConnectThread = new BlueToothConnectionThread(macAddress, mHandler, mBluetoothAdapter);
         mConnectThread.start();
     }
 
     public void disconnect() {
-        if (outputStream != null) {
-            try {
-                mConnectionStatus = false;
-                outputStream.close();
-                btSocket.close();
-
-                //CnBtn.setImageResource(R.drawable.con_scr);
-            } catch (IOException e) {
-            }
+        if (mConnectThread != null) {
+            mConnectThread.disconnect();
+            mConnectThread = null;
         }
     }
 
 
     private void initBinaryData() {
         setFirstFreeAddress(0x0100);
-        setBinaryData(new byte[0x3000]);
+        setBinaryData(new byte[0x2000]);
         for (int i = 0; i < getBinaryData().length; ++i) {
             getBinaryData()[i] = 0x00;
         }
@@ -453,14 +461,14 @@ public class ApplicationData {
         pointer *= 2;
         if (pointer >= 0 && pointer < 0x100 && value.length > 0) {
             success = true;
-            int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
-            if (realAddr < 0x0100) {
-                realAddr = getFirstFreeAddress();
-                setFirstFreeAddress(realAddr + value.length);
-                success = writeIntToByteArray(getBinaryData(), pointer, 2, realAddr);
+            int realAdr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+            if (realAdr < 0x0100) {
+                realAdr = getFirstFreeAddress();
+                setFirstFreeAddress(realAdr + value.length);
+                success = writeIntToByteArray(getBinaryData(), pointer, 2, realAdr);
             }
             if (success) {
-                success = writeBytesToByteArray(getBinaryData(), realAddr, value);
+                success = writeBytesToByteArray(getBinaryData(), realAdr, value);
             }
         }
         return success;
@@ -490,11 +498,11 @@ public class ApplicationData {
         byte[] retVal = null;
         pointer *= 2;
         if (getBinaryData().length > pointer + 1) {
-            int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
-            if (getBinaryData().length >= realAddr + size) {
+            int realAdr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+            if (getBinaryData().length >= realAdr + size) {
                 retVal = new byte[size];
                 for (int i = 0; i < size; ++i) {
-                    retVal[i] = getBinaryData()[realAddr + i];
+                    retVal[i] = getBinaryData()[realAdr + i];
                 }
             }
         }
