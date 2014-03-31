@@ -99,17 +99,17 @@ public class ApplicationData {
                             byte[] retVal = null;
                             pointer *= 2;
                             if (getBinaryData().length > pointer + 1) {
-                                int realAddr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+                                int realAdr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
                                 int len = 0;
-                                while (getBinaryData().length > realAddr + len && getBinaryData()[realAddr + len] != 0) {
+                                while (getBinaryData().length > realAdr + len && getBinaryData()[realAdr + len] != 0) {
                                     len += 4;
                                 }
-                                if (getBinaryData().length < realAddr + len) {
+                                if (getBinaryData().length < realAdr + len) {
                                     len -= 4;
                                 }
                                 if (len > 0) {
                                     retVal = new byte[len];
-                                    System.arraycopy(getBinaryData(), realAddr, retVal, 0, len);
+                                    System.arraycopy(getBinaryData(), realAdr, retVal, 0, len);
                                 }
                             }
                             return retVal;
