@@ -1,15 +1,29 @@
 package com.horrorsoft.viotimer.common;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.widget.Toast;
+import com.horrorsoft.viotimer.R;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
+import com.horrorsoft.viotimer.bluetooth.BlueToothConnectionThread;
+import com.horrorsoft.viotimer.bluetooth.BlueToothListener;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +46,58 @@ public class ApplicationData {
     List<ICommonData> globalSettingData;
     private static float dividerForAlgorithmDelay;
     private static int globalMaxDelay;
+    private ProgressDialog myProgressDialog;
+
+
+    //  bluetooth stuff
+    private BluetoothAdapter mBluetoothAdapter = null;
+    private BluetoothSocket btSocket = null;
+    private Handler mHandler = null;
+    private BlueToothConnectionThread mConnectThread = null;
+    Integer REQ_BT_ENABLE=1;
+
+    private OutputStream outputStream = null;
+    private InputStream inputStream = null;
+    private boolean mConnectionStatus = false;
+    private ArrayList<BlueToothListener> listeners = new ArrayList<BlueToothListener>();
+
+    private static final int NEW_DATA_ARRIVED = 3;
+    private static final int CONNECTION_ESTABLISHED = 4;
+    private static final int CONNECTION_FAILED = 5;
+    private static final int EXIT_CONNECTION_THREAD = 6;
+
+    // Well known SPP UUID (will *probably* map to RFCOMM channel 1 (default) if not in use);
+    private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+    public void addBlueToothListener(BlueToothListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeBlueToothListener(BlueToothListener listener) {
+        listeners.remove(listener);
+    }
+
+    public boolean getBlueToothConnectionStatus() {
+        return mConnectionStatus;
+    }
+
+    public boolean isBlueToothSupported() {
+        return mBluetoothAdapter != null;
+    }
+
+    private void emitBlueToothStatusChanged(boolean status) {
+        for (BlueToothListener listener : listeners) {
+            listener.bluetoothStatusChanged(status);
+        }
+    }
+
+    private void emitBlueToothIncomingData(byte buffer[]) {
+        for (BlueToothListener listener : listeners) {
+            listener.dataFromBluetooth(buffer);
+        }
+    }
 
     public List<ICommonData> getGlobalSettingData() {
         return globalSettingData;
@@ -182,8 +248,80 @@ public class ApplicationData {
     }
 
     public ApplicationData() {
-
+        initBlueTooth();
     }
+
+    private void initBlueTooth() {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mHandler = new Handler(Looper.getMainLooper()) {
+
+            @SuppressLint("HandlerLeak")
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case NEW_DATA_ARRIVED:
+                    {
+                        byte array[] = msg.getData().getByteArray("data");
+                        emitBlueToothIncomingData(array);
+                    }
+                    break;
+                    case EXIT_CONNECTION_THREAD:
+                    {
+                        if (context != null)
+                            Toast.makeText(context, "exit from thread", Toast.LENGTH_SHORT).show();
+                        mConnectionStatus = false;
+                        emitBlueToothStatusChanged(mConnectionStatus);
+                    }
+                    break;
+                    case CONNECTION_ESTABLISHED:
+                    {
+                        closeProgressDialog();
+                        mConnectionStatus = true;
+                        emitBlueToothStatusChanged(mConnectionStatus);
+
+                    }
+                    break;
+                    case CONNECTION_FAILED:
+                    {
+                        closeProgressDialog();
+                        mConnectionStatus = false;
+                        emitBlueToothStatusChanged(mConnectionStatus);
+                    }
+                    break;
+
+                    default:
+                        break;
+                }
+            }
+        };
+    }
+
+    private void closeProgressDialog() {
+        if (myProgressDialog != null) {
+            myProgressDialog.dismiss();
+            myProgressDialog = null;
+        }
+    }
+
+    public void connect(String macAddress, Activity activity) {
+        myProgressDialog = ProgressDialog.show(activity, activity.getResources().getString(R.string.pleaseWait), activity.getResources().getString(R.string.makingConnectionString), true);
+        mConnectThread = new BlueToothConnectionThread(macAddress);
+        mConnectThread.start();
+    }
+
+    public void disconnect() {
+        if (outputStream != null) {
+            try {
+                mConnectionStatus = false;
+                outputStream.close();
+                btSocket.close();
+
+                //CnBtn.setImageResource(R.drawable.con_scr);
+            } catch (IOException e) {
+            }
+        }
+    }
+
 
     private void initBinaryData() {
         setFirstFreeAddress(0x0100);

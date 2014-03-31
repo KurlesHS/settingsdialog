@@ -86,13 +86,14 @@
                     android:layout_weight="30">
 
                 <ImageButton
-                    android:id="@+id/GenSetButton"
+                    android:id="@+id/ProgrammButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="40"
                     android:background="@drawable/style_button"
                     android:scaleType="fitXY"
-                    android:src="@drawable/prg_scr" />
+                    android:src="@drawable/prg_scr"
+                    android:focusable="true"/>
 
                 android:text="@string/tele_butt"
 
@@ -141,7 +142,7 @@
                 </FrameLayout>
 
                 <ImageButton
-                    android:id="@+id/ReadButton"
+                    android:id="@+id/ConnectButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="40"

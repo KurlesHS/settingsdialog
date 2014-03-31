@@ -15,4 +15,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_setting">SettingActivity</string>
 
+    <!-- Wait bluetooth device dialog -->
+    <string name="makingConnectionString">Connecting to bluetooth device...</string>
+    <string name="pleaseWait">Please Wait</string>
+
+
 </resources>
