@@ -15,7 +15,8 @@ import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
 import com.horrorsoft.viotimer.bluetooth.BlueToothConnectionThread;
-import com.horrorsoft.viotimer.bluetooth.BlueToothListener;
+import com.horrorsoft.viotimer.bluetooth.BlueToothDataListener;
+import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.json.JsonSetting;
@@ -45,6 +46,8 @@ public class ApplicationData {
     List<ICommonData> globalSettingData;
     private static float dividerForAlgorithmDelay;
     private static int globalMaxDelay;
+    private static byte timer_ch1;
+    private static byte timer_ch2;
     private ProgressDialog myProgressDialog;
 
 
@@ -53,23 +56,44 @@ public class ApplicationData {
     private Handler mHandler = null;
     private BlueToothConnectionThread mConnectThread = null;
     private boolean mConnectionStatus = false;
-    private ArrayList<BlueToothListener> listeners = new ArrayList<BlueToothListener>();
+    private ArrayList<BlueToothStatusListener> blueToothStatusListeners = new ArrayList<BlueToothStatusListener>();
+    private ArrayList<BlueToothDataListener> blueToothDataListeners = new ArrayList<BlueToothDataListener>();
 
-    public static final int NEW_DATA_ARRIVED = 3;
-    public static final int CONNECTION_ESTABLISHED = 4;
-    public static final int CONNECTION_FAILED = 5;
-    public static final int EXIT_CONNECTION_THREAD = 6;
+    public static final int NEW_DATA_ARRIVED = 0x03;
+    public static final int CONNECTION_ESTABLISHED = 0x04;
+    public static final int CONNECTION_FAILED = 0x05;
+    public static final int EXIT_CONNECTION_THREAD = 0x06;
 
-    public void addBlueToothListener(BlueToothListener listener) {
-        if (!listeners.contains(listener)) {
-            for (BlueToothListener l: listeners) {
+    public void addBlueToothStatusListener(BlueToothStatusListener listener) {
+        if (!blueToothStatusListeners.contains(listener)) {
+            for (BlueToothStatusListener l: blueToothStatusListeners) {
                 if (l.id().equals(listener.id())) {
-                    removeBlueToothListener(l);
+                    removeBlueToothStatusListener(l);
                     break;
                 }
             }
-            listeners.add(listener);
+            blueToothStatusListeners.add(listener);
         }
+    }
+
+    public void removeBlueToothStatusListener(BlueToothStatusListener listener) {
+        blueToothStatusListeners.remove(listener);
+    }
+
+    public void addBlueToothDataListener(BlueToothDataListener listener) {
+        if (!blueToothDataListeners.contains(listener)) {
+            for (BlueToothDataListener l: blueToothDataListeners) {
+                if (l.id().equals(listener.id())) {
+                    removeBlueToothDataListener(l);
+                    break;
+                }
+            }
+            blueToothDataListeners.add(listener);
+        }
+    }
+
+    public void removeBlueToothDataListener(BlueToothDataListener listener) {
+        blueToothDataListeners.remove(listener);
     }
 
     public void writeDataIntoBlueTooth(byte[] array) {
@@ -78,9 +102,6 @@ public class ApplicationData {
         }
     }
 
-    public void removeBlueToothListener(BlueToothListener listener) {
-        listeners.remove(listener);
-    }
 
     public boolean getBlueToothConnectionStatus() {
         return mConnectionStatus;
@@ -95,13 +116,13 @@ public class ApplicationData {
     }
 
     private void emitBlueToothStatusChanged(boolean status) {
-        for (BlueToothListener listener : listeners) {
+        for (BlueToothStatusListener listener : blueToothStatusListeners) {
             listener.bluetoothStatusChanged(status);
         }
     }
 
     private void emitBlueToothIncomingData(byte buffer[]) {
-        for (BlueToothListener listener : listeners) {
+        for (BlueToothDataListener listener : blueToothDataListeners) {
             listener.dataFromBluetooth(buffer);
         }
     }
