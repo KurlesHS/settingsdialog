@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.bluetooth.BlueToothDataListener;
 import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;
 import com.horrorsoft.viotimer.bluetooth.DeviceListActivity;

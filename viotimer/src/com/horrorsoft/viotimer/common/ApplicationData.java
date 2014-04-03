@@ -11,17 +11,15 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 import com.horrorsoft.viotimer.R;
-import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.api.Scope;
-import com.horrorsoft.viotimer.bluetooth.BlueToothConnectionThread;
-import com.horrorsoft.viotimer.bluetooth.BlueToothDataListener;
-import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+import com.horrorsoft.viotimer.bluetooth.*;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,7 @@ import java.util.List;
  * Date: 28.10.13
  * Time: 22:21
  */
-@EBean(scope = Scope.Singleton)
+@EBean(scope = EBean.Scope.Singleton)
 public class ApplicationData {
 
     @RootContext
@@ -58,11 +56,33 @@ public class ApplicationData {
     private boolean mConnectionStatus = false;
     private ArrayList<BlueToothStatusListener> blueToothStatusListeners = new ArrayList<BlueToothStatusListener>();
     private ArrayList<BlueToothDataListener> blueToothDataListeners = new ArrayList<BlueToothDataListener>();
+    private ArrayList<TimerStatusListener> timerStatusListeners = new ArrayList<TimerStatusListener>();
+    private TimerProtocol mTimerProtocol = null;
 
     public static final int NEW_DATA_ARRIVED = 0x03;
     public static final int CONNECTION_ESTABLISHED = 0x04;
     public static final int CONNECTION_FAILED = 0x05;
     public static final int EXIT_CONNECTION_THREAD = 0x06;
+
+    public void tryToFlashSettings() {
+
+    }
+
+    public void addTimerStatusListener(TimerStatusListener listener) {
+        if (!timerStatusListeners.contains(listener)) {
+            for (TimerStatusListener l: timerStatusListeners) {
+                if (l.id().equals(listener.id())) {
+                    removeTimerStatusListener(l);
+                    break;
+                }
+            }
+            timerStatusListeners.add(listener);
+        }
+    }
+
+    public void removeTimerStatusListener(TimerStatusListener listener) {
+        timerStatusListeners.remove(listener);
+    }
 
     public void addBlueToothStatusListener(BlueToothStatusListener listener) {
         if (!blueToothStatusListeners.contains(listener)) {
@@ -257,6 +277,26 @@ public class ApplicationData {
         return success;
     }
 
+    public byte[] getBinaryDataToUploadToDevice() {
+        prepareBinaryDataToSaveOrUpload();
+        int lenJson = getJsonData().getBytes().length;
+        byte[] bToW = new byte[0x20];
+        if (firmwareId.length() > 0) {
+            byte[] fw = firmwareId.getBytes();
+            for (int i = 0; i < fw.length && i < 0x20; ++i) {
+                bToW[i] = fw[i];
+            }
+        }
+        int totalLength = 0x22 + lenJson + getBinaryData().length;
+        byte[] value = new byte[totalLength];
+        System.arraycopy(bToW, 0, value, 0, 0x20);
+        value[0x20] = (byte) (lenJson % 0x100);
+        value[0x21] = (byte) ((lenJson >> 8) % 0x100);
+        System.arraycopy(getJsonData().getBytes(), 0, value, 0x22, lenJson);
+        System.arraycopy(getBinaryData(), 0, value, 0x22 + lenJson, getBinaryData().length);
+        return value;
+    }
+
     static public int byteToInt(byte b) {
         return b & 0xff;
     }
@@ -280,7 +320,19 @@ public class ApplicationData {
     }
 
     private void initBlueTooth() {
+        timer_ch1 = 0x1f;
+        timer_ch2 = 0x2d;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // настраиваем протокол, что бы у него была возможность достучаться до блюпупа
+        mTimerProtocol = new TimerProtocol();
+        mTimerProtocol.setBlueToothWriter(new BlueToothWriter() {
+            @Override
+            public void write(byte[] array) {
+                writeDataIntoBlueTooth(array);
+            }
+        });
+        addBlueToothDataListener(mTimerProtocol);
+        mTimerProtocol.setChBytes(timer_ch1, timer_ch2);
         mHandler = new Handler(Looper.getMainLooper()) {
 
             @SuppressLint("HandlerLeak")

@@ -10,7 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.R;
 import com.horrorsoft.viotimer.common.ApplicationData;
 

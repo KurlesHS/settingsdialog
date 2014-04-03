@@ -1,8 +1,8 @@
 package com.horrorsoft.viotimer.data;
 
-import com.googlecode.androidannotations.annotations.AfterInject;
-import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import com.horrorsoft.viotimer.common.ApplicationData;
 
 import java.util.ArrayList;

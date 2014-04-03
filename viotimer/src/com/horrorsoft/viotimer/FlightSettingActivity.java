@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.adapters.AlgorithmAdapter;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;

@@ -1,8 +1,8 @@
 package com.horrorsoft.viotimer;
 
 import android.app.Application;
-import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.EApplication;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EApplication;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;
 import com.horrorsoft.viotimer.json.JsonSetting;
