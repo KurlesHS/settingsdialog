@@ -11,6 +11,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 import com.horrorsoft.viotimer.R;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import com.horrorsoft.viotimer.bluetooth.*;
@@ -19,7 +21,6 @@ import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ import java.util.List;
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class ApplicationData {
+
+
 
     @RootContext
     protected Context context;
@@ -54,10 +57,13 @@ public class ApplicationData {
     private Handler mHandler = null;
     private BlueToothConnectionThread mConnectThread = null;
     private boolean mConnectionStatus = false;
-    private ArrayList<BlueToothStatusListener> blueToothStatusListeners = new ArrayList<BlueToothStatusListener>();
-    private ArrayList<BlueToothDataListener> blueToothDataListeners = new ArrayList<BlueToothDataListener>();
-    private ArrayList<TimerStatusListener> timerStatusListeners = new ArrayList<TimerStatusListener>();
-    private TimerProtocol mTimerProtocol = null;
+    private ArrayList<BlueToothStatusListener> mBlueToothStatusListeners = new ArrayList<BlueToothStatusListener>();
+    private ArrayList<BlueToothDataListener> mBlueToothDataListeners = new ArrayList<BlueToothDataListener>();
+    private ArrayList<TimerStatusListener> mTimerStatusListeners = new ArrayList<TimerStatusListener>();
+    private ArrayList<WriteSettingInTimerResultListener> mWriteSettingInTimerResultListeners = new ArrayList<WriteSettingInTimerResultListener>();
+
+    @Bean
+    protected TimerProtocol mTimerProtocol;
 
     public static final int NEW_DATA_ARRIVED = 0x03;
     public static final int CONNECTION_ESTABLISHED = 0x04;
@@ -68,52 +74,72 @@ public class ApplicationData {
 
     }
 
+    public void addWriteSettingResultListener(WriteSettingInTimerResultListener listener) {
+        if (!mWriteSettingInTimerResultListeners.contains(listener)) {
+            for (WriteSettingInTimerResultListener l: mWriteSettingInTimerResultListeners) {
+                if (l.id().equals(listener.id())) {
+                    removeWriteSettingResultListener(l);
+                    break;
+                }
+            }
+            mWriteSettingInTimerResultListeners.add(listener);
+        }
+    }
+
+    public void removeWriteSettingResultListener(WriteSettingInTimerResultListener listener) {
+        mWriteSettingInTimerResultListeners.remove(listener);
+    }
+
+    public void writeSettingsIntoTimer() {
+        mTimerProtocol.writeSettingsIntoTimer();
+    }
+
     public void addTimerStatusListener(TimerStatusListener listener) {
-        if (!timerStatusListeners.contains(listener)) {
-            for (TimerStatusListener l: timerStatusListeners) {
+        if (!mTimerStatusListeners.contains(listener)) {
+            for (TimerStatusListener l: mTimerStatusListeners) {
                 if (l.id().equals(listener.id())) {
                     removeTimerStatusListener(l);
                     break;
                 }
             }
-            timerStatusListeners.add(listener);
+            mTimerStatusListeners.add(listener);
         }
     }
 
     public void removeTimerStatusListener(TimerStatusListener listener) {
-        timerStatusListeners.remove(listener);
+        mTimerStatusListeners.remove(listener);
     }
 
     public void addBlueToothStatusListener(BlueToothStatusListener listener) {
-        if (!blueToothStatusListeners.contains(listener)) {
-            for (BlueToothStatusListener l: blueToothStatusListeners) {
+        if (!mBlueToothStatusListeners.contains(listener)) {
+            for (BlueToothStatusListener l: mBlueToothStatusListeners) {
                 if (l.id().equals(listener.id())) {
                     removeBlueToothStatusListener(l);
                     break;
                 }
             }
-            blueToothStatusListeners.add(listener);
+            mBlueToothStatusListeners.add(listener);
         }
     }
 
     public void removeBlueToothStatusListener(BlueToothStatusListener listener) {
-        blueToothStatusListeners.remove(listener);
+        mBlueToothStatusListeners.remove(listener);
     }
 
     public void addBlueToothDataListener(BlueToothDataListener listener) {
-        if (!blueToothDataListeners.contains(listener)) {
-            for (BlueToothDataListener l: blueToothDataListeners) {
+        if (!mBlueToothDataListeners.contains(listener)) {
+            for (BlueToothDataListener l: mBlueToothDataListeners) {
                 if (l.id().equals(listener.id())) {
                     removeBlueToothDataListener(l);
                     break;
                 }
             }
-            blueToothDataListeners.add(listener);
+            mBlueToothDataListeners.add(listener);
         }
     }
 
     public void removeBlueToothDataListener(BlueToothDataListener listener) {
-        blueToothDataListeners.remove(listener);
+        mBlueToothDataListeners.remove(listener);
     }
 
     public void writeDataIntoBlueTooth(byte[] array) {
@@ -136,13 +162,13 @@ public class ApplicationData {
     }
 
     private void emitBlueToothStatusChanged(boolean status) {
-        for (BlueToothStatusListener listener : blueToothStatusListeners) {
+        for (BlueToothStatusListener listener : mBlueToothStatusListeners) {
             listener.bluetoothStatusChanged(status);
         }
     }
 
     private void emitBlueToothIncomingData(byte buffer[]) {
-        for (BlueToothDataListener listener : blueToothDataListeners) {
+        for (BlueToothDataListener listener : mBlueToothDataListeners) {
             listener.dataFromBluetooth(buffer);
         }
     }
@@ -313,9 +339,18 @@ public class ApplicationData {
                 writeBytesToBinaryData(pointer, value);
             }
         });
+        int binaryDataSize = binaryData.length - 2;
+        short binaryDataCrc = TimerProtocol.calculateCrc16(binaryData, binaryDataSize);
+        binaryData[binaryDataSize] = (byte)(binaryDataCrc % 0xff);
+        binaryData[binaryDataSize + 1] = (byte)((binaryDataCrc >> 8) % 0xff);
     }
 
     public ApplicationData() {
+
+    }
+
+    @AfterInject
+    public void init() {
         initBlueTooth();
     }
 
@@ -324,7 +359,8 @@ public class ApplicationData {
         timer_ch2 = 0x2d;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // настраиваем протокол, что бы у него была возможность достучаться до блюпупа
-        mTimerProtocol = new TimerProtocol();
+        //mTimerProtocol = new TimerProtocol();
+        //mTimerProtocol.setCommonData(this);
         mTimerProtocol.setBlueToothWriter(new BlueToothWriter() {
             @Override
             public void write(byte[] array) {
@@ -332,7 +368,26 @@ public class ApplicationData {
             }
         });
         addBlueToothDataListener(mTimerProtocol);
+        addBlueToothStatusListener(mTimerProtocol);
         mTimerProtocol.setChBytes(timer_ch1, timer_ch2);
+        mTimerProtocol.setWriteSettingInTimerResultListener(new WriteSettingInTimerResultListener() {
+            @Override
+            public void writeResult(int status) {
+                for (WriteSettingInTimerResultListener l : mWriteSettingInTimerResultListeners)
+                    l.writeResult(status);
+            }
+
+            @Override
+            public void writeProcess(int currentPos, int maxPos) {
+                for (WriteSettingInTimerResultListener l : mWriteSettingInTimerResultListeners)
+                    l.writeProcess(currentPos, maxPos);
+            }
+
+            @Override
+            public String id() {
+                return "";
+            }
+        });
         mHandler = new Handler(Looper.getMainLooper()) {
 
             @SuppressLint("HandlerLeak")

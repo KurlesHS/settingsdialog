@@ -130,6 +130,7 @@ public class BlueToothConnectionThread extends Thread {
 
         if (mConnectionStatus) {
             byte buffer[] = new byte[1024];
+            /*
             buffer[0] = 56;
             buffer[1] = 57;
             buffer[2] = 58;
@@ -140,7 +141,7 @@ public class BlueToothConnectionThread extends Thread {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
+            */
             while(true){
                 try {
                     int len = inputStream.read(buffer);

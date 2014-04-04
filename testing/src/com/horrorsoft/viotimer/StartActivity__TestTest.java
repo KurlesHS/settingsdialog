@@ -18,5 +18,8 @@ public class StartActivity__TestTest extends TestCase {
         }
         byte crc = timerProtocol.calculateCrc8(array, -1);
         assertEquals(15, crc);
+
+        short crc16 = timerProtocol.calculateCrc16(array, -1);
+        assertEquals(33580, (int)(crc16 & 0xffff));
     }
 }
