@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.bluetooth.BlueToothDataListener;
 import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;
 import com.horrorsoft.viotimer.bluetooth.DeviceListActivity;
@@ -58,6 +58,7 @@ public class StartActivity extends SherlockActivity {
     }
 
     private void initBlueToothListeners() {
+        /*
         if (blueToothDataListener == null) {
             blueToothDataListener = new BlueToothDataListener() {
 
@@ -72,8 +73,9 @@ public class StartActivity extends SherlockActivity {
                 }
             };
             commonData.addBlueToothDataListener(blueToothDataListener);
-        }
 
+        }
+         */
         if (blueToothStatusListener == null) {
             blueToothStatusListener = new BlueToothStatusListener() {
                 @Override

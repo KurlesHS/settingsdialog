@@ -1,14 +1,16 @@
 package com.horrorsoft.viotimer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Fullscreen;
+import com.horrorsoft.viotimer.bluetooth.TimerProtocol;
+import com.horrorsoft.viotimer.bluetooth.WriteSettingInTimerResultListener;
+import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.lamerman.FileDialog;
 import com.lamerman.SelectionMode;
@@ -24,8 +26,15 @@ public class ProgramActivity extends SherlockActivity {
     @Bean
     protected ApplicationData commonData;
 
+    @InstanceState
+    protected WriteSettingInTimerResultListener mWriteSettingInTimerResultListener = null;
+
+
+
     private static final int SAVE_FILE_ID = 0x01;
     private static final int LOAD_FILE_ID = 0x02;
+
+    protected ProgressDialog mProgressDialog = null;
 
     @Click(R.id.settingButtonId)
     protected void handleSetting() {
@@ -47,6 +56,11 @@ public class ProgramActivity extends SherlockActivity {
         startActivityForResult(intent, SAVE_FILE_ID);
     }
 
+    @AfterViews
+    protected void init() {
+
+    }
+
     @Click(R.id.loadFileButtonId)
     protected void handleLoadFile() {
         Intent intent = new Intent(getBaseContext(), FileDialog.class);
@@ -59,6 +73,114 @@ public class ProgramActivity extends SherlockActivity {
         //alternatively you can set file filter
         intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vts", "vts_json"});
         startActivityForResult(intent, LOAD_FILE_ID);
+    }
+
+    @Click(R.id.ReadFromTimerButton)
+    protected void  handleReadFromTimer() {
+
+    }
+
+    private void closeProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
+    @UiThread(delay = 5000)
+    protected void closeProgressDialogAfterFiveSecond() {
+        closeProgressDialog();
+    }
+
+    @Click(R.id.WriteInTimerButton)
+    protected void  handleWriteInTimer() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Write setting ...");
+        mProgressDialog.setMessage("Write setting in progress ...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.setMax(0);
+        mWriteSettingInTimerResultListener = new WriteSettingInTimerResultListener() {
+            @Override
+            public void writeResult(int status) {
+                if (status == TimerProtocol.WRITE_RESULT_OK) {
+                    mProgressDialog.setMessage("Success");
+                    closeProgressDialogAfterFiveSecond();
+                }  else if (status == TimerProtocol.WRITE_RESULT_FAIL) {
+                    mProgressDialog.setMessage("Failure");
+                    closeProgressDialogAfterFiveSecond();
+                } else {
+                    closeProgressDialog();
+                }
+                commonData.removeWriteSettingResultListener(this);
+                mWriteSettingInTimerResultListener = null;
+            }
+
+            @Override
+            public void writeProcess(int currentPos, int maxPos) {
+                Log.d(ApplicationData.LOG_TAG, String.valueOf(currentPos));
+                Log.d(ApplicationData.LOG_TAG, String.valueOf(maxPos));
+
+                if (mProgressDialog == null)
+                    return;
+                 if (currentPos == 0) {
+                     mProgressDialog.setMax(maxPos);
+                 }
+                mProgressDialog.setProgress(currentPos);
+            }
+
+            @Override
+            public String id() {
+                return "1f48bf5c-1ae5-43c2-b96f-bd4d349b2dbf";
+            }
+        };
+        commonData.addWriteSettingResultListener(mWriteSettingInTimerResultListener);
+        mProgressDialog.show();
+        commonData.writeSettingsIntoTimer();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(ApplicationData.LOG_TAG, "onStart");
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(ApplicationData.LOG_TAG, "onCreate");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(ApplicationData.LOG_TAG, "onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(ApplicationData.LOG_TAG, "onResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(ApplicationData.LOG_TAG, "onDestroy");
+        if (mWriteSettingInTimerResultListener != null) {
+            commonData.removeWriteSettingResultListener(mWriteSettingInTimerResultListener);
+            mWriteSettingInTimerResultListener = null;
+        }
+    }
+
+    @UiThread(delay = 2000)
+    protected void on2000Ms() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     @Override

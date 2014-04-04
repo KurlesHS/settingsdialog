@@ -2,9 +2,9 @@ package com.horrorsoft.viotimer;
 
 import android.content.Intent;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
 
 /**
  * Created with IntelliJ IDEA.

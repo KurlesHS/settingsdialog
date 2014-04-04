@@ -95,7 +95,7 @@
                 </FrameLayout>
 
                 <ImageButton
-                    android:id="@+id/ReadButton"
+                    android:id="@+id/ReadFromTimerButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="40"
@@ -135,7 +135,7 @@
                 </FrameLayout>
 
                 <ImageButton
-                    android:id="@+id/GenSetButton"
+                    android:id="@+id/WriteInTimerButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="40"
