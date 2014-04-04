@@ -46,7 +46,6 @@ public class StartActivity extends SherlockActivity {
             commonData.removeBlueToothDataListener(blueToothDataListener);
             blueToothDataListener = null;
         }
-
     }
 
     @AfterViews
