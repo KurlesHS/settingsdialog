@@ -21,5 +21,15 @@ public class StartActivity__TestTest extends TestCase {
 
         short crc16 = timerProtocol.calculateCrc16(array, -1);
         assertEquals(33580, (int)(crc16 & 0xffff));
+
+        for (int x = 0; x < array.length; ++x) {
+            array[x] = 0;
+        }
+
+        crc16 = timerProtocol.calculateCrc16(array, 0x20);
+        assertEquals(61772, (int)(crc16 & 0xffff));
+
+
+
     }
 }

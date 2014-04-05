@@ -38,7 +38,7 @@ public class ApplicationData {
     @RootContext
     protected Context context;
 
-    public static final String LOG_TAG = "com.horrorsoft.viotimer";
+    public static final String LOG_TAG = "com.horrorsoft.viotimer.debug.tag";
     private String jsonData;
     private String firmwareId = "";
     private byte[] binaryData;
@@ -341,8 +341,8 @@ public class ApplicationData {
         });
         int binaryDataSize = binaryData.length - 2;
         short binaryDataCrc = TimerProtocol.calculateCrc16(binaryData, binaryDataSize);
-        binaryData[binaryDataSize] = (byte)(binaryDataCrc % 0xff);
-        binaryData[binaryDataSize + 1] = (byte)((binaryDataCrc >> 8) % 0xff);
+        binaryData[binaryDataSize] = (byte)(binaryDataCrc & 0xff);
+        binaryData[binaryDataSize + 1] = (byte)((binaryDataCrc >> 8) & 0xff);
     }
 
     public ApplicationData() {

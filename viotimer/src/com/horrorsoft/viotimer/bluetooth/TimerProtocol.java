@@ -79,13 +79,13 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     }
 
 
-    @Background(delay=2000, id=DELAY_ID_FOR_WAIT_RESPONSE)
+    @Background(delay = 2000, id = DELAY_ID_FOR_WAIT_RESPONSE)
     protected void startDelayTimer() {
         sendWriteResult(WRITE_RESULT_FAIL);
         mCurrentState = COMMON_TIMER_STATE;
     }
 
-    @UiThread(delay=10)
+    @UiThread(delay = 10)
     protected void sendWriteResultWithDelay(int status) {
         sendWriteResult(status);
     }
@@ -173,8 +173,6 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             clearByteArray(mBufferForSendingData, (byte) 0x00);
             int remainBytes = mBufferForSettings.length - mCurrentWriteSettingOffset;
             int numOfPackets = mBufferForSettings.length / 0x20;
-
-
             if (remainBytes <= 0) {
                 mWriteSettingInTimerResultListener.writeProcess(numOfPackets, numOfPackets);
                 sendWriteResult(WRITE_RESULT_OK);
@@ -189,9 +187,8 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             mBlueToothWriter.write(mBufferForSendingData);
             mCurrentWriteSettingOffset += remainBytes;
             clearBufferForIncomingData();
-        } else {
-            startDelayTimer();
         }
+        startDelayTimer();
     }
 
     private void handleWriteWaitReadyState(String strResponse) {
@@ -207,9 +204,8 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             mCurrentWriteSettingOffset += 0x20;
             mCurrentStateForWriteSetting = WAIT_GOOD_STATE;
             clearBufferForIncomingData();
-        } else {
-            startDelayTimer();
         }
+        startDelayTimer();
     }
 
     private void handleCommonTimerState() {
@@ -219,8 +215,8 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private void appendCrc16ToSendingBuffer() {
         int dataLength = mBufferForSendingData.length - 2;
         short crc16 = calculateCrc16(mBufferForSendingData, dataLength);
-        mBufferForSendingData[dataLength] = (byte) (crc16 % 0xff);
-        mBufferForSendingData[dataLength + 1] = (byte) ((crc16 >> 8) % 0xff);
+        mBufferForSendingData[dataLength] = (byte) (crc16 & 0xff);
+        mBufferForSendingData[dataLength + 1] = (byte) ((crc16 >> 8) & 0xff);
     }
 
     @Override

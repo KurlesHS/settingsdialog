@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.bluetooth.TimerProtocol;
 import com.horrorsoft.viotimer.bluetooth.WriteSettingInTimerResultListener;
 import org.androidannotations.annotations.*;
@@ -21,7 +21,7 @@ import com.lamerman.SelectionMode;
  */
 @Fullscreen
 @EActivity(R.layout.activity_program)
-public class ProgramActivity extends SherlockActivity {
+public class ProgramActivity extends SherlockFragmentActivity {
 
     @Bean
     protected ApplicationData commonData;
@@ -77,6 +77,10 @@ public class ProgramActivity extends SherlockActivity {
 
     @Click(R.id.ReadFromTimerButton)
     protected void  handleReadFromTimer() {
+        ProgressWriteSettingsDialog_ dlg = new ProgressWriteSettingsDialog_();
+        dlg.initMessage("Write setting in progress ...");
+        dlg.initTitle("Write setting ...");
+        dlg.show(getSupportFragmentManager(), "writeProgress");
 
     }
 
@@ -143,32 +147,32 @@ public class ProgramActivity extends SherlockActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(ApplicationData.LOG_TAG, "onStart");
+        //Log.d(ApplicationData.LOG_TAG, "onStart");
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(ApplicationData.LOG_TAG, "onCreate");
+        //Log.d(ApplicationData.LOG_TAG, "onCreate");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(ApplicationData.LOG_TAG, "onRestart");
+        //Log.d(ApplicationData.LOG_TAG, "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(ApplicationData.LOG_TAG, "onResume");
+        //Log.d(ApplicationData.LOG_TAG, "onResume");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(ApplicationData.LOG_TAG, "onDestroy");
+        //Log.d(ApplicationData.LOG_TAG, "onDestroy");
         if (mWriteSettingInTimerResultListener != null) {
             commonData.removeWriteSettingResultListener(mWriteSettingInTimerResultListener);
             mWriteSettingInTimerResultListener = null;
