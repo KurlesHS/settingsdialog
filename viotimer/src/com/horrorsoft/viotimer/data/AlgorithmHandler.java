@@ -185,20 +185,26 @@ public class AlgorithmHandler {
         int servoPos = -1;
         InfoAboutRow infoAboutRow = null;
         if (row >= 0 && row <= getSize()) {
-            if (row - 1 < getSize() && row - 1 >= 0) {
-                AlgorithmRowData algorithmRowData = getAlgorithmRowData(row - 1);
-                minDelay = algorithmRowData.getDelay() + 1;
-                servoPos = algorithmRowData.getServoPos();
-            }
-            if (row < getSize()) {
-                AlgorithmRowData algorithmRowData = getAlgorithmRowData(row);
-                maxDelay = algorithmRowData.getDelay() - 1;
-                if (servoPos < 0) {
+            if (row == 0 && getSize() == 0) {
+                servoPos = 0x80;
+                maxDelay = 2;
+                minDelay = 0;
+            } else {
+                if (row - 1 < getSize() && row - 1 >= 0) {
+                    AlgorithmRowData algorithmRowData = getAlgorithmRowData(row - 1);
+                    minDelay = algorithmRowData.getDelay() + 1;
                     servoPos = algorithmRowData.getServoPos();
                 }
-            }
-            if (servoPos < 0) {
-                servoPos = 0;
+                if (row < getSize()) {
+                    AlgorithmRowData algorithmRowData = getAlgorithmRowData(row);
+                    maxDelay = algorithmRowData.getDelay() - 1;
+                    if (servoPos < 0) {
+                        servoPos = algorithmRowData.getServoPos();
+                    }
+                }
+                if (servoPos < 0) {
+                    servoPos = 0;
+                }
             }
             int middle = (maxDelay - minDelay) / 2;
             if (middle > 0) {

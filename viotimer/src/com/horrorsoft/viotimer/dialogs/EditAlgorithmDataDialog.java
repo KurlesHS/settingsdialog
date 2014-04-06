@@ -14,6 +14,8 @@ import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.R;
 import com.horrorsoft.viotimer.common.ApplicationData;
 
+import java.util.Calendar;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alexey
@@ -22,6 +24,12 @@ import com.horrorsoft.viotimer.common.ApplicationData;
  */
 @EFragment(R.layout.edit_algoritm_item)
 public class EditAlgorithmDataDialog extends SherlockDialogFragment implements TextView.OnEditorActionListener {
+
+
+    @Bean
+    ApplicationData mCommonData;
+
+    private boolean isActive;
 
     boolean stopTimerForAutoPushButton = false;
     @InstanceState
@@ -34,6 +42,11 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     protected int maxDelay;
     @InstanceState
     protected int position;
+    @InstanceState
+    protected int servoNumber;
+
+    private long lastSecond = -1;
+
     @InstanceState
     protected Integer instanceObject;
 
@@ -52,6 +65,7 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     public static final String keyMinDelay = "minDelay";
     public static final String keyMaxDelay = "maxDelay";
     public static final String keyPosition = "position";
+    public static final String keyServoNumber = "servoNumber";
 
     private int autoPushButtonMode;
     int autoPushCount = 0;
@@ -105,6 +119,15 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
         }
     }
 
+    private void tryToSendServoPos() {
+        long sec = System.currentTimeMillis() / 333L;
+        if (sec > lastSecond) {
+            mCommonData.changeServoPosition(getServoNumber(), getServoPos());
+            lastSecond = sec;
+        }
+
+    }
+
     public int getPosition() {
         return position;
     }
@@ -127,6 +150,14 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
 
     public void setServoPos(int servoPos) {
         this.servoPos = servoPos;
+    }
+
+    public void setServoNumber(int servoNumber) {
+        this.servoNumber = servoNumber;
+    }
+
+    public int getServoNumber() {
+        return servoNumber;
     }
 
     public int getMinDelay() {
@@ -156,11 +187,27 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
             setMinDelay(agrBundle.getInt(keyMinDelay));
             setMaxDelay(agrBundle.getInt(keyMaxDelay));
             setPosition(agrBundle.getInt(keyPosition));
+            setServoNumber(agrBundle.getInt(keyServoNumber));
         }
         delayTextEdit.setText(getDelayText());
         servoPosTextEdit.setText(getServoPosString());
         delayTextEdit.setOnEditorActionListener(this);
         servoPosTextEdit.setOnEditorActionListener(this);
+        isActive = true;
+        sendServoPosInTime();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isActive = false;
+    }
+
+    @SuppressWarnings("InfiniteRecursion")
+    @UiThread(delay=333)
+    protected void sendServoPosInTime() {
+        tryToSendServoPos();
+        if (isActive)
+            sendServoPosInTime();
     }
 
     private String getDelayText() {
@@ -229,7 +276,7 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     }
 
 
-    @Click(R.id.buttonDelayDown)
+            @Click(R.id.buttonDelayDown)
     void onButtonDelayDownPushed() {
         if (decreaseDelay(1)) {
             updateTextDelay();
@@ -271,13 +318,23 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
     }
 
     // Выключаем автонажатие кнопки
-    @Touch({R.id.buttonDelayDown, R.id.buttonDelayUp, R.id.buttonServoPosDown, R.id.buttonServoPosUp})
+    @Touch({R.id.buttonDelayDown, R.id.buttonDelayUp})
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             stopTimerForAutoPushButton = true;
         }
         return false;
     }
+
+    @Touch({R.id.buttonServoPosUp, R.id.buttonServoPosDown})
+    public boolean onTouchEvent2(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            stopTimerForAutoPushButton = true;
+        }
+        return false;
+    }
+
+
 
     @LongClick({R.id.buttonDelayDown, R.id.buttonDelayUp, R.id.buttonServoPosDown, R.id.buttonServoPosUp})
     public boolean onLongClickEvent(View v) {

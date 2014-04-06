@@ -94,6 +94,25 @@ public class ApplicationData {
         mTimerProtocol.writeSettingsIntoTimer();
     }
 
+    public void changeServoPosition(int servoNumber, int servoPos) {
+        if (servoNumber < 1 || servoNumber > 5) {
+            return;
+        }
+        byte[] command = getChangeServoPosCommand(servoNumber, servoPos);
+        writeDataIntoBlueTooth(command);
+    }
+
+    private byte[] getChangeServoPosCommand(int servoNumber, int servoPos) {
+        byte[] value = new byte[0x11];
+        value[0] = timer_ch1;
+        value[1] = timer_ch2;
+        value[2] = (byte)(servoNumber + 0x10);
+        value[3] = (byte)(servoPos);
+        byte crc8 = TimerProtocol.calculateCrc8(value, 0x10);
+        value[0x10] = crc8;
+        return value;
+    }
+
     public void addTimerStatusListener(TimerStatusListener listener) {
         if (!mTimerStatusListeners.contains(listener)) {
             for (TimerStatusListener l: mTimerStatusListeners) {
@@ -518,6 +537,8 @@ public class ApplicationData {
     public static String getServoPosString(int servoPos) {
         return getServoPosString(servoPos, true);
     }
+
+
 
     public static String getDelayText(int delay, boolean adjustSize) {
         if (adjustSize) {

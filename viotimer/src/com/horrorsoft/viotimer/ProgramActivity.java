@@ -2,9 +2,11 @@ package com.horrorsoft.viotimer;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -33,6 +35,7 @@ public class ProgramActivity extends SherlockFragmentActivity {
 
     private static final int SAVE_FILE_ID = 0x01;
     private static final int LOAD_FILE_ID = 0x02;
+    private PowerManager.WakeLock mWakeLock;
 
     protected ProgressDialog mProgressDialog = null;
 
@@ -154,6 +157,10 @@ public class ProgramActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        mWakeLock.acquire();
+
         //Log.d(ApplicationData.LOG_TAG, "onCreate");
     }
 
@@ -172,6 +179,7 @@ public class ProgramActivity extends SherlockFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mWakeLock.release();
         //Log.d(ApplicationData.LOG_TAG, "onDestroy");
         if (mWriteSettingInTimerResultListener != null) {
             commonData.removeWriteSettingResultListener(mWriteSettingInTimerResultListener);

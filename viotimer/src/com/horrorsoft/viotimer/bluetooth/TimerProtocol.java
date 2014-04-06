@@ -245,7 +245,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         }
     }
 
-    public byte calculateCrc8(byte[] array, int size) {
+    public static byte calculateCrc8(byte[] array, int size) {
         if (size < 0) {
             size = array.length;
         }

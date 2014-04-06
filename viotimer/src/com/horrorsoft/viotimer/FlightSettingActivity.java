@@ -1,8 +1,10 @@
 package com.horrorsoft.viotimer;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -42,6 +44,8 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @InstanceState
     protected int currentServoNumber;
 
+    private PowerManager.WakeLock mWakeLock;
+
     @Bean
     protected ApplicationData applicationData;
     @Bean
@@ -61,6 +65,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        mWakeLock.acquire();
     }
 
     @AfterViews
@@ -170,12 +177,14 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             int minDelay = infoAboutRow.minDelay;
             int delay = infoAboutRow.delay;
             int servoPos = infoAboutRow.servoPos;
+
             Bundle argBundle = new Bundle();
             argBundle.putInt(EditAlgorithmDataDialog.keyMaxDelay, maxDelay);
             argBundle.putInt(EditAlgorithmDataDialog.keyMinDelay, minDelay);
             argBundle.putInt(EditAlgorithmDataDialog.keyDelay, delay);
             argBundle.putInt(EditAlgorithmDataDialog.keyServoPos, servoPos);
             argBundle.putInt(EditAlgorithmDataDialog.keyPosition, position);
+            argBundle.putInt(EditAlgorithmDataDialog.keyServoNumber, currentServoNumber + 1);
             dlg.setArguments(argBundle);
             dlg.show(getSupportFragmentManager(), "editAlgDtaDlg");
         }
@@ -223,8 +232,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
 
     @Override
     protected void onDestroy() {
-        algorithmAdapter.setAlgorithmHandler(null);
         super.onDestroy();
+        mWakeLock.release();
+        algorithmAdapter.setAlgorithmHandler(null);
     }
 
     @Override

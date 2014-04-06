@@ -54,5 +54,7 @@
         <activity
                 android:name="com.lamerman.FileDialog"
                 android:screenOrientation="landscape"/>
+
+        <service android:name=".bluetooth.VioTimerBlueToothService" android:label="VioTimerBlueToothService"/>
     </application>
 </manifest>

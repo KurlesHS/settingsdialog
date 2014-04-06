@@ -1,6 +1,7 @@
 package com.horrorsoft.viotimer;
 
 import android.app.Application;
+import android.os.PowerManager;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
 import com.horrorsoft.viotimer.common.ApplicationData;
