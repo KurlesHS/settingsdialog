@@ -1,5 +1,6 @@
 package com.horrorsoft.viotimer.dialogs;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -193,6 +195,26 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
         servoPosTextEdit.setText(getServoPosString());
         delayTextEdit.setOnEditorActionListener(this);
         servoPosTextEdit.setOnEditorActionListener(this);
+        delayTextEdit.setOnKeyListener(new View.OnKeyListener()
+        {
+            /**
+             * This listens for the user to press the enter button on
+             * the keyboard and then hides the virtual keyboard
+             */
+            public boolean onKey(View arg0, int arg1, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ( (event.getAction() == KeyEvent.ACTION_DOWN  ) &&
+                        (arg1           == KeyEvent.KEYCODE_ENTER)   )
+                {
+                    InputMethodManager imm = (InputMethodManager)mCommonData.getRootContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(delayTextEdit.getWindowToken(), 0);
+                    handleTextDelayChanged(delayTextEdit.getText().toString());
+                    return true;
+
+                }
+                return false;
+            }
+        } );
         isActive = true;
         sendServoPosInTime();
     }
@@ -369,7 +391,8 @@ public class EditAlgorithmDataDialog extends SherlockDialogFragment implements T
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
+        Log.d(ApplicationData.LOG_TAG, "Editor acton: " + String.valueOf(actionId));
+        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
             switch (v.getId()) {
                 case R.id.editTextDelay: {
                     CharSequence charSequence = v.getText();

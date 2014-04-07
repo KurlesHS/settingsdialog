@@ -36,7 +36,7 @@ public class ApplicationData {
 
 
     @RootContext
-    protected Context context;
+    protected Context mRootContext;
 
     public static final String LOG_TAG = "com.horrorsoft.viotimer.debug.tag";
     private String jsonData;
@@ -100,6 +100,10 @@ public class ApplicationData {
         }
         byte[] command = getChangeServoPosCommand(servoNumber, servoPos);
         writeDataIntoBlueTooth(command);
+    }
+
+    public Context getRootContext() {
+        return mRootContext;
     }
 
     private byte[] getChangeServoPosCommand(int servoNumber, int servoPos) {
@@ -424,8 +428,8 @@ public class ApplicationData {
                     break;
                     case EXIT_CONNECTION_THREAD:
                     {
-                        if (context != null)
-                            Toast.makeText(context, "exit from thread", Toast.LENGTH_SHORT).show();
+                        if (mRootContext != null)
+                            Toast.makeText(mRootContext, "exit from thread", Toast.LENGTH_SHORT).show();
                         mConnectionStatus = false;
                         mConnectThread = null;
                         emitBlueToothStatusChanged(false);

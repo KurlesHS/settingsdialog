@@ -157,9 +157,8 @@ public class ProgramActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
-        mWakeLock.acquire();
+
+
 
         //Log.d(ApplicationData.LOG_TAG, "onCreate");
     }
@@ -173,18 +172,27 @@ public class ProgramActivity extends SherlockFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        mWakeLock.acquire();
         //Log.d(ApplicationData.LOG_TAG, "onResume");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWakeLock.release();
+        //mWakeLock.release();
         //Log.d(ApplicationData.LOG_TAG, "onDestroy");
         if (mWriteSettingInTimerResultListener != null) {
             commonData.removeWriteSettingResultListener(mWriteSettingInTimerResultListener);
             mWriteSettingInTimerResultListener = null;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mWakeLock.release();
     }
 
     @UiThread(delay = 2000)

@@ -105,6 +105,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     };
 
     private DialogInterface.OnDismissListener myDismissListener = new DialogInterface.OnDismissListener() {
+        @SuppressWarnings("deprecation")
         @Override
         public void onDismiss(DialogInterface dialog) {
             removeDialog(EDIT_SETTING_DIALOG);
@@ -132,6 +133,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         listViewForSettingsDialog.setOnItemClickListener(this);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
 
@@ -147,7 +149,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
                 }
                 break;
                 case ICommonData.TYPE_COMBOBOX: {
-                    createComboboxDialog(adb);
+                    createComboBoxDialog(adb);
                 }
                 break;
                 case ICommonData.TYPE_NUMERIC: {
@@ -198,19 +200,19 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         return ApplicationData.doubleToString(value / 1.0 / divider, precision);
     }
 
-    private void createComboboxDialog(AlertDialog.Builder adb) {
+    private void createComboBoxDialog(AlertDialog.Builder adb) {
         Spinner spinner = new Spinner(this);
 
         RadioButtonAndComboBoxData radioButtonData = (RadioButtonAndComboBoxData) dataForDialog;
         if (radioButtonData != null) {
             List<RadioButtonAndComboBoxData.ItemData> listOfItemData = radioButtonData.getListOfItemData();
-            String[] listOfItemForCombobox = new String[listOfItemData.size()];
+            String[] listOfItemForComboBox = new String[listOfItemData.size()];
             for (int i = 0; i < listOfItemData.size(); ++i) {
-                listOfItemForCombobox[i] = listOfItemData.get(i).description;
+                listOfItemForComboBox[i] = listOfItemData.get(i).description;
             }
 
             int currentIndex = radioButtonData.getCurrentIndex();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, listOfItemForCombobox);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, listOfItemForComboBox);
             adapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setSelection(currentIndex);
@@ -235,16 +237,17 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         RadioButtonAndComboBoxData radioButtonData = (RadioButtonAndComboBoxData) dataForDialog;
         if (radioButtonData != null) {
             List<RadioButtonAndComboBoxData.ItemData> listOfItemData = radioButtonData.getListOfItemData();
-            String[] listOfItemForCombobox = new String[listOfItemData.size()];
+            String[] listOfItemForComboBox = new String[listOfItemData.size()];
             for (int i = 0; i < listOfItemData.size(); ++i) {
-                listOfItemForCombobox[i] = listOfItemData.get(i).description;
+                listOfItemForComboBox[i] = listOfItemData.get(i).description;
             }
 
             int currentIndex = radioButtonData.getCurrentIndex();
-            adb.setSingleChoiceItems(listOfItemForCombobox, currentIndex, myClickListener);
+            adb.setSingleChoiceItems(listOfItemForComboBox, currentIndex, myClickListener);
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         dataForDialog = listOfData.get(position);

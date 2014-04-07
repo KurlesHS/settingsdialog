@@ -3183,3 +3183,282 @@ protected com.horrorsoft.viotimer.common.ApplicationData commonData;
 22:13:02.50 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.data.AlgorithmHandler_
 22:13:02.54 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 50 ms], [Find R Classes = 14 ms], [Process Annotations = 12 ms], [Extract Manifest = 8 ms], [Generate Sources = 6 ms], [Validate Annotations = 4 ms], [Extract Annotations = 1 ms], 
 22:13:02.55 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+11:15:52.534 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+11:15:52.632 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 18 annotations on 13 elements
+11:15:52.645 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+11:15:52.657 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+11:15:52.658 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+11:15:52.665 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+11:15:52.682 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+11:15:52.682 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EApplicationHandler: [com.horrorsoft.viotimer.TimerVioApplication]
+11:15:52.683 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity]
+11:15:52.685 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog, com.horrorsoft.viotimer.ProgressWriteSettingsDialog]
+11:15:52.687 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EBeanHandler: [com.horrorsoft.viotimer.bluetooth.TimerProtocol, com.horrorsoft.viotimer.data.AlgorithmHandler, com.horrorsoft.viotimer.common.ApplicationData]
+11:15:52.687 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay, algorithmListView, scrollViewForAlgorithmButtons, linearLayoutForServoButtons, textViewDescription, progressBar, textViewPerCent]
+11:15:52.691 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed(), onAddButtonClicked(), onChangeButtonClicked(), onDeleteButtonPushed(), handleSetting(), handleSaveFile(), handleLoadFile(), handleReadFromTimer(), handleWriteInTimer()]
+11:15:52.695 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+11:15:52.696 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+11:15:52.697 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemClickHandler: [personListItemClicked(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+11:15:52.698 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemLongClickHandler: [onItemLongClick1(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+11:15:52.699 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with FullscreenHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity]
+11:15:52.699 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with RootContextHanlder: [context]
+11:15:52.700 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [mCommonData, applicationData, algorithmHandler, algorithmAdapter, commonData, mCommonData, commonData, applicationData, commonData, mTimerProtocol]
+11:15:52.702 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject, currentAlgorithmNumber, currentServoNumber, mWriteSettingInTimerResultListener, mTitle, mDescription, firstTime]
+11:15:52.703 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterInjectHandler: [init(), init()]
+11:15:52.704 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init(), init(), init(), init()]
+11:15:52.704 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [autoPushButtonCallback(), sendServoPosInTime(), closeProgressDialogAfterFiveSecond(), on2000Ms(), sendWriteResultWithDelay(int), sendWriteResult(int), closeProgressDialogAfterFiveSecond()]
+11:15:52.704 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BackgroundHandler: [startDelayTimer()]
+11:15:52.711 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+11:15:52.711 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EApplicationHandler: [com.horrorsoft.viotimer.TimerVioApplication]
+11:15:52.721 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EActivityHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity]
+11:15:52.736 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog, com.horrorsoft.viotimer.ProgressWriteSettingsDialog]
+11:15:52.737 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EBeanHandler: [com.horrorsoft.viotimer.common.ApplicationData, com.horrorsoft.viotimer.bluetooth.TimerProtocol, com.horrorsoft.viotimer.data.AlgorithmHandler]
+11:15:52.738 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+11:15:52.746 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 8
+11:15:52.747 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+11:15:52.748 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.data.AlgorithmHandler_
+11:15:52.754 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.common.ApplicationData_
+11:15:52.758 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.bluetooth.TimerProtocol_
+11:15:52.761 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+11:15:52.773 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.FlightSettingActivity_
+11:15:52.778 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgramActivity_
+11:15:52.782 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgressWriteSettingsDialog_
+11:15:52.785 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.TimerVioApplication_
+11:15:52.787 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 155 ms], [Process Annotations = 41 ms], [Generate Sources = 41 ms], [Validate Annotations = 24 ms], [Find R Classes = 17 ms], [Extract Manifest = 14 ms], [Extract Annotations = 11 ms], 
+11:15:52.787 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+11:15:53.712 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+11:15:53.747 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 11 annotations on 9 elements
+11:15:53.752 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+11:15:53.755 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+11:15:53.756 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+11:15:53.765 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+11:15:53.775 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+11:15:53.775 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.ProgramActivity]
+11:15:53.777 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog, com.horrorsoft.viotimer.ProgressWriteSettingsDialog]
+11:15:53.778 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [imageViewBluetoothStatus, delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay, textViewDescription, progressBar, textViewPerCent]
+11:15:53.780 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [handleProgramButtonPushed(), handleConnectButtonPushed(), onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed(), handleSetting(), handleSaveFile(), handleLoadFile(), handleReadFromTimer(), handleWriteInTimer()]
+11:15:53.783 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+11:15:53.784 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+11:15:53.785 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with FullscreenHandler: [com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.ProgramActivity]
+11:15:53.785 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [commonData, mCommonData, commonData, commonData]
+11:15:53.786 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject, mTitle, mDescription, firstTime, mWriteSettingInTimerResultListener]
+11:15:53.787 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init(), init(), init(), init()]
+11:15:53.788 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [autoPushButtonCallback(), sendServoPosInTime(), closeProgressDialogAfterFiveSecond(), closeProgressDialogAfterFiveSecond(), on2000Ms()]
+11:15:53.793 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+11:15:53.793 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EActivityHandler: [com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.ProgramActivity]
+11:15:53.810 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.ProgressWriteSettingsDialog, com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+11:15:53.812 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+11:15:53.816 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 4
+11:15:53.817 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+11:15:53.818 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+11:15:53.826 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgramActivity_
+11:15:53.830 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgressWriteSettingsDialog_
+11:15:53.833 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.StartActivity_
+11:15:53.836 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 89 ms], [Process Annotations = 28 ms], [Generate Sources = 20 ms], [Find R Classes = 14 ms], [Validate Annotations = 13 ms], [Extract Annotations = 4 ms], [Extract Manifest = 4 ms], 
+11:15:53.836 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+11:32:35.543 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+11:32:35.580 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 7 annotations on 1 elements
+11:32:35.584 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+11:32:35.588 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+11:32:35.589 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+11:32:35.594 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+11:32:35.605 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+11:32:35.605 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.horrorsoft.viotimer.ProgramActivity]
+11:32:35.608 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [handleSetting(), handleSaveFile(), handleLoadFile(), handleReadFromTimer(), handleWriteInTimer()]
+11:32:35.611 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with FullscreenHandler: [com.horrorsoft.viotimer.ProgramActivity]
+11:32:35.611 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [commonData]
+11:32:35.611 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [mWriteSettingInTimerResultListener]
+11:32:35.620 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init()]
+11:32:35.620 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [closeProgressDialogAfterFiveSecond(), on2000Ms()]
+11:32:35.625 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+11:32:35.626 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EActivityHandler: [com.horrorsoft.viotimer.ProgramActivity]
+11:32:35.646 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+11:32:35.649 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 1
+11:32:35.650 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+11:32:35.650 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgramActivity_
+11:32:35.663 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 82 ms], [Process Annotations = 29 ms], [Validate Annotations = 15 ms], [Generate Sources = 13 ms], [Find R Classes = 12 ms], [Extract Manifest = 5 ms], [Extract Annotations = 2 ms], 
+11:32:35.663 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+11:37:07.274 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+11:37:07.310 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 9 annotations on 1 elements
+11:37:07.314 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+11:37:07.321 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+11:37:07.321 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+11:37:07.326 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+11:37:07.344 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+11:37:07.344 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+11:37:07.347 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay]
+11:37:07.349 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed()]
+11:37:07.351 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+11:37:07.352 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+11:37:07.353 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [mCommonData]
+11:37:07.354 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject]
+11:37:07.357 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init()]
+11:37:07.357 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [autoPushButtonCallback(), sendServoPosInTime()]
+11:37:07.362 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+11:37:07.363 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+11:37:07.374 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+11:37:07.378 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 1
+11:37:07.379 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+11:37:07.380 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+11:37:07.393 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 83 ms], [Process Annotations = 21 ms], [Find R Classes = 18 ms], [Generate Sources = 15 ms], [Validate Annotations = 13 ms], [Extract Manifest = 7 ms], [Extract Annotations = 3 ms], 
+11:37:07.394 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+12:53:15.43 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+12:53:15.81 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 10 annotations on 1 elements
+12:53:15.85 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+12:53:15.91 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+12:53:15.92 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+12:53:15.97 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+12:53:15.115 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+12:53:15.115 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+12:53:15.118 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay]
+12:53:15.120 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed()]
+12:53:15.122 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+12:53:15.124 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+12:53:15.125 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with RootContextHanlder: [mRootContext]
+12:53:15.125 [pool-1-thread-2] ERROR o.a.h.AnnotationHelper:110 - @org.androidannotations.annotations.RootContext can only be used in a class annotated with @org.androidannotations.annotations.EBean.
+12:53:15.125 [pool-1-thread-2] WARN  o.a.p.ModelValidator:69 - Element RootContextHanlder unvalidated by 
+12:53:15.126 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [mCommonData]
+12:53:15.127 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject]
+12:53:15.129 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init()]
+12:53:15.130 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [autoPushButtonCallback(), sendServoPosInTime()]
+12:53:15.135 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+12:53:15.135 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+12:53:15.147 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+12:53:15.150 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 1
+12:53:15.151 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+12:53:15.152 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+12:53:15.166 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 85 ms], [Process Annotations = 20 ms], [Find R Classes = 19 ms], [Generate Sources = 16 ms], [Validate Annotations = 15 ms], [Extract Manifest = 7 ms], [Extract Annotations = 3 ms], 
+12:53:15.166 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+13:01:45.963 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+13:01:46.7 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 16 annotations on 3 elements
+13:01:46.16 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+13:01:46.21 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+13:01:46.22 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+13:01:46.27 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+13:01:46.38 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+13:01:46.38 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.horrorsoft.viotimer.FlightSettingActivity]
+13:01:46.41 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+13:01:46.42 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EBeanHandler: [com.horrorsoft.viotimer.common.ApplicationData]
+13:01:46.42 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay, algorithmListView, scrollViewForAlgorithmButtons, linearLayoutForServoButtons]
+13:01:46.45 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed(), onAddButtonClicked(), onChangeButtonClicked(), onDeleteButtonPushed()]
+13:01:46.48 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+13:01:46.49 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+13:01:46.50 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemClickHandler: [personListItemClicked(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+13:01:46.50 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemLongClickHandler: [onItemLongClick1(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+13:01:46.51 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with FullscreenHandler: [com.horrorsoft.viotimer.FlightSettingActivity]
+13:01:46.51 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with RootContextHanlder: [mRootContext, mRootContext]
+13:01:46.52 [pool-1-thread-2] ERROR o.a.h.AnnotationHelper:110 - @org.androidannotations.annotations.RootContext can only be used in a class annotated with @org.androidannotations.annotations.EBean.
+13:01:46.52 [pool-1-thread-2] WARN  o.a.p.ModelValidator:69 - Element RootContextHanlder unvalidated by 
+13:01:46.53 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [mCommonData, mTimerProtocol, applicationData, algorithmHandler, algorithmAdapter]
+13:01:46.54 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject, currentAlgorithmNumber, currentServoNumber]
+13:01:46.56 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterInjectHandler: [init()]
+13:01:46.56 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init(), init()]
+13:01:46.56 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [autoPushButtonCallback(), sendServoPosInTime()]
+13:01:46.62 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+13:01:46.62 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EActivityHandler: [com.horrorsoft.viotimer.FlightSettingActivity]
+13:01:46.85 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+13:01:46.87 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EBeanHandler: [com.horrorsoft.viotimer.common.ApplicationData]
+13:01:46.87 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+13:01:46.92 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 3
+13:01:46.93 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+13:01:46.94 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.common.ApplicationData_
+13:01:46.100 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+13:01:46.109 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.FlightSettingActivity_
+13:01:46.115 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 107 ms], [Process Annotations = 36 ms], [Generate Sources = 22 ms], [Validate Annotations = 18 ms], [Find R Classes = 11 ms], [Extract Annotations = 6 ms], [Extract Manifest = 6 ms], 
+13:01:46.115 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+13:02:11.925 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+13:02:11.964 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 19 annotations on 12 elements
+13:02:11.977 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+13:02:11.980 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+13:02:11.980 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+13:02:11.985 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+13:02:12.1 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+13:02:12.2 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EApplicationHandler: [com.horrorsoft.viotimer.TimerVioApplication]
+13:02:12.2 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity, com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.SettingActivity]
+13:02:12.4 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.ProgressWriteSettingsDialog, com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+13:02:12.6 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EBeanHandler: [com.horrorsoft.viotimer.bluetooth.TimerProtocol, com.horrorsoft.viotimer.data.AlgorithmHandler, com.horrorsoft.viotimer.common.ApplicationData]
+13:02:12.6 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EViewGroupHandler: [com.horrorsoft.viotimer.views.AlgorithmDataRowView]
+13:02:12.7 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [textViewDescription, progressBar, textViewPerCent, layout, positionTextView, delayTextView, servoPosTextView, algorithmListView, scrollViewForAlgorithmButtons, linearLayoutForServoButtons, delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay, imageViewBluetoothStatus, listViewForSettingsDialog]
+13:02:12.11 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [onAddButtonClicked(), onChangeButtonClicked(), onDeleteButtonPushed(), handleSetting(), handleSaveFile(), handleLoadFile(), handleReadFromTimer(), handleWriteInTimer(), onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed(), handleProgramButtonPushed(), handleConnectButtonPushed()]
+13:02:12.15 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+13:02:12.16 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+13:02:12.17 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemClickHandler: [personListItemClicked(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+13:02:12.18 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemLongClickHandler: [onItemLongClick1(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+13:02:12.19 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with FullscreenHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity, com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.SettingActivity]
+13:02:12.19 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with RootContextHanlder: [mRootContext]
+13:02:12.20 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [commonData, mCommonData, commonData, applicationData, algorithmHandler, algorithmAdapter, commonData, mCommonData, commonData, applicationData, commonData, applicationData, mTimerProtocol]
+13:02:12.22 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [mTitle, mDescription, firstTime, currentAlgorithmNumber, currentServoNumber, mWriteSettingInTimerResultListener, delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject]
+13:02:12.23 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterInjectHandler: [init(), init()]
+13:02:12.23 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init(), init(), init(), init(), init(), init()]
+13:02:12.24 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [sendWriteResultWithDelay(int), sendWriteResult(int), closeProgressDialogAfterFiveSecond(), closeProgressDialogAfterFiveSecond(), on2000Ms(), autoPushButtonCallback(), sendServoPosInTime()]
+13:02:12.24 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BackgroundHandler: [startDelayTimer()]
+13:02:12.30 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+13:02:12.30 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EApplicationHandler: [com.horrorsoft.viotimer.TimerVioApplication]
+13:02:12.38 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EActivityHandler: [com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.SettingActivity, com.horrorsoft.viotimer.ProgramActivity, com.horrorsoft.viotimer.FlightSettingActivity]
+13:02:12.56 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.ProgressWriteSettingsDialog, com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+13:02:12.57 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EBeanHandler: [com.horrorsoft.viotimer.bluetooth.TimerProtocol, com.horrorsoft.viotimer.data.AlgorithmHandler, com.horrorsoft.viotimer.common.ApplicationData]
+13:02:12.58 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EViewGroupHandler: [com.horrorsoft.viotimer.views.AlgorithmDataRowView]
+13:02:12.59 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+13:02:12.67 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 11
+13:02:12.68 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+13:02:12.69 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.common.ApplicationData_
+13:02:12.75 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.data.AlgorithmHandler_
+13:02:12.78 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.views.AlgorithmDataRowView_
+13:02:12.82 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.bluetooth.TimerProtocol_
+13:02:12.85 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+13:02:12.141 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.FlightSettingActivity_
+13:02:12.146 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgramActivity_
+13:02:12.150 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgressWriteSettingsDialog_
+13:02:12.154 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.SettingActivity_
+13:02:12.157 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.StartActivity_
+13:02:12.161 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.TimerVioApplication_
+13:02:12.163 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 199 ms], [Generate Sources = 96 ms], [Process Annotations = 43 ms], [Validate Annotations = 23 ms], [Find R Classes = 16 ms], [Extract Annotations = 11 ms], [Extract Manifest = 4 ms], 
+13:02:12.163 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
+13:02:27.498 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+13:02:27.536 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 19 annotations on 12 elements
+13:02:27.548 [pool-1-thread-2] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder C:\Users\Admin\IdeaProjects\viotimer\viotimer: C:\Users\Admin\IdeaProjects\viotimer\viotimer\AndroidManifest.xml
+13:02:27.551 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.horrorsoft.viotimer, componentQualifiedNames=[com.horrorsoft.viotimer.StartActivity_, com.horrorsoft.viotimer.bluetooth.DeviceListActivity, com.horrorsoft.viotimer.SettingActivity_, com.horrorsoft.viotimer.SelectSettingActivity_, com.horrorsoft.viotimer.ProgramActivity_, com.horrorsoft.viotimer.FlightSettingActivity_, com.lamerman.FileDialog, com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.BLUETOOTH, android.permission.BLUETOOTH_ADMIN, android.permission.WAKE_LOCK], applicationClassName=com.horrorsoft.viotimer.TimerVioApplication_, libraryProject=false, debugabble=false, minSdkVersion=6, maxSdkVersion=-1, targetSdkVersion=14]
+13:02:27.551 [pool-1-thread-2] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.horrorsoft.viotimer.R
+13:02:27.556 [pool-1-thread-2] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+13:02:27.573 [pool-1-thread-2] INFO  o.a.p.ModelValidator:42 - Validating elements
+13:02:27.573 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EApplicationHandler: [com.horrorsoft.viotimer.TimerVioApplication]
+13:02:27.573 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity, com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.SettingActivity]
+13:02:27.576 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EFragmentHandler: [com.horrorsoft.viotimer.ProgressWriteSettingsDialog, com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+13:02:27.577 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EBeanHandler: [com.horrorsoft.viotimer.bluetooth.TimerProtocol, com.horrorsoft.viotimer.data.AlgorithmHandler, com.horrorsoft.viotimer.common.ApplicationData]
+13:02:27.577 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with EViewGroupHandler: [com.horrorsoft.viotimer.views.AlgorithmDataRowView]
+13:02:27.578 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ViewByIdHandler: [textViewDescription, progressBar, textViewPerCent, layout, positionTextView, delayTextView, servoPosTextView, algorithmListView, scrollViewForAlgorithmButtons, linearLayoutForServoButtons, delayTextEdit, servoPosTextEdit, editTextServoPos, editTextDelay, imageViewBluetoothStatus, listViewForSettingsDialog]
+13:02:27.582 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ClickHandler: [onAddButtonClicked(), onChangeButtonClicked(), onDeleteButtonPushed(), handleSetting(), handleSaveFile(), handleLoadFile(), handleReadFromTimer(), handleWriteInTimer(), onButtonDelayDownPushed(), onButtonDelayUpPushed(), onButtonServoPosDownPushed(), onButtonServoPosUpPushed(), onButtonOkPushed(), handleProgramButtonPushed(), handleConnectButtonPushed()]
+13:02:27.586 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with LongClickHandler: [onLongClickEvent(android.view.View)]
+13:02:27.587 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with TouchHandler: [onTouchEvent(android.view.MotionEvent), onTouchEvent2(android.view.MotionEvent)]
+13:02:27.588 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemClickHandler: [personListItemClicked(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+13:02:27.589 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with ItemLongClickHandler: [onItemLongClick1(com.horrorsoft.viotimer.data.AlgorithmRowData)]
+13:02:27.590 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with FullscreenHandler: [com.horrorsoft.viotimer.FlightSettingActivity, com.horrorsoft.viotimer.ProgramActivity, com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.SettingActivity]
+13:02:27.590 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with RootContextHanlder: [mRootContext]
+13:02:27.591 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BeanHandler: [commonData, mCommonData, commonData, applicationData, algorithmHandler, algorithmAdapter, commonData, mCommonData, commonData, applicationData, commonData, applicationData, mTimerProtocol]
+13:02:27.593 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with InstanceStateHandler: [mTitle, mDescription, firstTime, currentAlgorithmNumber, currentServoNumber, mWriteSettingInTimerResultListener, delay, servoPos, minDelay, maxDelay, position, servoNumber, instanceObject]
+13:02:27.595 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterInjectHandler: [init(), init()]
+13:02:27.595 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with AfterViewsHandler: [init(), init(), init(), init(), init(), init()]
+13:02:27.595 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with UiThreadHandler: [sendWriteResultWithDelay(int), sendWriteResult(int), closeProgressDialogAfterFiveSecond(), closeProgressDialogAfterFiveSecond(), on2000Ms(), autoPushButtonCallback(), sendServoPosInTime()]
+13:02:27.596 [pool-1-thread-2] DEBUG o.a.p.ModelValidator:62 - Validating with BackgroundHandler: [startDelayTimer()]
+13:02:27.601 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:73 - Processing root elements
+13:02:27.601 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EApplicationHandler: [com.horrorsoft.viotimer.TimerVioApplication]
+13:02:27.610 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EActivityHandler: [com.horrorsoft.viotimer.StartActivity, com.horrorsoft.viotimer.SettingActivity, com.horrorsoft.viotimer.ProgramActivity, com.horrorsoft.viotimer.FlightSettingActivity]
+13:02:27.626 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EFragmentHandler: [com.horrorsoft.viotimer.ProgressWriteSettingsDialog, com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog]
+13:02:27.628 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EBeanHandler: [com.horrorsoft.viotimer.bluetooth.TimerProtocol, com.horrorsoft.viotimer.data.AlgorithmHandler, com.horrorsoft.viotimer.common.ApplicationData]
+13:02:27.629 [pool-1-thread-2] DEBUG o.a.p.ModelProcessor:80 - Processing root elements EViewGroupHandler: [com.horrorsoft.viotimer.views.AlgorithmDataRowView]
+13:02:27.630 [pool-1-thread-2] INFO  o.a.p.ModelProcessor:104 - Processing enclosed elements
+13:02:27.638 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:251 - Number of files generated by AndroidAnnotations: 11
+13:02:27.639 [pool-1-thread-2] INFO  o.a.g.ApiCodeGenerator:52 - Writting following API classes in project: []
+13:02:27.639 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.common.ApplicationData_
+13:02:27.645 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.data.AlgorithmHandler_
+13:02:27.647 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.views.AlgorithmDataRowView_
+13:02:27.649 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.bluetooth.TimerProtocol_
+13:02:27.651 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_
+13:02:27.706 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.FlightSettingActivity_
+13:02:27.711 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgramActivity_
+13:02:27.713 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.ProgressWriteSettingsDialog_
+13:02:27.715 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.SettingActivity_
+13:02:27.717 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.StartActivity_
+13:02:27.720 [pool-1-thread-2] DEBUG o.a.g.SourceCodewriter:55 - Generating class: com.horrorsoft.viotimer.TimerVioApplication_
+13:02:27.722 [pool-1-thread-2] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 186 ms], [Generate Sources = 85 ms], [Process Annotations = 41 ms], [Validate Annotations = 23 ms], [Find R Classes = 17 ms], [Extract Annotations = 11 ms], [Extract Manifest = 4 ms], 
+13:02:27.722 [pool-1-thread-2] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing
