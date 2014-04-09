@@ -1,7 +1,9 @@
 package com.horrorsoft.viotimer;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.PowerManager;
+import com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EApplication;
 import com.horrorsoft.viotimer.common.ApplicationData;
@@ -30,5 +32,7 @@ public class TimerVioApplication extends Application {
         AlgorithmData algorithmData = JsonSetting.createAlgorithmDataByJson(commonData.getJsonData());
         commonData.setGlobalSettingData(JsonSetting.createListOfDataByJson(commonData.getJsonData()));
         commonData.setAlgorithmData(algorithmData);
+        startService(new Intent(this, VioTimerBlueToothService.class));
+        //stopService(new Intent(this, VioTimerBlueToothService.class));
     }
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.bluetooth.TimerProtocol;
+import com.horrorsoft.viotimer.bluetooth.VioTimerBlueToothService;
 import com.horrorsoft.viotimer.bluetooth.WriteSettingInTimerResultListener;
 import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.common.ApplicationData;
@@ -169,6 +170,7 @@ public class ProgramActivity extends SherlockFragmentActivity {
         //Log.d(ApplicationData.LOG_TAG, "onRestart");
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onResume() {
         super.onResume();

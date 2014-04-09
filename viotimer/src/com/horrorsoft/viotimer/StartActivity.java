@@ -23,6 +23,7 @@ public class StartActivity extends SherlockActivity {
     private static final int REQUEST_ENABLE_BLUETOOTH = 0x02;
     private static final String BLUETOOTH_LISTENER_UUID = "0d534e8c-c092-4eea-8425-da9a344d48de";
     private Context applicationContext = null;
+    private int backButtonCount;
 
     private BlueToothDataListener blueToothDataListener = null;
     private BlueToothStatusListener blueToothStatusListener = null;
@@ -36,6 +37,25 @@ public class StartActivity extends SherlockActivity {
     @Bean
     protected ApplicationData commonData;
 
+    public void onBackPressed()
+    {
+        if(backButtonCount >= 1)
+        {
+            /*
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            */
+            finish();
+        }
+        else
+        {
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
+    }
+
     protected void finalize() {
         try {
             super.finalize();
@@ -48,8 +68,15 @@ public class StartActivity extends SherlockActivity {
         }
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        backButtonCount = 0;
+    }
+
     @AfterViews
     public void init() {
+        backButtonCount = 0;
         applicationContext = getApplicationContext();
         boolean btStatus = commonData.getBlueToothConnectionStatus();
         int resId = btStatus ? R.drawable.bt_con : R.drawable.bt_discon;

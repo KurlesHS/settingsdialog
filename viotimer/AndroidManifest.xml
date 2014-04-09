@@ -16,7 +16,7 @@
             android:label="@string/app_name"
             android:icon="@drawable/ic_launcher"
             android:name=".TimerVioApplication_">
-
+        <service android:name=".bluetooth.VioTimerBlueToothService"/>
 
         <activity
                 android:name=".StartActivity_"
