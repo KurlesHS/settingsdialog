@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="HeightChangeAlgorithmButtonInMm">10</integer>
+    <integer name="HeightRowOfTableWithAlgorithmInMm">8</integer>
+    <integer name="NumOfServos">5</integer>
+    <integer name="DividerForAlgorithmDelay">50</integer>
+    <integer name="GlobalMaxDelay">65535</integer>
+</resources>

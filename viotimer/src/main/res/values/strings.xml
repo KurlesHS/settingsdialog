@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">F1ABC timer by VIO</string>
+
+    <!-- DeviceListActivity -->
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+    <string name="connection_error">error happens while connecting to bluetooth device</string>
+    <string name="title_activity_gen_set">GenSetActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <!-- Wait bluetooth device dialog -->
+    <string name="makingConnectionString">Connecting to bluetooth device...</string>
+    <string name="pleaseWait">Please Wait</string>
+    <string name="macFailed">Error retrieving MAC address.</string>
+    <string name="cancelButtonPressed">Cancel button pressed</string>
+
+</resources>

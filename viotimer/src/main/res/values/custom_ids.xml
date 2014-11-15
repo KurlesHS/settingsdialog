@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="AlgorithmNumberButton"/>
+    <item type="id" name="ServoNumberButton"/>
+    <item type="id" name="CurrentIndexForAlgorithmTable"/>
+    <item type="id" name="InsertAlgorithmDataBottomCurrentItem"/>
+    <item type="id" name="InsertAlgorithmDataUpperCurrentItem"/>
+    <item type="id" name="AlgorithmDataChanged"/>
+</resources>
