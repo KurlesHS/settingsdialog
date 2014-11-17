@@ -99,6 +99,12 @@ public class StartActivity extends SherlockActivity {
         startActivity(intent);
     }
 
+    @Click(R.id.GraphButton)
+    public void handleGraphButtonPushed() {
+        Intent intent = new Intent(this, GraphActivity_.class);
+        startActivity(intent);
+    }
+
     @Click(R.id.ConnectButton)
     public void handleConnectButtonPushed() {
         if (!commonData.isBlueToothSupported()) {
