@@ -101,7 +101,7 @@ public class StartActivity extends SherlockActivity {
 
     @Click(R.id.GraphButton)
     public void handleGraphButtonPushed() {
-        Intent intent = new Intent(this, GraphActivity_.class);
+        Intent intent = new Intent(this, GraphSettingActivity_.class);
         startActivity(intent);
     }
 
