@@ -20,5 +20,4 @@
     <string name="pleaseWait">Please Wait</string>
     <string name="macFailed">Error retrieving MAC address.</string>
     <string name="cancelButtonPressed">Cancel button pressed</string>
-
 </resources>
