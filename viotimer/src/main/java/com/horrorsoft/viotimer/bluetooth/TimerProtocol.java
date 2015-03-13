@@ -130,8 +130,6 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             default:
                 break;
         }
-
-
     }
 
     private void handleReadSettingsState() {

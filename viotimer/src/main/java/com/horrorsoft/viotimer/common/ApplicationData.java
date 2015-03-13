@@ -57,10 +57,10 @@ public class ApplicationData {
     private Handler mHandler = null;
     private BlueToothConnectionThread mConnectThread = null;
     private boolean mConnectionStatus = false;
-    private ArrayList<BlueToothStatusListener> mBlueToothStatusListeners = new ArrayList<BlueToothStatusListener>();
-    private ArrayList<BlueToothDataListener> mBlueToothDataListeners = new ArrayList<BlueToothDataListener>();
-    private ArrayList<TimerStatusListener> mTimerStatusListeners = new ArrayList<TimerStatusListener>();
-    private ArrayList<WriteSettingInTimerResultListener> mWriteSettingInTimerResultListeners = new ArrayList<WriteSettingInTimerResultListener>();
+    private ArrayList<BlueToothStatusListener> mBlueToothStatusListeners = new ArrayList<>();
+    private ArrayList<BlueToothDataListener> mBlueToothDataListeners = new ArrayList<>();
+    private ArrayList<TimerStatusListener> mTimerStatusListeners = new ArrayList<>();
+    private ArrayList<WriteSettingInTimerResultListener> mWriteSettingInTimerResultListeners = new ArrayList<>();
 
     @Bean
     protected TimerProtocol mTimerProtocol;
