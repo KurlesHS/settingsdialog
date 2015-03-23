@@ -74,8 +74,8 @@ public class GraphActivity extends SherlockActivity {
         ArrayList<Entry> valComp1 = new ArrayList<Entry>();
         double pi = (Math.PI * 2) / 360.;
         ArrayList<String> xVal = new ArrayList<String>();
-        for (int i = 0; i < 30000; ++i) {
-            Entry c1e1 = new Entry((float) Math.sin((double) ((float)i * pi * 0.012)), i); // 0 == quarter 1
+        for (int i = 0; i < 3000; ++i) {
+            Entry c1e1 = new Entry((float) Math.sin((double) ((float)i * pi * 0.12)), i); // 0 == quarter 1
             valComp1.add(c1e1);
             xVal.add(Integer.toString(i));
         }

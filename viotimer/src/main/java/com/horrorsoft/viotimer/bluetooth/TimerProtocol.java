@@ -10,6 +10,7 @@ import org.androidannotations.api.BackgroundExecutor;
 
 /**
  * Created by Admin on 03.04.2014.
+ * Ух ты, сколько времени прошло :)
  */
 @EBean
 public class TimerProtocol implements BlueToothDataListener, BlueToothStatusListener {
@@ -34,9 +35,11 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private static final int COMMON_TIMER_STATE = 0x00;
     private static final int WRITING_SETTINGS_STATE = 0x01;
     private static final int READING_SETTINGS_STATE = 0x02;
+    private static final int READING_ALTIMETER_DATA = 0x03;
 
     private static final int WAIT_READY_STATE = 0x00;
     private static final int WAIT_GOOD_STATE = 0x01;
+    private static final int WAIT_PACKET_STATE = 0x02;
 
 
     public static final int WRITE_RESULT_OK = 0x00;
@@ -76,6 +79,10 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         mBlueToothWriter.write(command);
         mLengthBufferForIncomingData = 0x00;
         startDelayTimer();
+    }
+
+    public void readSettingsFromTimer() {
+
     }
 
 
