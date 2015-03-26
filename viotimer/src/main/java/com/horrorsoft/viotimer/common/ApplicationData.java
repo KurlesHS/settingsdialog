@@ -34,11 +34,10 @@ import java.util.List;
 public class ApplicationData {
 
 
-
     @RootContext
     protected Context mRootContext;
 
-    public static final String LOG_TAG = "com.horrorsoft.viotimer.debug.tag";
+    public static final String LOG_TAG = "com.horrorsoft.viotimer";
     private String jsonData;
     private String firmwareId = "";
     private byte[] binaryData;
@@ -76,7 +75,7 @@ public class ApplicationData {
 
     public void addWriteSettingResultListener(WriteSettingInTimerResultListener listener) {
         if (!mWriteSettingInTimerResultListeners.contains(listener)) {
-            for (WriteSettingInTimerResultListener l: mWriteSettingInTimerResultListeners) {
+            for (WriteSettingInTimerResultListener l : mWriteSettingInTimerResultListeners) {
                 if (l.id().equals(listener.id())) {
                     removeWriteSettingResultListener(l);
                     break;
@@ -110,8 +109,8 @@ public class ApplicationData {
         byte[] value = new byte[0x11];
         value[0] = timer_ch1;
         value[1] = timer_ch2;
-        value[2] = (byte)(servoNumber + 0x10);
-        value[3] = (byte)(servoPos);
+        value[2] = (byte) (servoNumber + 0x10);
+        value[3] = (byte) (servoPos);
         byte crc8 = TimerProtocol.calculateCrc8(value, 0x10);
         value[0x10] = crc8;
         return value;
@@ -119,7 +118,7 @@ public class ApplicationData {
 
     public void addTimerStatusListener(TimerStatusListener listener) {
         if (!mTimerStatusListeners.contains(listener)) {
-            for (TimerStatusListener l: mTimerStatusListeners) {
+            for (TimerStatusListener l : mTimerStatusListeners) {
                 if (l.id().equals(listener.id())) {
                     removeTimerStatusListener(l);
                     break;
@@ -135,7 +134,7 @@ public class ApplicationData {
 
     public void addBlueToothStatusListener(BlueToothStatusListener listener) {
         if (!mBlueToothStatusListeners.contains(listener)) {
-            for (BlueToothStatusListener l: mBlueToothStatusListeners) {
+            for (BlueToothStatusListener l : mBlueToothStatusListeners) {
                 if (l.id().equals(listener.id())) {
                     removeBlueToothStatusListener(l);
                     break;
@@ -151,7 +150,7 @@ public class ApplicationData {
 
     public void addBlueToothDataListener(BlueToothDataListener listener) {
         if (!mBlueToothDataListeners.contains(listener)) {
-            for (BlueToothDataListener l: mBlueToothDataListeners) {
+            for (BlueToothDataListener l : mBlueToothDataListeners) {
                 if (l.id().equals(listener.id())) {
                     removeBlueToothDataListener(l);
                     break;
@@ -212,13 +211,11 @@ public class ApplicationData {
         this.firstFreeAddress = firstFreeAddress;
     }
 
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public boolean loadConfigFromFile(String fileName) {
-        boolean rawJson = fileName.endsWith(".vts_json");
+    private boolean loadConfig(InputStream inputStream, boolean rawJson) {
         boolean success = true;
-        FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(new File(fileName));
             String jsonData;
             byte[] read;
             if (rawJson) {
@@ -297,6 +294,24 @@ public class ApplicationData {
         return success;
     }
 
+    public boolean loadConfigFromBytearray(byte[] bytes) {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        return loadConfig(inputStream, false);
+    }
+
+    public boolean loadConfigFromFile(String fileName) {
+        boolean rawJson = fileName.endsWith(".vts_json");
+        boolean success;
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(new File(fileName));
+            success = loadConfig(inputStream, rawJson);
+        } catch (FileNotFoundException e) {
+            success = false;
+        }
+        return success;
+    }
+
     public boolean saveConfigToFile(String fileName) {
         prepareBinaryDataToSaveOrUpload();
         boolean success = true;
@@ -364,8 +379,8 @@ public class ApplicationData {
         });
         int binaryDataSize = binaryData.length - 2;
         short binaryDataCrc = TimerProtocol.calculateCrc16(binaryData, binaryDataSize);
-        binaryData[binaryDataSize] = (byte)(binaryDataCrc & 0xff);
-        binaryData[binaryDataSize + 1] = (byte)((binaryDataCrc >> 8) & 0xff);
+        binaryData[binaryDataSize] = (byte) (binaryDataCrc & 0xff);
+        binaryData[binaryDataSize + 1] = (byte) ((binaryDataCrc >> 8) & 0xff);
     }
 
     public ApplicationData() {
@@ -417,17 +432,15 @@ public class ApplicationData {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case NEW_DATA_ARRIVED:
-                    {
+                    case NEW_DATA_ARRIVED: {
                         Bundle data = msg.getData();
-                        if(data != null) {
+                        if (data != null) {
                             byte[] array = data.getByteArray("data");
                             emitBlueToothIncomingData(array);
                         }
                     }
                     break;
-                    case EXIT_CONNECTION_THREAD:
-                    {
+                    case EXIT_CONNECTION_THREAD: {
                         if (mRootContext != null)
                             Toast.makeText(mRootContext, "exit from thread", Toast.LENGTH_SHORT).show();
                         mConnectionStatus = false;
@@ -436,15 +449,13 @@ public class ApplicationData {
 
                     }
                     break;
-                    case CONNECTION_ESTABLISHED:
-                    {
+                    case CONNECTION_ESTABLISHED: {
                         closeProgressDialog();
                         mConnectionStatus = true;
                         emitBlueToothStatusChanged(true);
                     }
                     break;
-                    case CONNECTION_FAILED:
-                    {
+                    case CONNECTION_FAILED: {
                         closeProgressDialog();
                         mConnectionStatus = false;
                         mConnectThread = null;
@@ -469,7 +480,7 @@ public class ApplicationData {
 
     public void connect(String macAddress, Activity activity) {
         if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled())
-        myProgressDialog = ProgressDialog.show(activity, activity.getResources().getString(R.string.pleaseWait), activity.getResources().getString(R.string.makingConnectionString), true);
+            myProgressDialog = ProgressDialog.show(activity, activity.getResources().getString(R.string.pleaseWait), activity.getResources().getString(R.string.makingConnectionString), true);
         mConnectThread = new BlueToothConnectionThread(macAddress, mHandler, mBluetoothAdapter);
         mConnectThread.start();
     }
@@ -541,7 +552,6 @@ public class ApplicationData {
     public static String getServoPosString(int servoPos) {
         return getServoPosString(servoPos, true);
     }
-
 
 
     public static String getDelayText(int delay, boolean adjustSize) {
