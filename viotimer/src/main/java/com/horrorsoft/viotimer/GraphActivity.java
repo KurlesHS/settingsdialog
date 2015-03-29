@@ -6,102 +6,168 @@ import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.Legend;
-import com.github.mikephil.charting.utils.XLabels;
-import com.github.mikephil.charting.utils.YLabels;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Fullscreen;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.horrorsoft.viotimer.common.ApplicationData;
+import org.androidannotations.annotations.*;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
  * Created by Alexey on 17.11.2014.
+ * Yep, I create this shit
  */
 
 @Fullscreen
 @EActivity(R.layout.activity_graph)
 public class GraphActivity extends SherlockActivity {
+    class FlightValue {
+        FlightValue(byte[] data) {
+            int intData = ApplicationData.getIntFromBytes(data);
+
+            mRdtFlag = (intData & 0x01) != 0;
+            mDtFlag = (intData & 0x02) != 0;
+            int t = (intData >> 2) & 0x3ff;
+            int v = (intData >>12) & 0x3ff;
+            int h = (intData >> 22) & 0x3ff;
+            mTemperature = (double)t * 0.1 - 20.;
+            mHeight = h - 0x40;
+            mSpeed = (double)v * 0.01 ;
+        }
+
+        int mHeight;
+        double mSpeed;
+        double mTemperature;
+        boolean mDtFlag;
+        boolean mRdtFlag;
+
+        public boolean getDtFlag() {return mDtFlag;}
+        public boolean getRdtFlag() {return mRdtFlag;}
+        public int getHeight() {return  mHeight;}
+        public double getSpeed() {return mSpeed;}
+        public double getTemperature() {return  mTemperature;}
+    }
+
+    class FlightChunk {
+        FlightValue[] mFlightData = null;
+        int flightNumber = 0;
+
+        FlightChunk(byte[] data) {
+            if (data.length == 0x40) {
+                byte[] tmp = new byte[4];
+                System.arraycopy(data, 0x3c, tmp, 0, 0x04);
+                flightNumber = ApplicationData.getIntFromBytes(tmp);
+                mFlightData = new FlightValue[0x0f];
+                for (int i = 0; i < 0x0f; ++i) {
+                    System.arraycopy(data, i * 0x04, tmp, 0, 0x04);
+                    mFlightData[i] = new FlightValue(tmp);
+                }
+            }
+        }
+
+        boolean isValid() {
+            return mFlightData != null;
+        }
+
+        public FlightValue[] getFlightData() {
+            return mFlightData;
+        }
+
+        public int getFlightNumber() {
+            return flightNumber;
+        }
+    }
+
+    @Bean
+    protected ApplicationData commonData;
+
+    private byte[] mBuffForChunk = new byte[0x40];
+
+
     @AfterViews
     protected void onInit() {
+        byte[] flightHistoryData = commonData.getFlightHistoryData();
+        if (flightHistoryData == null) {
+            return;
+        }
+
+        int flightNum = 0;
+        boolean firstTime = true;
+        int currentStep = 0x02;
+        ArrayList<Entry> heights = new ArrayList<Entry>();
+        ArrayList<Entry> speeds = new ArrayList<Entry>();
+        ArrayList<Entry> temperatures = new ArrayList<Entry>();
+        ArrayList<String> xVal = new ArrayList<String>();
+        int currentXAxis = 0x00;
+        for(int i = 0; i < 100; ++i) {
+            System.arraycopy(flightHistoryData, i * 0x40, mBuffForChunk, 0, 0x40);
+            FlightChunk fc = new FlightChunk(mBuffForChunk);
+            if (!fc.isValid()) {
+                break;
+            }
+            if (firstTime) {
+                firstTime = false;
+                flightNum = fc.getFlightNumber();
+            } else if (flightNum != fc.getFlightNumber()) {
+                break;
+            }
+            for (FlightValue fv : fc.mFlightData) {
+                speeds.add(new Entry((float) fv.getSpeed(), currentXAxis));
+                heights.add(new Entry(fv.getHeight(), currentXAxis));
+                temperatures.add(new Entry((float) fv.getTemperature(), currentXAxis));
+                double time = currentXAxis / 0.05;
+                xVal.add(String.valueOf(time));
+                currentXAxis += currentStep;
+            }
+            if (i == 12) {
+                currentStep = 5;
+            } else if (i == 60) {
+                currentStep = 20;
+            }
+        }
+
+        LineDataSet setHeight = new LineDataSet(heights, "Heights");
+        LineDataSet setSpeed = new LineDataSet(speeds, "Speed");
+
+
+        setHeight.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setHeight.setColor(ColorTemplate.getHoloBlue());
+        setHeight.setCircleColor(Color.WHITE);
+        setHeight.setLineWidth(2f);
+        setHeight.setCircleSize(3f);
+        setHeight.setFillAlpha(65);
+        setHeight.setFillColor(ColorTemplate.getHoloBlue());
+        setHeight.setHighLightColor(Color.rgb(244, 117, 117));
+        setHeight.setDrawCircleHole(false);
+
+        setSpeed.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setSpeed.setColor(ColorTemplate.getHoloBlue());
+        setSpeed.setColor(Color.RED);
+        setSpeed.setCircleColor(Color.WHITE);
+        setSpeed.setLineWidth(2f);
+        setSpeed.setCircleSize(3f);
+        setSpeed.setFillAlpha(65);
+        setSpeed.setFillColor(ColorTemplate.getHoloBlue());
+        setSpeed.setHighLightColor(Color.rgb(244, 117, 117));
+        setSpeed.setDrawCircleHole(false);
+
+
+        ArrayList<LineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(setHeight);
+        dataSets.add(setSpeed);
+        LineData data = new LineData(xVal, dataSets);
+
 
         LineChart mChart = new LineChart(this);
 
-        mChart.setDrawLegend(false);
-        mChart.setYRange(-1f, 1f, false);
-        mChart.setDescription("Simple sinus graph for test graph");
-        mChart.setUnit(" $");
-        mChart.setDrawUnitsInChart(true);
-
-        // if enabled, the chart will always start at zero on the y-axis
-        mChart.setStartAtZero(false);
-
-        // disable the drawing of values into the chart
-        mChart.setDrawYValues(false);
-
-        mChart.setDrawBorder(true);
-        mChart.setBorderPositions(new BarLineChartBase.BorderPosition[] {
-                BarLineChartBase.BorderPosition.BOTTOM
-        });
-
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
-
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        mChart.setDrawGridBackground(false);
-        mChart.setDrawVerticalGrid(false);
-        mChart.setDrawHorizontalGrid(false);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
-
-        // set an alternative background color
-        mChart.setBackgroundColor(Color.BLACK);
         LinearLayout layout = (LinearLayout) findViewById(R.id.LayoutForCharts);
         layout.addView(mChart);
-        ArrayList<Entry> valComp1 = new ArrayList<Entry>();
-        double pi = (Math.PI * 2) / 360.;
-        ArrayList<String> xVal = new ArrayList<String>();
-        for (int i = 0; i < 3000; ++i) {
-            Entry c1e1 = new Entry((float) Math.sin((double) ((float)i * pi * 0.12)), i); // 0 == quarter 1
-            valComp1.add(c1e1);
-            xVal.add(Integer.toString(i));
-        }
-        LineDataSet setComp1 = new LineDataSet(valComp1, "Test");
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(setComp1);
-
-        LineData data = new LineData(xVal, dataSets);
         mChart.setData(data);
-
-        // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        l.setForm(Legend.LegendForm.LINE);
-        // l.setTypeface(tf);
-        l.setTextColor(Color.WHITE);
-
-        XLabels xl = mChart.getXLabels();
-        //xl.setTypeface(tf);
-        xl.setTextColor(Color.WHITE);
-
-        YLabels yl = mChart.getYLabels();
-        //yl.setTypeface(tf);
-        yl.setTextColor(Color.WHITE);
     }
 
     @Click(R.id.FlightSetButton)

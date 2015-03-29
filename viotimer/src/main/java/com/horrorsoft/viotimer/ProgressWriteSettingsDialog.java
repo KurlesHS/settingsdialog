@@ -115,10 +115,10 @@ public class ProgressWriteSettingsDialog extends SherlockDialogFragment implemen
 
     @Override
     public void writeResult(int status) {
-        if (status == TimerProtocol.WRITE_RESULT_OK) {
+        if (status == TimerProtocol.RESULT_OK) {
             setMessage("Success");
             closeProgressDialogAfterFiveSecond();
-        }  else if (status == TimerProtocol.WRITE_RESULT_FAIL) {
+        }  else if (status == TimerProtocol.RESULT_FAIL) {
             setMessage("Failure");
             closeProgressDialogAfterFiveSecond();
         } else {

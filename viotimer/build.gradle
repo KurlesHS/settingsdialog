@@ -3,6 +3,7 @@ buildscript {
         jcenter()
         mavenLocal()
         mavenCentral()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
@@ -37,7 +38,10 @@ android {
     }
 }
 
-
+// for mpandroidchart
+repositories {
+    maven { url "https://jitpack.io" }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -49,6 +53,7 @@ dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
 
     compile project (path: ':fileexplorer')
+    compile 'com.github.PhilJay:MPAndroidChart:v2.0.8'
 }
 
 apt {

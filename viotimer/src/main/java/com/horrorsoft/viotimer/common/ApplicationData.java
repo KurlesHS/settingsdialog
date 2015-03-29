@@ -21,6 +21,9 @@ import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +52,7 @@ public class ApplicationData {
     private static byte timer_ch1;
     private static byte timer_ch2;
     private ProgressDialog myProgressDialog;
+    private byte[] mFlightHistoryData = null;
 
 
     //  bluetooth stuff
@@ -60,6 +64,8 @@ public class ApplicationData {
     private ArrayList<BlueToothDataListener> mBlueToothDataListeners = new ArrayList<>();
     private ArrayList<TimerStatusListener> mTimerStatusListeners = new ArrayList<>();
     private ArrayList<WriteSettingInTimerResultListener> mWriteSettingInTimerResultListeners = new ArrayList<>();
+    private ArrayList<ReadSettingFromTimerResultListener> mReadSettingFromTimerResultListeners = new ArrayList<>();
+    private ArrayList<ITimerCommandResultListener> mReadFlightHistoryFromTimerResultListeners = new ArrayList<>();
 
     @Bean
     protected TimerProtocol mTimerProtocol;
@@ -69,10 +75,15 @@ public class ApplicationData {
     public static final int CONNECTION_FAILED = 0x05;
     public static final int EXIT_CONNECTION_THREAD = 0x06;
 
-    public void tryToFlashSettings() {
-
+    public void setFlightHistoryData(byte[] flightHistoryData) {
+        mFlightHistoryData = flightHistoryData;
     }
 
+    public byte[] getFlightHistoryData() {
+        return mFlightHistoryData;
+    }
+
+    //TODO: заменить на ITimerCommandResultListener
     public void addWriteSettingResultListener(WriteSettingInTimerResultListener listener) {
         if (!mWriteSettingInTimerResultListeners.contains(listener)) {
             for (WriteSettingInTimerResultListener l : mWriteSettingInTimerResultListeners) {
@@ -85,12 +96,55 @@ public class ApplicationData {
         }
     }
 
+    //TODO: заменить на ITimerCommandResultListener
+    public void removeReadSettingResultListener(ReadSettingFromTimerResultListener listener) {
+        mReadSettingFromTimerResultListeners.remove(listener);
+    }
+
+    public void addReadFlightHistoryFromTimerResultListener(ITimerCommandResultListener listener) {
+        if (!mReadFlightHistoryFromTimerResultListeners.contains(listener)) {
+            for (ITimerCommandResultListener l : mReadFlightHistoryFromTimerResultListeners) {
+                if (l.id().equals(listener.id())) {
+                    removeReadFlightHistoryFromTimerResultListener(l);
+                    break;
+                }
+            }
+            mReadFlightHistoryFromTimerResultListeners.add(listener);
+        }
+    }
+
+    public void removeReadFlightHistoryFromTimerResultListener(ITimerCommandResultListener listener) {
+        mReadFlightHistoryFromTimerResultListeners.remove(listener);
+    }
+
+    //TODO: заменить на ITimerCommandResultListener
+    public void addReadSettingResultListener(ReadSettingFromTimerResultListener listener) {
+        if (!mReadSettingFromTimerResultListeners.contains(listener)) {
+            for (ReadSettingFromTimerResultListener l : mReadSettingFromTimerResultListeners) {
+                if (l.id().equals(listener.id())) {
+                    removeReadSettingResultListener(l);
+                    break;
+                }
+            }
+            mReadSettingFromTimerResultListeners.add(listener);
+        }
+    }
+
+    //TODO: заменить на ITimerCommandResultListener
     public void removeWriteSettingResultListener(WriteSettingInTimerResultListener listener) {
         mWriteSettingInTimerResultListeners.remove(listener);
     }
 
     public void writeSettingsIntoTimer() {
         mTimerProtocol.writeSettingsIntoTimer();
+    }
+
+    public void readSettingsFromTimer() {
+        mTimerProtocol.readSettingsFromTimer();
+    }
+
+    public void readFlightHistoryFromTimer() {
+        mTimerProtocol.readFlightHistory();
     }
 
     public void changeServoPosition(int servoNumber, int servoPos) {
@@ -169,7 +223,6 @@ public class ApplicationData {
             mConnectThread.writeIntoBlueTooth(array);
         }
     }
-
 
     public boolean getBlueToothConnectionStatus() {
         return mConnectionStatus;
@@ -426,6 +479,49 @@ public class ApplicationData {
                 return "";
             }
         });
+
+        mTimerProtocol.setReadSettingFromTimerResultListener(new ReadSettingFromTimerResultListener() {
+            @Override
+            public void readResult(int status) {
+                for (ReadSettingFromTimerResultListener l : mReadSettingFromTimerResultListeners)
+                    l.readResult(status);
+            }
+
+            @Override
+            public void readProcess(int currentPos, int maxPos) {
+                for (ReadSettingFromTimerResultListener l : mReadSettingFromTimerResultListeners)
+                    l.readProcess(currentPos, maxPos);
+            }
+
+            @Override
+            public String id() {
+                return "";
+            }
+        });
+
+        mTimerProtocol.setReadFlightHistoryFromTimerResultListener(new ITimerCommandResultListener() {
+
+            @Override
+            public void result(int status) {
+                for (ITimerCommandResultListener l : mReadFlightHistoryFromTimerResultListeners) {
+                    l.result(status);
+                }
+            }
+
+            @Override
+            public void process(int currentPos, int maxPos) {
+                for (ITimerCommandResultListener l : mReadFlightHistoryFromTimerResultListeners) {
+                    l.process(currentPos, maxPos);
+                }
+            }
+
+            @Override
+            public String id() {
+                return "";
+            }
+        });
+
+
         mHandler = new Handler(Looper.getMainLooper()) {
 
             @SuppressLint("HandlerLeak")
@@ -670,5 +766,16 @@ public class ApplicationData {
             }
         }
         return retVal;
+    }
+
+    public static int getIntFromBytes(byte [] bytes) {
+        ByteBuffer bb = ByteBuffer.allocate(4);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        if (bytes.length > 4) {
+            bb.put(bytes, 0, 4);
+        } else {
+            bb.put(bytes);
+        }
+        return bb.getInt(0);
     }
 }

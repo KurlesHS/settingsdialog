@@ -2,7 +2,6 @@ package com.horrorsoft.viotimer.bluetooth;
 
 
 import com.horrorsoft.viotimer.common.ApplicationData;
-import com.horrorsoft.viotimer.data.CommonData;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -29,15 +28,19 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private int mCurrentState;
     private int mCurrentStateForReadSetting;
     private int mCurrentStateForWriteSetting;
+    private int mCurrentStateForReadFlightHistory;
     private int mCurrentWriteSettingOffset;
     private int mCurrentReadPacketNum;
     private int mTotalReadPacketNum;
     private byte[] mBufferForSettings = null;
+    private byte[] mBufferForFlightHistory = null;
     private byte[] mBufferForIncomingData = new byte[0x100];
     private byte[] mBufferForSendingData = new byte[0x22];
     private int mLengthBufferForIncomingData = 0;
     private int mCh1;
     private int mCh2;
+
+    private static final int mFlightHistoryPacketTotalCount = 200;
 
     private static final String DELAY_ID_FOR_WAIT_RESPONSE = "delay_id";
 
@@ -50,15 +53,12 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private static final int WAIT_GOOD_STATE = 0x01;
     private static final int WAIT_PACKET_STATE = 0x02;
 
-    public static final int WRITE_RESULT_OK = 0x00;
-    public static final int WRITE_RESULT_FAIL = 0x01;
-
-    public static final int READ_RESULT_OK = 0x02;
-    public static final int READ_RESULT_FAIL = 0x03;
-
+    public static final int RESULT_OK = 0x00;
+    public static final int RESULT_FAIL = 0x01;
 
     WriteSettingInTimerResultListener mWriteSettingInTimerResultListener = null;
     ReadSettingFromTimerResultListener mReadSettingFromTimerResultListener = null;
+    ITimerCommandResultListener mReadFlightHistoryFromTimerResultListener = null;
 
     public TimerProtocol() {
         mCurrentBlueToothStatus = false;
@@ -73,6 +73,10 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         mBlueToothWriter = blueToothWriter;
     }
 
+    public void setReadFlightHistoryFromTimerResultListener(ITimerCommandResultListener listener) {
+        mReadFlightHistoryFromTimerResultListener = listener;
+    }
+
     public void setWriteSettingInTimerResultListener(WriteSettingInTimerResultListener listener) {
         mWriteSettingInTimerResultListener = listener;
     }
@@ -85,9 +89,23 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
 
     }
 
+    public void readFlightHistory() {
+        if (!mCurrentBlueToothStatus || mCurrentState != COMMON_TIMER_STATE) {
+            sendReadFlightHistoryResultWhitDelay(RESULT_FAIL);
+            return;
+        }
+        mBufferForFlightHistory = new byte[0x20 * mFlightHistoryPacketTotalCount];
+        byte[] command = getCommand((byte) 0x85);
+        mCurrentState = READING_ALTIMETER_DATA;
+        mCurrentReadPacketNum = 0x00;
+        mCurrentStateForReadFlightHistory = WAIT_PACKET_STATE;
+        mBlueToothWriter.write(command);
+        startDelayTimer();
+    }
+
     public void writeSettingsIntoTimer() {
         if (!mCurrentBlueToothStatus || mCurrentState != COMMON_TIMER_STATE) {
-            sendWriteResultWithDelay(WRITE_RESULT_FAIL);
+            sendWriteResultWithDelay(RESULT_FAIL);
             return;
         }
         byte[] command = getCommandForStartFlashing();
@@ -112,9 +130,11 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     @Background(delay = 2000, id = DELAY_ID_FOR_WAIT_RESPONSE)
     protected void startDelayTimer() {
         if (mCurrentState == WRITING_SETTINGS_STATE) {
-            sendWriteResult(WRITE_RESULT_FAIL);
+            sendWriteResult(RESULT_FAIL);
         } else if (mCurrentState == READING_SETTINGS_STATE) {
-            sendReadResult(READ_RESULT_FAIL);
+            sendReadResult(RESULT_FAIL);
+        } else if (mCurrentState == READING_ALTIMETER_DATA) {
+            sendReadFlightHistoryResult(RESULT_FAIL);
         }
         mCurrentState = COMMON_TIMER_STATE;
     }
@@ -130,6 +150,20 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         mBufferForSettings = null;
         if (mReadSettingFromTimerResultListener != null) {
             mReadSettingFromTimerResultListener.readResult(status);
+        }
+    }
+
+    @UiThread(delay = 10)
+    protected void sendReadFlightHistoryResultWhitDelay(int status) {
+        sendReadFlightHistoryResult(status);
+    }
+
+    @UiThread
+    protected void sendReadFlightHistoryResult(int status) {
+        mCurrentState = COMMON_TIMER_STATE;
+        mBufferForFlightHistory = null;
+        if (mReadFlightHistoryFromTimerResultListener != null) {
+            mReadFlightHistoryFromTimerResultListener.result(status);
         }
     }
 
@@ -175,19 +209,52 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             case READING_SETTINGS_STATE:
                 handleReadSettingsState();
                 break;
+            case READING_ALTIMETER_DATA:
+                handleReadAltimeterState();
+                break;
             default:
                 break;
         }
     }
 
-    private void handleReadSettingsState() {
+    private void stopDelayTimer() {
         BackgroundExecutor.cancelAll(DELAY_ID_FOR_WAIT_RESPONSE, false);
+    }
+
+    private void handleReadAltimeterState() {
+        stopDelayTimer();
         if (mLengthBufferForIncomingData < 0x22) {
             startDelayTimer();
             return;
         } else if (mLengthBufferForIncomingData != 0x22) {
             mCurrentState = COMMON_TIMER_STATE;
-            sendWriteResult(WRITE_RESULT_FAIL);
+            sendWriteResult(RESULT_FAIL);
+            return;
+        }
+        if (checkPacketCrc(mBufferForIncomingData, 0x22)) {
+            System.arraycopy(mBufferForIncomingData, 0, mBufferForFlightHistory, mCurrentReadPacketNum * 0x20, 0x20);
+            ++mCurrentReadPacketNum;
+            mBlueToothWriter.write("GOOD ".getBytes());
+            if (mCurrentReadPacketNum == mFlightHistoryPacketTotalCount) {
+                mCommonData.setFlightHistoryData(mBufferForFlightHistory);
+                sendReadFlightHistoryResult(RESULT_OK);
+            } else {
+                startDelayTimer();
+            }
+        } else {
+            mBlueToothWriter.write("BAD  ".getBytes());
+            sendReadFlightHistoryResult(RESULT_FAIL);
+        }
+    }
+
+    private void handleReadSettingsState() {
+        stopDelayTimer();
+        if (mLengthBufferForIncomingData < 0x22) {
+            startDelayTimer();
+            return;
+        } else if (mLengthBufferForIncomingData != 0x22) {
+            mCurrentState = COMMON_TIMER_STATE;
+            sendWriteResult(RESULT_FAIL);
             return;
         }
         byte[] packet = new byte[0x22];
@@ -199,17 +266,15 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             break;
             default: {
                 mBlueToothWriter.write("BAD  ".getBytes());
-                sendReadResult(READ_RESULT_FAIL);
+                sendReadResult(RESULT_FAIL);
             }
             break;
         }
-
-
     }
 
     private void sendReadResultFail() {
         mCurrentState = COMMON_TIMER_STATE;
-        sendReadResult(READ_RESULT_FAIL);
+        sendReadResult(RESULT_FAIL);
     }
 
     private void handleWaitPacketState(byte[] packet) {
@@ -219,7 +284,9 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         }
         System.arraycopy(packet, 0, mBufferForSettings, mCurrentReadPacketNum * 0x20, 0x20);
         ++mCurrentReadPacketNum;
-        if (mCurrentReadPacketNum > 2) {
+        if (mCurrentReadPacketNum == 0x01) {
+            mTotalReadPacketNum = 0x101;
+        } else if (mCurrentReadPacketNum > 2) {
             if (mCurrentReadPacketNum == mTotalReadPacketNum) {
                 readSettingDone();
                 return;
@@ -232,19 +299,22 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             if (xmlLen % 0x20 != 0) {
                 ++xmlPacketCount;
             }
-            mTotalReadPacketNum = xmlPacketCount + 0x0400; // TODO: уточнить длинну данных в пакетах
+            mTotalReadPacketNum = xmlPacketCount + 0x0100; // кол-во полезной инфы - 256 пакетов
         }
         clearBufferForIncomingData();
         mBlueToothWriter.write("GOOD ".getBytes());
+        if (mReadSettingFromTimerResultListener != null) {
+            mReadSettingFromTimerResultListener.readProcess(mCurrentReadPacketNum, mTotalReadPacketNum);
+        }
         startDelayTimer();
     }
 
     private void readSettingDone() {
         mCurrentState = COMMON_TIMER_STATE;
         if (mCommonData.loadConfigFromBytearray(mBufferForSettings)) {
-            sendReadResult(READ_RESULT_OK);
+            sendReadResult(RESULT_OK);
         } else {
-            sendReadResult(READ_RESULT_FAIL);
+            sendReadResult(RESULT_FAIL);
         }
     }
 
@@ -255,7 +325,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             return;
         } else if (mLengthBufferForIncomingData > 0x80) {
             mCurrentState = COMMON_TIMER_STATE;
-            sendWriteResult(WRITE_RESULT_FAIL);
+            sendWriteResult(RESULT_FAIL);
             return;
         }
         byte[] response = new byte[5];
@@ -285,7 +355,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             int numOfPackets = mBufferForSettings.length / 0x20;
             if (remainBytes <= 0) {
                 mWriteSettingInTimerResultListener.writeProcess(numOfPackets, numOfPackets);
-                sendWriteResult(WRITE_RESULT_OK);
+                sendWriteResult(RESULT_OK);
                 return;
             }
             int currentPacket = mCurrentWriteSettingOffset / 0x20;
@@ -385,14 +455,18 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         return crc;
     }
 
-    private static boolean checkPacketCrc(byte[] packet) {
-        int len = packet.length - 2;
+    private static boolean checkPacketCrc(byte[] packet, int len) {
+        int dataLen = packet.length - 2;
         if (len < 0) {
             return false;
         }
-        short realCrc = calculateCrc16(packet, len);
+        short realCrc = calculateCrc16(packet, dataLen);
         short expectedCrc = getShortFromBytes(packet[len], packet[len + 1]);
         return realCrc == expectedCrc;
+    }
+
+    private static boolean checkPacketCrc(byte[] packet) {
+        return checkPacketCrc(packet, packet.length);
     }
 
     private static short getShortFromBytes(byte low, byte high) {

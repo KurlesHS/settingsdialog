@@ -10,6 +10,7 @@ import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.horrorsoft.viotimer.bluetooth.ReadSettingFromTimerResultListener;
 import com.horrorsoft.viotimer.bluetooth.TimerProtocol;
 import com.horrorsoft.viotimer.bluetooth.WriteSettingInTimerResultListener;
 import org.androidannotations.annotations.*;
@@ -31,7 +32,8 @@ public class ProgramActivity extends SherlockFragmentActivity {
     @InstanceState
     protected WriteSettingInTimerResultListener mWriteSettingInTimerResultListener = null;
 
-
+    @InstanceState
+    protected ReadSettingFromTimerResultListener mReadSettingFromTimerResultListener = null;
 
     private static final int SAVE_FILE_ID = 0x01;
     private static final int LOAD_FILE_ID = 0x02;
@@ -80,10 +82,57 @@ public class ProgramActivity extends SherlockFragmentActivity {
 
     @Click(R.id.ReadFromTimerButton)
     protected void  handleReadFromTimer() {
+        /*
         ProgressWriteSettingsDialog_ dlg = new ProgressWriteSettingsDialog_();
         dlg.initMessage("Write setting in progress ...");
         dlg.initTitle("Write setting ...");
         dlg.show(getSupportFragmentManager(), "writeProgress");
+        */
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Read setting ...");
+        mProgressDialog.setMessage("Read setting in progress ...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.setMax(0);
+        mReadSettingFromTimerResultListener = new ReadSettingFromTimerResultListener() {
+            @Override
+            public void readResult(int status) {
+                if (status == TimerProtocol.RESULT_OK) {
+                    mProgressDialog.setMessage("Success");
+                    closeProgressDialogAfterFiveSecond();
+                }  else if (status == TimerProtocol.RESULT_FAIL) {
+                    mProgressDialog.setMessage("Failure");
+                    closeProgressDialogAfterFiveSecond();
+                } else {
+                    closeProgressDialog();
+                }
+                commonData.removeReadSettingResultListener(this);
+                mReadSettingFromTimerResultListener = null;
+            }
+
+            @Override
+            public void readProcess(int currentPos, int maxPos) {
+                Log.d(ApplicationData.LOG_TAG, String.valueOf(currentPos));
+                Log.d(ApplicationData.LOG_TAG, String.valueOf(maxPos));
+
+                if (mProgressDialog == null)
+                    return;
+                if (currentPos == 0) {
+                    mProgressDialog.setMax(maxPos);
+                }
+                mProgressDialog.setProgress(currentPos);
+            }
+
+            @Override
+            public String id() {
+                return "1f48bf5c-1ae5-43c2-b96f-bd4d349b2dbf";
+            }
+        };
+        commonData.addReadSettingResultListener(mReadSettingFromTimerResultListener);
+        mProgressDialog.show();
+        commonData.readSettingsFromTimer();
+
 
     }
 
@@ -111,10 +160,10 @@ public class ProgramActivity extends SherlockFragmentActivity {
         mWriteSettingInTimerResultListener = new WriteSettingInTimerResultListener() {
             @Override
             public void writeResult(int status) {
-                if (status == TimerProtocol.WRITE_RESULT_OK) {
+                if (status == TimerProtocol.RESULT_OK) {
                     mProgressDialog.setMessage("Success");
                     closeProgressDialogAfterFiveSecond();
-                }  else if (status == TimerProtocol.WRITE_RESULT_FAIL) {
+                }  else if (status == TimerProtocol.RESULT_FAIL) {
                     mProgressDialog.setMessage("Failure");
                     closeProgressDialogAfterFiveSecond();
                 } else {
