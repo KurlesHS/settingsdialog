@@ -21,7 +21,6 @@ import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.json.JsonSetting;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -289,9 +288,19 @@ public class ApplicationData {
             }
 
             initBinaryData();
+
             if (!rawJson) {
                 inputStream.read(getBinaryData());
             }
+
+            // проверяем crc
+            int binaryDataSize = binaryData.length - 2;
+            short binaryDataCrc = TimerProtocol.calculateCrc16(binaryData, binaryDataSize);
+            if (binaryData[binaryDataSize] != (byte) (binaryDataCrc & 0xff) &&
+                    binaryData[binaryDataSize + 1] != (byte) ((binaryDataCrc >> 8) & 0xff)) {
+                return false;
+            }
+
             AlgorithmData algorithmDataByJson = JsonSetting.createAlgorithmDataByJson(jsonData);
             List<ICommonData> listOfDataByJson = JsonSetting.createListOfDataByJson(jsonData);
             if (algorithmDataByJson.getAlgorithmCount() > 0) {
@@ -347,7 +356,7 @@ public class ApplicationData {
         return success;
     }
 
-    public boolean loadConfigFromBytearray(byte[] bytes) {
+    public boolean loadConfigFromByteArray(byte[] bytes) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         return loadConfig(inputStream, false);
     }
@@ -355,7 +364,7 @@ public class ApplicationData {
     public boolean loadConfigFromFile(String fileName) {
         boolean rawJson = fileName.endsWith(".vts_json");
         boolean success;
-        FileInputStream inputStream = null;
+        FileInputStream inputStream;
         try {
             inputStream = new FileInputStream(new File(fileName));
             success = loadConfig(inputStream, rawJson);
@@ -523,7 +532,6 @@ public class ApplicationData {
 
 
         mHandler = new Handler(Looper.getMainLooper()) {
-
             @SuppressLint("HandlerLeak")
             @Override
             public void handleMessage(Message msg) {
@@ -760,9 +768,7 @@ public class ApplicationData {
             int realAdr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
             if (getBinaryData().length >= realAdr + size) {
                 retVal = new byte[size];
-                for (int i = 0; i < size; ++i) {
-                    retVal[i] = getBinaryData()[realAdr + i];
-                }
+                System.arraycopy(getBinaryData(), realAdr, retVal, 0, size);
             }
         }
         return retVal;
