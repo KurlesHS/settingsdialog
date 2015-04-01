@@ -22,6 +22,7 @@
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
                     android:id="@+id/editTextDelay" android:layout_gravity="center_horizontal"
                     android:numeric="integer|decimal"/>
             <Button
@@ -43,6 +44,7 @@
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
                     android:id="@+id/editTextServoPos" android:layout_gravity="center_horizontal"
                     android:numeric="integer"/>
             <Button

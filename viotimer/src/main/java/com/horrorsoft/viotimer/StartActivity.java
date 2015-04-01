@@ -5,27 +5,24 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockActivity;
-import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.bluetooth.BlueToothDataListener;
-import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;
 import com.horrorsoft.viotimer.bluetooth.DeviceListActivity;
 import com.horrorsoft.viotimer.common.ApplicationData;
+import org.androidannotations.annotations.*;
 
 
 @Fullscreen
 @EActivity(R.layout.activity_main)
-public class StartActivity extends SherlockActivity {
+public class StartActivity extends ActivityWithBluetoothStatuses {
 
     private static final int REQUEST_CONNECT_DEVICE = 0x01;
     private static final int REQUEST_ENABLE_BLUETOOTH = 0x02;
-    private static final String BLUETOOTH_LISTENER_UUID = "0d534e8c-c092-4eea-8425-da9a344d48de";
     private Context applicationContext = null;
 
     private BlueToothDataListener blueToothDataListener = null;
-    private BlueToothStatusListener blueToothStatusListener = null;
 
     /**
      * Called when the activity is first created.
@@ -50,47 +47,9 @@ public class StartActivity extends SherlockActivity {
 
     @AfterViews
     public void init() {
+        Log.d(ApplicationData.LOG_TAG, "init-start-activity");
         applicationContext = getApplicationContext();
-        boolean btStatus = commonData.getBlueToothConnectionStatus();
-        int resId = btStatus ? R.drawable.bt_con : R.drawable.bt_discon;
-        imageViewBluetoothStatus.setImageResource(resId);
-        initBlueToothListeners();
-    }
 
-    private void initBlueToothListeners() {
-        /*
-        if (blueToothDataListener == null) {
-            blueToothDataListener = new BlueToothDataListener() {
-
-                @Override
-                public void dataFromBluetooth(byte[] buffer) {
-                    commonData.writeDataIntoBlueTooth(buffer);
-                }
-
-                @Override
-                public String id() {
-                    return BLUETOOTH_LISTENER_UUID;
-                }
-            };
-            commonData.addBlueToothDataListener(blueToothDataListener);
-
-        }
-         */
-        if (blueToothStatusListener == null) {
-            blueToothStatusListener = new BlueToothStatusListener() {
-                @Override
-                public void bluetoothStatusChanged(boolean status) {
-                    int resId = status ? R.drawable.bt_con : R.drawable.bt_discon;
-                    imageViewBluetoothStatus.setImageResource(resId);
-                }
-
-                @Override
-                public String id() {
-                    return  BLUETOOTH_LISTENER_UUID;
-                }
-            };
-            commonData.addBlueToothStatusListener(blueToothStatusListener);
-        }
     }
 
     @Click(R.id.ProgrammButton)
@@ -130,7 +89,6 @@ public class StartActivity extends SherlockActivity {
             } else {
                 commonData.disconnect();
             }
-
         }
     }
 
@@ -174,5 +132,15 @@ public class StartActivity extends SherlockActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected ImageView getImageViewBluetoothStatus() {
+        return imageViewBluetoothStatus;
+    }
+
+    @Override
+    protected ApplicationData getCommonData() {
+        return commonData;
     }
 }

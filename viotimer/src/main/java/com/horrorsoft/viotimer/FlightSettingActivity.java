@@ -30,10 +30,10 @@ import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog
  */
 @Fullscreen
 @EActivity(R.layout.activity_fligth_setting)
-public class FlightSettingActivity extends SherlockFragmentActivity implements View.OnClickListener, IDialogFragmentClickListener {
+public class FlightSettingActivity extends FragmentActivityWithBluetoothStatuses implements View.OnClickListener, IDialogFragmentClickListener {
 
-    private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
-    private static final int SERVO_NUMBER_BUTTON_ID = 2;
+    //private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
+    //private static final int SERVO_NUMBER_BUTTON_ID = 2;
 
     //private static final int POSITION_OF_DATA_ID = 2;
     //private static final int DELAY_OF_DATA_ID = 3;
@@ -43,6 +43,9 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     protected int currentAlgorithmNumber;
     @InstanceState
     protected int currentServoNumber;
+
+    @ViewById(R.id.imageViewBluetoothStatus)
+    protected ImageView imageViewBluetoothStatus;
 
     private PowerManager.WakeLock mWakeLock;
 
@@ -87,7 +90,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                         button.setSelected(true);
                     }
                     button.setTag(R.id.ServoNumberButton, servoNum++);
-                    button.setId(SERVO_NUMBER_BUTTON_ID);
+                    button.setId(R.id.ServoNumberButtonId);
                     button.setOnClickListener(this);
                 }
             }
@@ -137,7 +140,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
             button.setBackgroundResource(R.drawable.selected_button);
             button.setText(description);
             button.setTag(R.id.AlgorithmNumberButton, i);
-            button.setId(ALGORITHM_NUMBER_BUTTON_ID);
+            button.setId(R.id.AlgorithmNumberButtonId);
             button.setOnClickListener(this);
             float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, getResources().getInteger(R.integer.HeightChangeAlgorithmButtonInMm),
                     getResources().getDisplayMetrics());
@@ -194,7 +197,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case ALGORITHM_NUMBER_BUTTON_ID: {
+            case R.id.AlgorithmNumberButtonId: {
                 Button button = (Button) v;
                 Integer i = (Integer) v.getTag(R.id.AlgorithmNumberButton);
                 if (i != null) {
@@ -209,7 +212,7 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
                 }
             }
             break;
-            case SERVO_NUMBER_BUTTON_ID: {
+            case R.id.ServoNumberButtonId: {
                 ImageButton button = (ImageButton) v;
                 Integer i = (Integer) v.getTag(R.id.ServoNumberButton);
                 if (i != null) {
@@ -288,5 +291,15 @@ public class FlightSettingActivity extends SherlockFragmentActivity implements V
         if (infoAboutRow != null) {
             algorithmHandler.insertRow(currentPos, infoAboutRow.delay, infoAboutRow.servoPos);
         }
+    }
+
+    @Override
+    protected ImageView getImageViewBluetoothStatus() {
+        return imageViewBluetoothStatus;
+    }
+
+    @Override
+    protected ApplicationData getCommonData() {
+        return applicationData;
     }
 }

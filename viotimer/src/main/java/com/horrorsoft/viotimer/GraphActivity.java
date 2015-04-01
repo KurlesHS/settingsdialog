@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -15,7 +13,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import org.androidannotations.annotations.*;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**

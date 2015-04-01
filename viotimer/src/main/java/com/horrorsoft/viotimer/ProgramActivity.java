@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.bluetooth.ReadSettingFromTimerResultListener;
@@ -24,7 +25,7 @@ import com.lamerman.SelectionMode;
  */
 @Fullscreen
 @EActivity(R.layout.activity_program)
-public class ProgramActivity extends SherlockFragmentActivity {
+public class ProgramActivity extends ActivityWithBluetoothStatuses {
 
     @Bean
     protected ApplicationData commonData;
@@ -34,6 +35,9 @@ public class ProgramActivity extends SherlockFragmentActivity {
 
     @InstanceState
     protected ReadSettingFromTimerResultListener mReadSettingFromTimerResultListener = null;
+
+    @ViewById(R.id.imageViewBluetoothStatus)
+    protected ImageView imageViewBluetoothStatus;
 
     private static final int SAVE_FILE_ID = 0x01;
     private static final int LOAD_FILE_ID = 0x02;
@@ -234,6 +238,16 @@ public class ProgramActivity extends SherlockFragmentActivity {
             commonData.removeWriteSettingResultListener(mWriteSettingInTimerResultListener);
             mWriteSettingInTimerResultListener = null;
         }
+    }
+
+    @Override
+    protected ImageView getImageViewBluetoothStatus() {
+        return imageViewBluetoothStatus;
+    }
+
+    @Override
+    protected ApplicationData getCommonData() {
+        return commonData;
     }
 
     @Override

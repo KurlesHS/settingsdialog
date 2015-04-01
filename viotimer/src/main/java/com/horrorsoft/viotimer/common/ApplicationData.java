@@ -449,6 +449,8 @@ public class ApplicationData {
 
     }
 
+
+
     @AfterInject
     public void init() {
         initBlueTooth();

@@ -2,19 +2,22 @@ package com.horrorsoft.viotimer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockActivity;
-import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.adapters.SettingDialogAdapter;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.ICommonData;
 import com.horrorsoft.viotimer.data.NumericData;
 import com.horrorsoft.viotimer.data.RadioButtonAndComboBoxData;
+import org.androidannotations.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,7 @@ import java.util.List;
 
 @Fullscreen
 @EActivity(R.layout.settinglayout)
-public class SettingActivity extends SherlockActivity implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener, View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
+public class SettingActivity extends ActivityWithBluetoothStatuses implements AdapterView.OnItemClickListener, TextView.OnEditorActionListener, View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
 
     final static int EDIT_SETTING_DIALOG = 1;
     final static int PLUS_OPERATION = 1;
@@ -39,6 +42,9 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
 
     @ViewById
     ListView listViewForSettingsDialog;
+
+    @ViewById(R.id.imageViewBluetoothStatus)
+    protected ImageView imageViewBluetoothStatus;
 
     @Bean
     ApplicationData applicationData;
@@ -112,19 +118,6 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
         }
     };
 
-    /*
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.settinglayout);
-        fillData();
-        SettingDialogAdapter settingDialogAdapter = new SettingDialogAdapter(this, listOfData);
-        ListView lv = (ListView) findViewById(R.id.listViewForSettingsDialog);
-        lv.setAdapter(settingDialogAdapter);
-        lv.setOnItemClickListener(this);
-    }
-    */
     @AfterViews
     public void init() {
         fillData();
@@ -168,8 +161,11 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     }
 
     private void createNumericDialog(AlertDialog.Builder adb) {
-        View view = getLayoutInflater().inflate(R.layout.editnumbers, null);
+        // workaround for disable warning
+        ViewGroup parent = (ViewGroup) findViewById(R.id.container);
+        View view = getLayoutInflater().inflate(R.layout.editnumbers, parent, false);
         if (view != null) {
+            Log.d(ApplicationData.LOG_TAG, "create numeritc");
             viewForSpinBoxDialog = view;
             EditText editText = (EditText) view.findViewById(R.id.editTextSpinBox);
             NumericData numericData = (NumericData) dataForDialog;
@@ -179,7 +175,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             editText.setText(intWithDividerAndPrecisionToString(currentValue, divider, precision));
             editText.setOnEditorActionListener(this);
             TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
-            TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
+            final TextView textViewPrefix = (TextView) view.findViewById(R.id.textViewSpinboxPrefix);
             textViewPrefix.setText(numericData.getPrefix());
             textViewSuffix.setText(numericData.getSuffix());
             Button plus = (Button) view.findViewById(R.id.buttonSpinBoxPlus);
@@ -212,7 +208,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             }
 
             int currentIndex = radioButtonData.getCurrentIndex();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.sherlock_spinner_item, listOfItemForComboBox);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.sherlock_spinner_item, listOfItemForComboBox);
             adapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setSelection(currentIndex);
@@ -300,7 +296,7 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
     private void fillData() {
         listOfData = commonData.getGlobalSettingData();
         if (listOfData == null) {
-            listOfData = new ArrayList<ICommonData>();
+            listOfData = new ArrayList<>();
         }
     }
 
@@ -382,5 +378,15 @@ public class SettingActivity extends SherlockActivity implements AdapterView.OnI
             timerHandler.removeCallbacks(timerRunnable);
         }
         return false;
+    }
+
+    @Override
+    protected ImageView getImageViewBluetoothStatus() {
+        return imageViewBluetoothStatus;
+    }
+
+    @Override
+    protected ApplicationData getCommonData() {
+        return commonData;
     }
 }

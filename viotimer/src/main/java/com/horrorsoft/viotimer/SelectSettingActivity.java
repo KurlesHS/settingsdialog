@@ -1,10 +1,10 @@
 package com.horrorsoft.viotimer;
 
 import android.content.Intent;
+import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Fullscreen;
+import com.horrorsoft.viotimer.common.ApplicationData;
+import org.androidannotations.annotations.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +14,13 @@ import org.androidannotations.annotations.Fullscreen;
  */
 @Fullscreen
 @EActivity(R.layout.activity_setting)
-public class SelectSettingActivity extends SherlockActivity {
+public class SelectSettingActivity extends ActivityWithBluetoothStatuses {
+
+    @Bean
+    protected ApplicationData commonData;
+
+    @ViewById(R.id.imageViewBluetoothStatus)
+    protected ImageView imageViewBluetoothStatus;
 
     @Click(R.id.FlightSetButton)
     public void handleFlightSettings() {
@@ -26,5 +32,15 @@ public class SelectSettingActivity extends SherlockActivity {
     public void handleCommonSettings() {
         Intent intent = new Intent(this, SettingActivity_.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected ImageView getImageViewBluetoothStatus() {
+        return imageViewBluetoothStatus;
+    }
+
+    @Override
+    protected ApplicationData getCommonData() {
+        return commonData;
     }
 }
