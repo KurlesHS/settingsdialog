@@ -20,4 +20,6 @@
     <string name="pleaseWait">Please Wait</string>
     <string name="macFailed">Error retrieving MAC address.</string>
     <string name="cancelButtonPressed">Cancel button pressed</string>
+    <string name="title_activity_telemetry">Telemetry</string>
+    <string name="action_settings">Settings</string>
 </resources>
