@@ -25,7 +25,7 @@ public class StartActivity extends ActivityWithBluetoothStatuses {
     private BlueToothDataListener blueToothDataListener = null;
 
     /**
-     * Called when the activity is first created.
+     * Called when the activity is first created. vio was here
      */
     @ViewById(R.id.imageViewBluetoothStatus)
     protected ImageView imageViewBluetoothStatus;
