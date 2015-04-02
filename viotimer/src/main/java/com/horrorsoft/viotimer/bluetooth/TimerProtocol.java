@@ -285,7 +285,11 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         mLengthBufferForIncomingData = 0x00;
         if (checkPacketCrc(mBufferForIncomingData, 0x22)) {
             System.arraycopy(mBufferForIncomingData, 0, mBufferForFlightHistory, mCurrentReadPacketNum * 0x20, 0x20);
+
             ++mCurrentReadPacketNum;
+            if (mReadFlightHistoryFromTimerResultListener != null) {
+                mReadFlightHistoryFromTimerResultListener.process(mCurrentReadPacketNum, mFlightHistoryPacketTotalCount);
+            }
             mBlueToothWriter.write("GOOD ".getBytes());
             if (mCurrentReadPacketNum == mFlightHistoryPacketTotalCount) {
                 mCommonData.setFlightHistoryData(mBufferForFlightHistory);
@@ -513,7 +517,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     }
 
     private static boolean checkPacketCrc(byte[] packet, int len) {
-        int dataLen = packet.length - 2;
+        int dataLen = len - 2;
         if (len < 0) {
             return false;
         }

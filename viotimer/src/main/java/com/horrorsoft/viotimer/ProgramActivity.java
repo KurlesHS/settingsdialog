@@ -182,9 +182,7 @@ public class ProgramActivity extends ActivityWithBluetoothStatuses {
 
                 if (mProgressDialog == null)
                     return;
-                 if (currentPos == 0) {
-                     mProgressDialog.setMax(maxPos);
-                 }
+                mProgressDialog.setMax(maxPos);
                 mProgressDialog.setProgress(currentPos);
             }
 
