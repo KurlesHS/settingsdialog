@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
 
 
 public class Telemetry extends Activity {

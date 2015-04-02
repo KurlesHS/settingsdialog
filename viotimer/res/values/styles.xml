@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.Horrorsoft.Viotimer" parent="Theme.Sherlock.NoActionBar">
-        <item name="android:imageButtonStyle">@android:style/Widget.ImageButton</item>
-    </style>
-</resources>

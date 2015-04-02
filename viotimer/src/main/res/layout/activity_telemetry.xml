@@ -38,26 +38,27 @@
 
         </LinearLayout>
 
+        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="13"/>
         <ImageView
                 android:id="@+id/ImageView1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="58"
+                android:layout_weight="13"
                 android:scaleType="fitXY"
-                android:src="@drawable/welcome"/>
-
-        <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7">
-        </FrameLayout>
+                />
+        <ImageView android:id="@+id/imageView" android:layout_width="0dp" android:layout_height="match_parent"
+                   android:layout_weight="13" android:scaleType="fitXY"/>
+        <ImageView android:id="@+id/imageView3" android:layout_width="0dp" android:layout_height="match_parent"
+                   android:layout_weight="13" android:scaleType="fitXY"/>
+        <ImageView android:id="@+id/imageView4" android:layout_width="0dp" android:layout_height="match_parent"
+                   android:layout_weight="13" android:scaleType="fitXY"/>
 
     </LinearLayout>
 
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8">
+            android:layout_weight="3">
 
     </FrameLayout>
 
@@ -65,109 +66,231 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_weight="65">
+            android:layout_weight="45">
 
         <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7">
+                android:layout_weight="0">
 
         </FrameLayout>
 
         <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="86"
-                android:orientation="vertical">
+                android:layout_weight="100"
+                android:orientation="horizontal" android:layout_gravity="center">
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="30">
-
-                <ImageButton
-                        android:id="@+id/ProgrammButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:background="@drawable/style_button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/prg_scr"
-                        android:focusable="true"/>
-
-                android:text="@string/tele_butt"
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
-                </FrameLayout>
-
-                <ImageButton
-                        android:id="@+id/SaveButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:background="@drawable/style_button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/tel_scr"
-                        android:visibility="visible" />
-
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="48"
+                    android:orientation="vertical">
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:layout_weight="20">
+                    <ImageView android:id="@+id/imageView6" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="20"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView5" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView7" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView8" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView9" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView10" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:layout_weight="20">
+                    <ImageView android:id="@+id/imageView11" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="20"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView12" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView13" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView14" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView15" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView16" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:layout_weight="20">
+                    <ImageView android:id="@+id/imageView17" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="20"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView18" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView19" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView20" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView21" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView22" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                </LinearLayout>
             </LinearLayout>
-
             <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4">
             </FrameLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="30">
-
-                <ImageButton
-                        android:id="@+id/GraphButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:background="@drawable/style_button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/grp_scr" />
-
-                <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6">
-                </FrameLayout>
-
-                <ImageButton
-                        android:id="@+id/ConnectButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40"
-                        android:background="@drawable/style_button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/con_scr" />
-
+            <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="48"
+                          android:orientation="vertical">
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:layout_weight="20">
+                    <ImageView android:id="@+id/imageView23" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="20"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView24" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView25" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView26" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView27" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView28" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:layout_weight="20">
+                    <ImageView android:id="@+id/imageView29" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="20"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView30" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView31" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView32" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView33" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView34" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                              android:layout_height="0dp" android:layout_weight="20">
+                    <ImageView android:id="@+id/imageView35" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="20"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView36" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView37" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView38" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView39" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                    <ImageView android:id="@+id/imageView40" android:layout_width="0dp"
+                               android:layout_height="match_parent" android:layout_weight="3"
+                               android:scaleType="fitXY"/>
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
 
         <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7">
+                android:layout_weight="0">
 
         </FrameLayout>
 
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7">
-
-    </FrameLayout>
+            android:layout_height="0dp" android:layout_weight="15">
+        <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent" android:layout_weight="26">
+        </FrameLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="0dp" android:layout_height="match_parent"
+                      android:layout_weight="48">
+            <ImageView android:id="@+id/imageView41" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="20" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView42" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView43" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView44" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView45" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView46" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+        </LinearLayout>
+        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="26"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="0dp"
+                  android:layout_weight="15">
+        <LinearLayout android:orientation="horizontal" android:layout_width="0dp" android:layout_height="match_parent"
+                      android:layout_weight="48">
+            <ImageView android:id="@+id/imageView47" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="20" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView48" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView49" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView50" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView51" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView52" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+        </LinearLayout>
+        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="4"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="0dp" android:layout_height="match_parent"
+                      android:layout_weight="48">
+            <ImageView android:id="@+id/imageView53" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="20" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView54" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView55" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView56" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView57" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+            <ImageView android:id="@+id/imageView58" android:layout_width="0dp" android:layout_height="match_parent"
+                       android:layout_weight="3" android:scaleType="fitXY"/>
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="2"/>
 
 </LinearLayout>

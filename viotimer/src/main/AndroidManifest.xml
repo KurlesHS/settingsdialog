@@ -72,7 +72,8 @@
 
         <activity
             android:name=".Telemetry"
-            android:label="@string/title_activity_telemetry" >
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
     </application>
 
