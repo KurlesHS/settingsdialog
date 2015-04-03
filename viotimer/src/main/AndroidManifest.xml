@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.horrorsoft.viotimer"
-    android:versionCode="1"
-    android:versionName="1.0" >
-
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="21" />
-
+    package="com.horrorsoft.viotimer" >
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
@@ -22,7 +15,7 @@
         android:name=".TimerVioApplication_"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Horrorsoft.Viotimer" >
+        android:theme="@style/Theme.Horrorsoft.Viotimer" android:allowBackup="true">
         <activity
             android:name=".StartActivity_"
             android:label="@string/app_name"
@@ -71,7 +64,7 @@
             android:label="VioTimerBlueToothService" />
 
         <activity
-            android:name=".Telemetry"
+            android:name=".TelemetryActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>

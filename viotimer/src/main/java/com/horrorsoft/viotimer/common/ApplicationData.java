@@ -74,6 +74,14 @@ public class ApplicationData {
     public static final int CONNECTION_FAILED = 0x05;
     public static final int EXIT_CONNECTION_THREAD = 0x06;
 
+    public void setTelemetryListener(ITelemetryListener listener) {
+        mTimerProtocol.setTelemetryListener(listener);
+    }
+
+    public void getTelemetry() {
+        mTimerProtocol.getTelemetry();
+    }
+
     public void setFlightHistoryData(byte[] flightHistoryData) {
         mFlightHistoryData = flightHistoryData;
     }
@@ -450,7 +458,6 @@ public class ApplicationData {
     }
 
 
-
     @AfterInject
     public void init() {
         initBlueTooth();
@@ -776,7 +783,7 @@ public class ApplicationData {
         return retVal;
     }
 
-    public static int getIntFromBytes(byte [] bytes) {
+    public static int getIntFromBytes(byte[] bytes) {
         ByteBuffer bb = ByteBuffer.allocate(4);
         bb.order(ByteOrder.LITTLE_ENDIAN);
         if (bytes.length > 4) {

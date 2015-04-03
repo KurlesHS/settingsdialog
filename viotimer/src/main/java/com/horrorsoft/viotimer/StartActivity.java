@@ -54,7 +54,7 @@ public class StartActivity extends ActivityWithBluetoothStatuses {
 
     @Click(R.id.SaveButton)
     public void handleTelemetryButtonPushed() {
-        Intent intent = new Intent(this, Telemetry.class);
+        Intent intent = new Intent(this, TelemetryActivity_.class);
         startActivity(intent);
     }
 

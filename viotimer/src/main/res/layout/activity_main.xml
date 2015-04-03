@@ -10,7 +10,7 @@
             android:layout_gravity="center"
             android:layout_weight="20">
 
-        <LinearLayouts
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="35"
@@ -36,7 +36,7 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ant_10"/>
 
-        </LinearLayouts>
+        </LinearLayout>
 
         <ImageView
                 android:id="@+id/ImageView1"

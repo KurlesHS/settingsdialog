@@ -6,6 +6,7 @@ import com.horrorsoft.viotimer.common.ApplicationData;
 
 /**
  *  Created by Alexey on 01.04.2015.
+ *  Confirm
  */
 public abstract class ActivityWithBluetoothStatuses extends SherlockActivity {
 

@@ -90,6 +90,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         mReadSettingFromTimerResultListener = listener;
     }
 
+    @UiThread
     public void readFlightHistory() {
         if (!mCurrentBlueToothStatus || mCurrentState != COMMON_TIMER_STATE) {
             sendReadFlightHistoryResultWhitDelay(RESULT_FAIL);
@@ -103,6 +104,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         startDelayTimer();
     }
 
+    @UiThread
     public void writeSettingsIntoTimer() {
         if (!mCurrentBlueToothStatus || mCurrentState != COMMON_TIMER_STATE) {
             sendWriteResultWithDelay(RESULT_FAIL);
@@ -116,7 +118,12 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         startDelayTimer();
     }
 
+    @UiThread
     public void readSettingsFromTimer() {
+        if (!mCurrentBlueToothStatus || mCurrentState != COMMON_TIMER_STATE) {
+            sendReadResultWithDelay(RESULT_FAIL);
+            return;
+        }
         byte[] readSettingCommand = getCommand((byte) 0x84);
         mCurrentState = READING_SETTINGS_STATE;
         mCurrentReadPacketNum = 0;
@@ -127,6 +134,20 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         startDelayTimer();
     }
 
+    @UiThread
+    public void getTelemetry() {
+        if (mCurrentState != COMMON_TIMER_STATE) {
+            return;
+        }
+        byte[] telemetryCommand = getCommand((byte) 0xff);
+        mCurrentState = READING_SETTINGS_STATE;
+        mCurrentStateForReadSetting = READING_TELEMETRY_DATA;
+        mBlueToothWriter.write(telemetryCommand);
+        mLengthBufferForIncomingData = 0x00;
+        startDelayTimer();
+
+    }
+
     @Background(delay = 2000, id = DELAY_ID_FOR_WAIT_RESPONSE)
     protected void startDelayTimer() {
         if (mCurrentState == WRITING_SETTINGS_STATE) {
@@ -135,8 +156,18 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             sendReadResult(RESULT_FAIL);
         } else if (mCurrentState == READING_ALTIMETER_DATA) {
             sendReadFlightHistoryResult(RESULT_FAIL);
+        } else if (mCurrentState == READING_TELEMETRY_DATA) {
+            ITelemetryListener.TelemetryData telemetryData = new ITelemetryListener.TelemetryData();
+            telemetryData.hasError = true;
+            broadcastTelemetry(telemetryData);
         }
         mCurrentState = COMMON_TIMER_STATE;
+    }
+
+    private void broadcastTelemetry(ITelemetryListener.TelemetryData telemetryData) {
+        if (mTelemetryListener != null) {
+            mTelemetryListener.result(telemetryData);
+        }
     }
 
     @UiThread(delay = 10)
@@ -263,9 +294,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
                 telemetryData.servoOnFlag = (secondInt & 0x0001) != 0;
             }
         }
-        if (mTelemetryListener != null) {
-            mTelemetryListener.result(telemetryData);
-        }
+        broadcastTelemetry(telemetryData);
     }
 
     private void stopDelayTimer() {

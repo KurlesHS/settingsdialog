@@ -1,6 +1,5 @@
 package com.horrorsoft.viotimer;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;

@@ -2,12 +2,13 @@ package com.horrorsoft.viotimer.bluetooth;
 
 /**
  * Created by Alexey on 30.03.2015.
+ * Confirm!
  */
 public interface ITelemetryListener {
     class TelemetryData {
         public byte ch1;
         public byte ch2;
-        public float height;
+        public int height;
         public float speed;
         public float temperature;
         public boolean dtFlag;
