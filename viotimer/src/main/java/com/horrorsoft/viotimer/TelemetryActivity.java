@@ -325,7 +325,8 @@ public class TelemetryActivity extends ActivityWithBluetoothStatuses implements 
         return str;
     }
 
-    private void setNewTelemetryData(ITelemetryListener.TelemetryData data) {
+    @UiThread
+    protected void setNewTelemetryData(ITelemetryListener.TelemetryData data) {
         String altitudeStr = String.format("%04d", Math.abs(data.height));
         altitudeStr = appendSign(altitudeStr, data.height);
         String voltageStr = String.format("%.2f", data.voltage);
