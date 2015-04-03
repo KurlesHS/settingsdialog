@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" android:orientation="horizontal">
+
+    <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent" android:layout_weight="5">
+    </FrameLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" android:layout_weight="90">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="20">
+            </FrameLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="20">
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="BT name"
+                        android:id="@+id/textView" android:layout_weight="20" android:textStyle="bold"
+                        android:layout_gravity="center" android:editable="false" android:elegantTextHeight="false"
+                        android:gravity="center"/>
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="vio_timer"
+                        android:ems="10"
+                        android:id="@+id/editText" android:layout_weight="20" android:singleLine="false"
+                        android:textStyle="bold"/>
+            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="20"/>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                          android:layout_height="0dp" android:layout_weight="20">
+                <TextView android:layout_width="0dp" android:layout_height="match_parent"
+                          android:textAppearance="?android:attr/textAppearanceLarge" android:text="BT pin"
+                          android:id="@+id/textView2" android:layout_weight="20" android:textStyle="bold"
+                          android:layout_gravity="center" android:editable="false" android:elegantTextHeight="false"
+                          android:gravity="center"/>
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:id="@+id/editText2" android:layout_weight="20" android:text="0000"
+                        android:textStyle="bold"/>
+            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="20"/>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+                          android:layout_height="0dp" android:layout_weight="20">
+                <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5"/>
+                <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="Apply"
+                        android:id="@+id/button" android:layout_weight="20"/>
+                <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5"/>
+            </LinearLayout>
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" android:layout_weight="20">
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent" android:layout_weight="5">
+    </FrameLayout>
+</LinearLayout>
