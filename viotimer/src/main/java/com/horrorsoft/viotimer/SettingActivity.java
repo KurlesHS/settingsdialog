@@ -51,6 +51,8 @@ public class SettingActivity extends ActivityWithBluetoothStatuses implements Ad
 
     List<ICommonData> listOfData;
     ICommonData dataForDialog;
+    boolean isValueConfirmed;
+    int lastValue;
     int lastPosition;
     int lastComboBoxOrRadioButtonIndexSelected;
     View viewForSpinBoxDialog;
@@ -115,6 +117,10 @@ public class SettingActivity extends ActivityWithBluetoothStatuses implements Ad
         @Override
         public void onDismiss(DialogInterface dialog) {
             removeDialog(EDIT_SETTING_DIALOG);
+            if (dataForDialog != null && dataForDialog.getType() == ICommonData.TYPE_NUMERIC && !isValueConfirmed) {
+                NumericData nd = (NumericData) dataForDialog;
+                nd.setCurrentValue(lastValue);
+            }
         }
     };
 
@@ -172,6 +178,8 @@ public class SettingActivity extends ActivityWithBluetoothStatuses implements Ad
             int currentValue = numericData.getCurrentValue();
             int precision = numericData.getPrecision();
             int divider = numericData.getDivider();
+            lastValue = currentValue;
+            isValueConfirmed = false;
             editText.setText(intWithDividerAndPrecisionToString(currentValue, divider, precision));
             editText.setOnEditorActionListener(this);
             TextView textViewSuffix = (TextView) view.findViewById(R.id.textViewSpinboxSuffix);
@@ -266,6 +274,7 @@ public class SettingActivity extends ActivityWithBluetoothStatuses implements Ad
                     }
                     break;
                     case ICommonData.TYPE_NUMERIC: {
+                        isValueConfirmed = true;
                         updateCurrentItem();
                     }
                 }
