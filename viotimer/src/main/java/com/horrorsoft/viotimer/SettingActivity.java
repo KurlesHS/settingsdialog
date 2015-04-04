@@ -239,6 +239,7 @@ public class SettingActivity extends ActivityWithBluetoothStatuses implements Ad
             }
 
             int currentIndex = radioButtonData.getCurrentIndex();
+            lastComboBoxOrRadioButtonIndexSelected = currentIndex;
             adb.setSingleChoiceItems(listOfItemForComboBox, currentIndex, myClickListener);
         }
     }
