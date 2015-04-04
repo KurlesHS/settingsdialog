@@ -5,6 +5,9 @@ import android.widget.ImageView;
 import com.horrorsoft.viotimer.bluetooth.BlueToothStatusListener;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.common.CommonBlueToothStatusListener;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 
 /**
  *  Created by Alexey on 01.04.2015.

@@ -1,6 +1,7 @@
 package com.horrorsoft.viotimer;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 import com.horrorsoft.viotimer.bluetooth.ITelemetryListener;
 import com.horrorsoft.viotimer.common.ApplicationData;
@@ -305,7 +306,6 @@ public class TelemetryActivity extends ActivityWithBluetoothStatuses implements 
     protected void onResume() {
         super.onResume();
         commonData.setTelemetryListener(this);
-        updateUi();
         fetchActualDataHelper();
     }
 
@@ -331,7 +331,7 @@ public class TelemetryActivity extends ActivityWithBluetoothStatuses implements 
         altitudeStr = appendSign(altitudeStr, data.height);
         String voltageStr = String.format("%.2f", data.voltage);
         String timeDtStr = String.format("%04d", data.timeToDt);
-        String noDataStr = String.format("%5d", data.reservedA & 0xff);
+        String noDataStr = String.format("%5d", data.act & 0xff);
         String voltage2Str = String.format("%.2f", data.pwr);
         String speedStr = String.format("%.2f", data.speed);
         String temperatureStr = String.format("%.1f", Math.abs(data.temperature));
@@ -353,28 +353,6 @@ public class TelemetryActivity extends ActivityWithBluetoothStatuses implements 
         blinkFlagImage.setImageDrawable(data.blinkerOnFlag ? tmBlinkFlagOnImg : tmBlinkFlagOffImg);
         dtFlagImage.setImageDrawable(data.dtFlag ? tmDtFlagOnImg : tmDtFlagOffImg);
         rdtFlagImage.setImageDrawable(data.rdtFlag ? tmRdtFlagOnImg : tmRdtFlagOffImg);
-    }
-
-    @UiThread(delay = 1000)
-    protected void updateUi() {
-        ITelemetryListener.TelemetryData telemetryData = new ITelemetryListener.TelemetryData();
-        telemetryData.act = 123;
-        telemetryData.height = -23;
-        telemetryData.voltage = 12.65f;
-        telemetryData.hasError = false;
-        telemetryData.blinkerOnFlag = true;
-        telemetryData.dtFlag = true;
-        telemetryData.prediction = 5432;
-        telemetryData.pwr = 54.63f;
-        telemetryData.rdtFlag = true;
-        telemetryData.reservedA = (byte) 210;
-        telemetryData.rssi = 23;
-        telemetryData.servoOnFlag = true;
-        telemetryData.speed = 44.32f;
-        telemetryData.temperature = 44.2f;
-        telemetryData.timeToDt = 1987;
-
-        setNewTelemetryData(telemetryData);
     }
 
     @Override

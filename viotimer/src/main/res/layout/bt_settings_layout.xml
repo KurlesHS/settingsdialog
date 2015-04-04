@@ -17,7 +17,7 @@
                 android:layout_height="match_parent">
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="20">
+                    android:layout_height="0dp" android:layout_weight="0">
             </FrameLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -39,7 +39,7 @@
                         android:id="@+id/editText" android:layout_weight="20" android:singleLine="false"
                         android:textStyle="bold"/>
             </LinearLayout>
-            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="20"/>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="5"/>
             <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
                           android:layout_height="0dp" android:layout_weight="20">
                 <TextView android:layout_width="0dp" android:layout_height="match_parent"
@@ -52,9 +52,9 @@
                         android:layout_height="match_parent"
                         android:ems="10"
                         android:id="@+id/editText2" android:layout_weight="20" android:text="0000"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" android:numeric="integer"/>
             </LinearLayout>
-            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="20"/>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="5"/>
             <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
                           android:layout_height="0dp" android:layout_weight="20">
                 <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5"/>
@@ -62,12 +62,12 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:text="Apply"
-                        android:id="@+id/button" android:layout_weight="20"/>
+                        android:id="@+id/applyButton" android:layout_weight="20"/>
                 <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="5"/>
             </LinearLayout>
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp" android:layout_weight="20">
+                    android:layout_height="0dp" android:layout_weight="0">
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

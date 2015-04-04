@@ -16,7 +16,7 @@ import org.androidannotations.annotations.*;
 
 @Fullscreen
 @EActivity(R.layout.activity_main)
-public class StartActivity extends ActivityWithBluetoothStatuses {
+public class StartActivity extends FragmentActivityWithBluetoothStatuses {
 
     private static final int REQUEST_CONNECT_DEVICE = 0x01;
     private static final int REQUEST_ENABLE_BLUETOOTH = 0x02;
@@ -68,6 +68,12 @@ public class StartActivity extends ActivityWithBluetoothStatuses {
     public void handleGraphButtonPushed() {
         Intent intent = new Intent(this, GraphSettingActivity_.class);
         startActivity(intent);
+    }
+
+    @LongClick(R.id.ConnectButton)
+    void handleConnectButtonLongClick() {
+        BlueToothSettingsDialog dlg = new BlueToothSettingsDialog();
+        dlg.show(getSupportFragmentManager(), "bluetooth_setting_dlg");
     }
 
     @Click(R.id.ConnectButton)

@@ -16,17 +16,19 @@ public abstract class ActivityWithBluetoothStatuses extends SherlockActivity {
 
     @Override
     protected void onPause() {
+        super.onPause();
         changeBluetoothStatusHelper.setCommonData(getCommonData());
         changeBluetoothStatusHelper.setImageViewBluetoothStatus(getImageViewBluetoothStatus());
         changeBluetoothStatusHelper.removeBluetoothStatusListeners();
-        super.onPause();
+
     }
 
     @Override
     protected void onResume() {
+        super.onResume();
         changeBluetoothStatusHelper.setCommonData(getCommonData());
         changeBluetoothStatusHelper.setImageViewBluetoothStatus(getImageViewBluetoothStatus());
         changeBluetoothStatusHelper.initBlueToothListeners();
-        super.onResume();
+
     }
 }

@@ -25,7 +25,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="16"
                     android:scaleType="fitXY"
-                    android:src="@drawable/bt_discon"/>
+                    android:background="@drawable/bt_discon"/>
 
             <ImageView
                     android:id="@+id/imageView2"

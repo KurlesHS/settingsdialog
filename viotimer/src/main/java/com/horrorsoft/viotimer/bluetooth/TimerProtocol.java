@@ -134,14 +134,19 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         startDelayTimer();
     }
 
+    @UiThread(delay = 300)
+    protected void broadcastErrorTelemetryWithDelay() {
+        broadcastErrorTelemetry();
+    }
+
     @UiThread
     public void getTelemetry() {
-        if (mCurrentState != COMMON_TIMER_STATE) {
+        if (!mCurrentBlueToothStatus || mCurrentState != COMMON_TIMER_STATE) {
+            broadcastErrorTelemetryWithDelay();
             return;
         }
         byte[] telemetryCommand = getCommand((byte) 0xff);
-        mCurrentState = READING_SETTINGS_STATE;
-        mCurrentStateForReadSetting = READING_TELEMETRY_DATA;
+        mCurrentState = READING_TELEMETRY_DATA;
         mBlueToothWriter.write(telemetryCommand);
         mLengthBufferForIncomingData = 0x00;
         startDelayTimer();
@@ -157,11 +162,15 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         } else if (mCurrentState == READING_ALTIMETER_DATA) {
             sendReadFlightHistoryResult(RESULT_FAIL);
         } else if (mCurrentState == READING_TELEMETRY_DATA) {
-            ITelemetryListener.TelemetryData telemetryData = new ITelemetryListener.TelemetryData();
-            telemetryData.hasError = true;
-            broadcastTelemetry(telemetryData);
+            broadcastErrorTelemetry();
         }
         mCurrentState = COMMON_TIMER_STATE;
+    }
+
+    private void broadcastErrorTelemetry() {
+        ITelemetryListener.TelemetryData telemetryData = new ITelemetryListener.TelemetryData();
+        telemetryData.hasError = true;
+        broadcastTelemetry(telemetryData);
     }
 
     private void broadcastTelemetry(ITelemetryListener.TelemetryData telemetryData) {
@@ -260,11 +269,12 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             return;
         }
         mCurrentState = COMMON_TIMER_STATE;
+        int dataLen = mLengthBufferForIncomingData;
         clearBufferForIncomingData();
         ITelemetryListener.TelemetryData telemetryData = new ITelemetryListener.TelemetryData();
         telemetryData.hasError = true;
         byte[] intBuffer = new byte[0x04];
-        if (mLengthBufferForIncomingData == 0x11) {
+        if (dataLen == 0x11) {
             byte crc8 = calculateCrc8(mBufferForIncomingData, 0x10);
             if (crc8 == mBufferForIncomingData[0x10]) {
                 System.arraycopy(mBufferForIncomingData, 0x02, intBuffer, 0, 0x04);
