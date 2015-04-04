@@ -299,14 +299,13 @@ public class ApplicationData {
 
             if (!rawJson) {
                 inputStream.read(getBinaryData());
-            }
-
-            // проверяем crc
-            int binaryDataSize = binaryData.length - 2;
-            short binaryDataCrc = TimerProtocol.calculateCrc16(binaryData, binaryDataSize);
-            if (binaryData[binaryDataSize] != (byte) (binaryDataCrc & 0xff) &&
-                    binaryData[binaryDataSize + 1] != (byte) ((binaryDataCrc >> 8) & 0xff)) {
-                return false;
+                int binaryDataSize = binaryData.length - 2;
+                short binaryDataCrc = TimerProtocol.calculateCrc16(binaryData, binaryDataSize);
+                // проверяем crc
+                if (binaryData[binaryDataSize] != (byte) (binaryDataCrc & 0xff) &&
+                        binaryData[binaryDataSize + 1] != (byte) ((binaryDataCrc >> 8) & 0xff)) {
+                    return false;
+                }
             }
 
             AlgorithmData algorithmDataByJson = JsonSetting.createAlgorithmDataByJson(jsonData);

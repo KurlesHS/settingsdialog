@@ -36,8 +36,10 @@
                         android:layout_height="match_parent"
                         android:text="vio_timer"
                         android:ems="10"
-                        android:id="@+id/editText" android:layout_weight="20" android:singleLine="false"
-                        android:textStyle="bold"/>
+                        android:imeOptions="actionDone"
+                        android:maxLength="16"
+                        android:id="@+id/editTextBluetoothName" android:layout_weight="20" android:singleLine="true"
+                        android:textStyle="bold" android:inputType="text"/>
             </LinearLayout>
             <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="5"/>
             <LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
@@ -51,7 +53,9 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:ems="10"
-                        android:id="@+id/editText2" android:layout_weight="20" android:text="0000"
+                        android:id="@+id/editTextPin" android:layout_weight="20" android:text="0000"
+                        android:imeOptions="actionDone"
+                        android:maxLength="4"
                         android:textStyle="bold" android:numeric="integer"/>
             </LinearLayout>
             <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="5"/>
