@@ -48,6 +48,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private static final int READING_SETTINGS_STATE = 0x02;
     private static final int READING_ALTIMETER_DATA = 0x03;
     private static final int READING_TELEMETRY_DATA = 0x04;
+    private static final int FLASH_BLUETOOTH_SETTINGS = 0x05;
 
     private static final int WAIT_READY_STATE = 0x00;
     private static final int WAIT_GOOD_STATE = 0x01;
@@ -60,6 +61,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     ReadSettingFromTimerResultListener mReadSettingFromTimerResultListener = null;
     ITimerCommandResultListener mReadFlightHistoryFromTimerResultListener = null;
     ITelemetryListener mTelemetryListener = null;
+    IFlashBluetoothSettingsListener mFlashBluetoothSettingsListener = null;
 
     public TimerProtocol() {
         mCurrentBlueToothStatus = false;
@@ -68,6 +70,10 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
 
     public void setCommonData(ApplicationData commonData) {
         mCommonData = commonData;
+    }
+
+    public void setFlashBluetoothSettingsListener(IFlashBluetoothSettingsListener listener) {
+        mFlashBluetoothSettingsListener = listener;
     }
 
     public void setTelemetryListener(ITelemetryListener listener) {
@@ -134,6 +140,45 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         startDelayTimer();
     }
 
+    @UiThread
+    public void flashNewBluetoothSettings(String newPin, String newBluetoothName) {
+
+        if (!mCurrentBlueToothStatus) {
+            return;
+        }
+        byte[] pin = newPin.getBytes();
+        byte[] name = newBluetoothName.getBytes();
+
+        if (pin.length > 0x04 || pin.length < 0x04) {
+            byte[] tmp = new byte[4];
+            Arrays.fill(tmp, (byte) 0x30); // нулями
+            System.arraycopy(pin, 0, tmp, 0, Math.min(pin.length, 0x04));
+            pin = tmp;
+        }
+
+        if (name.length > 0x10 || name.length < 0x10) {
+            byte[] tmp = new byte[0x10];
+            Arrays.fill(tmp, (byte) 0x20); // пробелами
+            System.arraycopy(name, 0, tmp, 0, Math.min(name.length, 0x10));
+            name = tmp;
+        }
+
+        byte[] lastTwelveBytes = new byte[]{0x67, 0x45, 0x23, 0x01, (byte) 0xef, (byte) 0xcd,
+                (byte) 0xab, (byte) 0x89, 0x00, 0x00, 0x00, 0x00};
+
+        byte[] cmd = new byte[0x22];
+        System.arraycopy(name, 0, cmd, 0, 0x10);
+        System.arraycopy(pin, 0, cmd, 0x10, 0x04);
+        System.arraycopy(lastTwelveBytes, 0, cmd, 0x14, 0x0c);
+        short crc16 = crcForFirmware(cmd, 0x20);
+        cmd[0x21] = (byte) (crc16 & 0xff);
+        cmd[0x20] = (byte) (((crc16 & 0xffff) >> 8) & 0xff);
+        mCurrentState = FLASH_BLUETOOTH_SETTINGS;
+
+        mBlueToothWriter.write(cmd);
+        startDelayTimer();
+    }
+
     @UiThread(delay = 300)
     protected void broadcastErrorTelemetryWithDelay() {
         broadcastErrorTelemetry();
@@ -163,8 +208,17 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             sendReadFlightHistoryResult(RESULT_FAIL);
         } else if (mCurrentState == READING_TELEMETRY_DATA) {
             broadcastErrorTelemetry();
+        } else if (mCurrentState == FLASH_BLUETOOTH_SETTINGS) {
+            broadcastFlashBluetoothResult(false);
         }
         mCurrentState = COMMON_TIMER_STATE;
+    }
+
+    @UiThread
+    protected void broadcastFlashBluetoothResult(boolean result) {
+        if (mFlashBluetoothSettingsListener != null) {
+            mFlashBluetoothSettingsListener.flashBluetoothSettingResult(result);
+        }
     }
 
     private void broadcastErrorTelemetry() {
@@ -257,8 +311,26 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             case READING_TELEMETRY_DATA:
                 handleReadTelemetryData();
                 break;
+            case FLASH_BLUETOOTH_SETTINGS:
+                handleFlashBluetoothSettingData();
             default:
                 break;
+        }
+    }
+
+    private void handleFlashBluetoothSettingData() {
+        stopDelayTimer();
+        if (mLengthBufferForIncomingData < 0x05) {
+            startDelayTimer();
+            return;
+        }
+        mCurrentState = COMMON_TIMER_STATE;
+        if (mLengthBufferForIncomingData > 0x05) {
+            broadcastFlashBluetoothResult(false);
+        } else {
+            clearBufferForIncomingData();
+            String response = new String(Arrays.copyOfRange(mBufferForIncomingData, 0x00, 0x05));
+            broadcastFlashBluetoothResult(response.equals("GOOD "));
         }
     }
 
@@ -492,11 +564,16 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
 
     }
 
+    // счтает crc16 пакета (кроме последних 2 байт) и помещает это crc в последние два байта пакета
+    private void calculateCrc16AndPutItInLastBytes(byte[] packet) {
+        int dataLength = packet.length - 2;
+        short crc16 = calculateCrc16(packet, dataLength);
+        packet[dataLength] = (byte) (crc16 & 0xff);
+        packet[dataLength + 1] = (byte) ((crc16 >> 8) & 0xff);
+    }
+
     private void appendCrc16ToSendingBuffer() {
-        int dataLength = mBufferForSendingData.length - 2;
-        short crc16 = calculateCrc16(mBufferForSendingData, dataLength);
-        mBufferForSendingData[dataLength] = (byte) (crc16 & 0xff);
-        mBufferForSendingData[dataLength + 1] = (byte) ((crc16 >> 8) & 0xff);
+        calculateCrc16AndPutItInLastBytes(mBufferForSendingData);
     }
 
     @Override
@@ -586,6 +663,18 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
             bb.put(bytes);
         }
         return bb.getInt(0);
+    }
+
+    public static short crcForFirmware(byte[] array, int length) {
+        long sum = 0;
+        int i = 0;
+        if (length == 0) length = array.length;
+        while (i < length) {
+            sum += ((long) (array[i++] % 0xff) << 8) + (array[i++] % 0xff);
+        }
+        sum = (sum >> 16) + (sum & 0xffff);
+        sum += (sum >> 16);
+        return (short) (~(sum & 0xffff));
     }
 }
 

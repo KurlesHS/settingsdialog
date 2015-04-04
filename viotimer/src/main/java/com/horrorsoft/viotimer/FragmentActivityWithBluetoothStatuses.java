@@ -1,5 +1,7 @@
 package com.horrorsoft.viotimer;
 
+import android.content.Context;
+import android.os.PowerManager;
 import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.common.ApplicationData;
@@ -13,19 +15,30 @@ public abstract class FragmentActivityWithBluetoothStatuses extends SherlockFrag
     protected abstract ApplicationData getCommonData();
     protected ChangeBluetoothStatusHelper changeBluetoothStatusHelper = new ChangeBluetoothStatusHelper();
 
+    PowerManager.WakeLock wakeLock;
+
     @Override
     protected void onPause() {
+        super.onPause();
         changeBluetoothStatusHelper.setCommonData(getCommonData());
         changeBluetoothStatusHelper.setImageViewBluetoothStatus(getImageViewBluetoothStatus());
         changeBluetoothStatusHelper.removeBluetoothStatusListeners();
-        super.onPause();
+        if (wakeLock != null) {
+            wakeLock.release();
+        }
+        wakeLock = null;
     }
 
     @Override
     protected void onResume() {
+        super.onResume();
         changeBluetoothStatusHelper.setCommonData(getCommonData());
         changeBluetoothStatusHelper.setImageViewBluetoothStatus(getImageViewBluetoothStatus());
         changeBluetoothStatusHelper.initBlueToothListeners();
-        super.onResume();
+        if (wakeLock == null) {
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        }
+        wakeLock.acquire();
     }
 }

@@ -10,13 +10,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.horrorsoft.viotimer.bluetooth.BlueToothDataListener;
 import com.horrorsoft.viotimer.bluetooth.DeviceListActivity;
+import com.horrorsoft.viotimer.bluetooth.IFlashBluetoothSettingsListener;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import org.androidannotations.annotations.*;
 
 
 @Fullscreen
 @EActivity(R.layout.activity_main)
-public class StartActivity extends FragmentActivityWithBluetoothStatuses {
+public class StartActivity extends FragmentActivityWithBluetoothStatuses implements INewBluetoothSettingListener, IFlashBluetoothSettingsListener {
 
     private static final int REQUEST_CONNECT_DEVICE = 0x01;
     private static final int REQUEST_ENABLE_BLUETOOTH = 0x02;
@@ -60,7 +61,7 @@ public class StartActivity extends FragmentActivityWithBluetoothStatuses {
 
     @Click(R.id.ProgrammButton)
     public void handleProgramButtonPushed() {
-        Intent intent = new Intent(this, ProgramActivity_.class); //
+        Intent intent = new Intent(this, ProgramActivity_.class);
         startActivity(intent);
     }
 
@@ -72,8 +73,11 @@ public class StartActivity extends FragmentActivityWithBluetoothStatuses {
 
     @LongClick(R.id.ConnectButton)
     void handleConnectButtonLongClick() {
-        BlueToothSettingsDialog dlg = new BlueToothSettingsDialog();
-        dlg.show(getSupportFragmentManager(), "bluetooth_setting_dlg");
+        if (commonData.getBlueToothConnectionStatus()) {
+            BlueToothSettingsDialog dlg = new BlueToothSettingsDialog();
+            dlg.setSettingListener(this);
+            dlg.show(getSupportFragmentManager(), "bluetooth_setting_dlg");
+        }
     }
 
     @Click(R.id.ConnectButton)
@@ -154,5 +158,19 @@ public class StartActivity extends FragmentActivityWithBluetoothStatuses {
     @Override
     protected ApplicationData getCommonData() {
         return commonData;
+    }
+
+    @Override
+    public void newSettings(String pinCond, String bluetoothName) {
+        commonData.setFlashBluetoothSettingsListener(this);
+        commonData.flashNewBluetoothSettings(pinCond, bluetoothName);
+    }
+
+    @Override
+    public void flashBluetoothSettingResult(boolean result) {
+        Toast.makeText(this,
+                result ? R.string.okFlashBluetoothSetting : R.string.errorFlashBluetoothSetting,
+                Toast.LENGTH_SHORT).show();
+        commonData.setFlashBluetoothSettingsListener(null);
     }
 }

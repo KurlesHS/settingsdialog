@@ -23,14 +23,24 @@ import java.util.Arrays;
  */
 public class BlueToothSettingsDialog extends SherlockDialogFragment implements View.OnClickListener{
 
+
+    private INewBluetoothSettingListener settingListener;
+    private Button applyButton;
+    private EditText pinTextEdit;
+    private EditText nameTextEdit;
+
+    public void setSettingListener(INewBluetoothSettingListener settingListener) {
+        this.settingListener = settingListener;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bt_settings_layout, container);
         if (v != null) {
             getDialog().setTitle("Bluetooth settings");
-            final Button applyButton = (Button) v.findViewById(R.id.applyButton);
-            final EditText pinTextEdit = (EditText) v.findViewById(R.id.editTextPin);
-            final EditText nameTextEdit = (EditText) v.findViewById(R.id.editTextBluetoothName);
+            applyButton = (Button) v.findViewById(R.id.applyButton);
+            pinTextEdit = (EditText) v.findViewById(R.id.editTextPin);
+            nameTextEdit = (EditText) v.findViewById(R.id.editTextBluetoothName);
 
             if (applyButton != null) {
                 applyButton.setOnClickListener(this);
@@ -64,14 +74,14 @@ public class BlueToothSettingsDialog extends SherlockDialogFragment implements V
 
     @Override
     public void onClick(View v) {
-        if (getActivity() instanceof IDialogFragmentClickListener) {
-            IDialogFragmentClickListener listener = (IDialogFragmentClickListener) getActivity();
-            switch (v.getId()) {
-                case R.id.applyButton:
-                    listener.onClick(R.id.InsertAlgorithmDataUpperCurrentItem, null);
-                    break;
-            }
+        switch (v.getId()) {
+            case R.id.applyButton:
+                if (settingListener != null && pinTextEdit != null && nameTextEdit != null) {
+                    settingListener.newSettings(pinTextEdit.getText().toString(), nameTextEdit.getText().toString());
+                }
+                break;
         }
+
         dismiss();
     }
 }

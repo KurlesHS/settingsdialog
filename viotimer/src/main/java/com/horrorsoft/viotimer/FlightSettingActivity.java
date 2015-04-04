@@ -1,17 +1,13 @@
 package com.horrorsoft.viotimer;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.adapters.AlgorithmAdapter;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.horrorsoft.viotimer.data.AlgorithmData;
@@ -21,6 +17,7 @@ import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog;
 import com.horrorsoft.viotimer.dialogs.EditAlgorithmDataDialog_;
 import com.horrorsoft.viotimer.dialogs.IDialogFragmentClickListener;
 import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog;
+import org.androidannotations.annotations.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,13 +29,6 @@ import com.horrorsoft.viotimer.dialogs.SelectItemPositionForAlgorithmTableDialog
 @EActivity(R.layout.activity_fligth_setting)
 public class FlightSettingActivity extends FragmentActivityWithBluetoothStatuses implements View.OnClickListener, IDialogFragmentClickListener {
 
-    //private static final int ALGORITHM_NUMBER_BUTTON_ID = 1;
-    //private static final int SERVO_NUMBER_BUTTON_ID = 2;
-
-    //private static final int POSITION_OF_DATA_ID = 2;
-    //private static final int DELAY_OF_DATA_ID = 3;
-    //private static final int SERVO_POSITION_OF_DATA_ID = 4;
-
     @InstanceState
     protected int currentAlgorithmNumber;
     @InstanceState
@@ -47,7 +37,6 @@ public class FlightSettingActivity extends FragmentActivityWithBluetoothStatuses
     @ViewById(R.id.imageViewBluetoothStatus)
     protected ImageView imageViewBluetoothStatus;
 
-    private PowerManager.WakeLock mWakeLock;
 
     @Bean
     protected ApplicationData applicationData;
@@ -68,9 +57,6 @@ public class FlightSettingActivity extends FragmentActivityWithBluetoothStatuses
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
-        mWakeLock.acquire();
     }
 
     @AfterViews
@@ -236,7 +222,6 @@ public class FlightSettingActivity extends FragmentActivityWithBluetoothStatuses
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWakeLock.release();
         algorithmAdapter.setAlgorithmHandler(null);
     }
 

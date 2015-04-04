@@ -2,22 +2,19 @@ package com.horrorsoft.viotimer;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PowerManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.horrorsoft.viotimer.bluetooth.ReadSettingFromTimerResultListener;
 import com.horrorsoft.viotimer.bluetooth.TimerProtocol;
 import com.horrorsoft.viotimer.bluetooth.WriteSettingInTimerResultListener;
-import org.androidannotations.annotations.*;
 import com.horrorsoft.viotimer.common.ApplicationData;
 import com.lamerman.FileDialog;
 import com.lamerman.SelectionMode;
+import org.androidannotations.annotations.*;
 
 /**
  *
@@ -41,7 +38,6 @@ public class ProgramActivity extends ActivityWithBluetoothStatuses {
 
     private static final int SAVE_FILE_ID = 0x01;
     private static final int LOAD_FILE_ID = 0x02;
-    private PowerManager.WakeLock mWakeLock;
 
     protected ProgressDialog mProgressDialog = null;
 
@@ -221,16 +217,11 @@ public class ProgramActivity extends ActivityWithBluetoothStatuses {
     @Override
     protected void onResume() {
         super.onResume();
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
-        mWakeLock.acquire();
-        //Log.d(ApplicationData.LOG_TAG, "onResume");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //mWakeLock.release();
         //Log.d(ApplicationData.LOG_TAG, "onDestroy");
         if (mWriteSettingInTimerResultListener != null) {
             commonData.removeWriteSettingResultListener(mWriteSettingInTimerResultListener);
@@ -251,7 +242,6 @@ public class ProgramActivity extends ActivityWithBluetoothStatuses {
     @Override
     protected void onPause() {
         super.onPause();
-        mWakeLock.release();
     }
 
     @UiThread(delay = 2000)

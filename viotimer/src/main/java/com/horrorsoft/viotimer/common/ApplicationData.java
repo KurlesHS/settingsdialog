@@ -78,6 +78,10 @@ public class ApplicationData {
         mTimerProtocol.setTelemetryListener(listener);
     }
 
+    public void setFlashBluetoothSettingsListener(IFlashBluetoothSettingsListener listener) {
+        mTimerProtocol.setFlashBluetoothSettingsListener(listener);
+    }
+
     public void getTelemetry() {
         mTimerProtocol.getTelemetry();
     }
@@ -152,6 +156,10 @@ public class ApplicationData {
 
     public void readFlightHistoryFromTimer() {
         mTimerProtocol.readFlightHistory();
+    }
+
+    public void flashNewBluetoothSettings(String newPin, String newBluetoothName) {
+        mTimerProtocol.flashNewBluetoothSettings(newPin, newBluetoothName);
     }
 
     public void changeServoPosition(int servoNumber, int servoPos) {
