@@ -362,7 +362,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
                 telemetryData.act = mBufferForIncomingData[0x0c];
                 telemetryData.reservedD = mBufferForIncomingData[0x0d];
                 telemetryData.rssi = mBufferForIncomingData[0x0e];
-                telemetryData.pwr = ((float)mBufferForIncomingData[0x0f] + 100f) * 0.01f;
+                telemetryData.pwr = ((float)(mBufferForIncomingData[0x0f] & 0xff) + 100f) * 0.01f;
                 telemetryData.rdtFlag = (firstInt & 0x01) != 0;
                 telemetryData.dtFlag = (firstInt & 0x02) != 0;
                 telemetryData.temperature = (float)t * 0.1f - 20f;
