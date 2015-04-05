@@ -140,6 +140,16 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         startDelayTimer();
     }
 
+    private byte[] resizeArray(byte[] array, int len, byte fillChar) {
+        if (array.length == len) {
+            return array;
+        }
+        byte[] tmp = new byte[len];
+        Arrays.fill(tmp, fillChar);
+        System.arraycopy(array, 0, tmp, 0, Math.min(len, array.length));
+        return tmp;
+    }
+
     @UiThread
     public void flashNewBluetoothSettings(String newPin, String newBluetoothName) {
 
@@ -149,19 +159,8 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         byte[] pin = newPin.getBytes();
         byte[] name = newBluetoothName.getBytes();
 
-        if (pin.length > 0x04 || pin.length < 0x04) {
-            byte[] tmp = new byte[4];
-            Arrays.fill(tmp, (byte) 0x30); // нулями
-            System.arraycopy(pin, 0, tmp, 0, Math.min(pin.length, 0x04));
-            pin = tmp;
-        }
-
-        if (name.length > 0x10 || name.length < 0x10) {
-            byte[] tmp = new byte[0x10];
-            Arrays.fill(tmp, (byte) 0x20); // пробелами
-            System.arraycopy(name, 0, tmp, 0, Math.min(name.length, 0x10));
-            name = tmp;
-        }
+        pin = resizeArray(pin, 0x04, (byte) 0x30);
+        name = resizeArray(name, 0x10, (byte) 0x00);
 
         byte[] lastTwelveBytes = new byte[]{0x67, 0x45, 0x23, 0x01, (byte) 0xef, (byte) 0xcd,
                 (byte) 0xab, (byte) 0x89, 0x00, 0x00, 0x00, 0x00};
@@ -353,9 +352,9 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
                 int firstInt = getIntFromBytes(intBuffer);
                 System.arraycopy(mBufferForIncomingData, 0x06, intBuffer, 0, 0x04);
                 int secondInt = getIntFromBytes(intBuffer);
-                int t = (firstInt >> 2) & 0x3ff;
-                int v = (firstInt >>12) & 0x3ff;
-                int h = (firstInt >> 22) & 0x3ff;
+                int t = ((firstInt) >>> 2) & 0x3ff;
+                int v = ((firstInt) >>> 12) & 0x3ff;
+                int h = ((firstInt) >>> 22) & 0x3ff;
                 telemetryData.hasError = false;
                 telemetryData.ch1 = mBufferForIncomingData[0x00];
                 telemetryData.ch2 = mBufferForIncomingData[0x01];
@@ -369,9 +368,9 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
                 telemetryData.temperature = (float)t * 0.1f - 20f;
                 telemetryData.height = h - 0x40;
                 telemetryData.speed = (float)v * 0.01f;
-                telemetryData.voltage = (float)((secondInt >> 22) & 0x03ff) * 0.01f;
-                telemetryData.timeToDt = (secondInt >> 12) & 0x03ff;
-                telemetryData.prediction = (secondInt >> 2) & 0x03ff;
+                telemetryData.voltage = (float)((secondInt >>> 22) & 0x03ff) * 0.01f;
+                telemetryData.timeToDt = (secondInt >>> 12) & 0x03ff;
+                telemetryData.prediction = (secondInt >>> 2) & 0x03ff;
                 telemetryData.blinkerOnFlag = (secondInt & 0x0002) != 0;
                 telemetryData.servoOnFlag = (secondInt & 0x0001) != 0;
             }
