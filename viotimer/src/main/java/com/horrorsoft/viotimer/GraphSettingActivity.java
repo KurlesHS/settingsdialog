@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.annotation.IdRes;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.horrorsoft.viotimer.bluetooth.ITimerCommandResultListener;
@@ -22,12 +24,16 @@ import java.io.*;
  */
 @Fullscreen
 @EActivity(R.layout.activity_setup_graph)
-public class GraphSettingActivity extends SherlockActivity {
+public class GraphSettingActivity extends ActivityWithBluetoothStatuses {
     private static final int SAVE_FILE_ID = 0x01;
     private static final int LOAD_FILE_ID = 0x02;
 
     @Bean
     protected ApplicationData commonData;
+
+    @ViewById(R.id.imageViewBluetoothStatus)
+    protected ImageView imageViewBluetoothStatus;
+
 
     private ProgressDialog mProgressDialog = null;
     private ITimerCommandResultListener mReadFlightHistoryListener = null;
@@ -42,7 +48,7 @@ public class GraphSettingActivity extends SherlockActivity {
         intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
 
         //alternatively you can set file filter
-        intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vtf", "vtf_b"});
+        intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vtf", "vtf_b", "VTF","VTF_B"});
         startActivityForResult(intent, LOAD_FILE_ID);
     }
 
@@ -59,7 +65,7 @@ public class GraphSettingActivity extends SherlockActivity {
             intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
 
             //alternatively you can set file filter
-            intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vtf", "vtf_b"});
+            intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vtf", "VTF"});
             startActivityForResult(intent, SAVE_FILE_ID);
         }
     }
@@ -112,7 +118,7 @@ public class GraphSettingActivity extends SherlockActivity {
                     if (bytes != 2) {
                         break;
                     }
-                    crc16 = (short) (buffer[0] | (buffer[1] % 0xff) << 0x08);
+                    crc16 = (short) ((buffer[0] & 0xff) | ((buffer[1] % 0xff) << 0x08));
                 }
                 int bytes = inputStream.read(buffer, 0, buffer.length);
                 if (bytes != buffer.length) {
@@ -122,8 +128,8 @@ public class GraphSettingActivity extends SherlockActivity {
                     retVal = true;
                 } else {
                     short realCrc = TimerProtocol.calculateCrc16(buffer, buffer.length);
-                    //retVal = realCrc == crc16;
-                    retVal = true;
+                    retVal = realCrc == crc16;
+                    //retVal = true;
                 }
                 if (retVal) {
                     commonData.setFlightHistoryData(buffer);
@@ -142,8 +148,10 @@ public class GraphSettingActivity extends SherlockActivity {
             try {
                 FileOutputStream outputStream = new FileOutputStream(new File(filepath));
                 short crc16 = TimerProtocol.calculateCrc16(dataToSave, dataToSave.length);
-                outputStream.write(crc16 & 0xff);
-                outputStream.write((crc16 >>> 0x08) & 0xff);
+                int low = crc16 & 0xff;
+                int hight = (crc16 >>> 0x08) & 0xff;
+                outputStream.write(low);
+                outputStream.write(hight);
                 outputStream.write(dataToSave);
                 outputStream.close();
                 retVal = true;
@@ -220,5 +228,15 @@ public class GraphSettingActivity extends SherlockActivity {
         commonData.addReadFlightHistoryFromTimerResultListener(mReadFlightHistoryListener);
         mProgressDialog.show();
         commonData.readFlightHistoryFromTimer();
+    }
+
+    @Override
+    protected ImageView getImageViewBluetoothStatus() {
+        return imageViewBluetoothStatus;
+    }
+
+    @Override
+    protected ApplicationData getCommonData() {
+        return commonData;
     }
 }

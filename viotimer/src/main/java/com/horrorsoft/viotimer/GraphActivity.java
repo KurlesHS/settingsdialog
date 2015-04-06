@@ -2,7 +2,7 @@ package com.horrorsoft.viotimer;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.Paint;
 import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.github.mikephil.charting.charts.LineChart;
@@ -32,9 +32,9 @@ public class GraphActivity extends SherlockActivity {
 
             mRdtFlag = (intData & 0x01) != 0;
             mDtFlag = (intData & 0x02) != 0;
-            int t = (intData >> 2) & 0x3ff;
-            int v = (intData >>12) & 0x3ff;
-            int h = (intData >> 22) & 0x3ff;
+            int t = (intData >>> 2) & 0x03ff;
+            int v = (intData >>> 12) & 0x03ff;
+            int h = (intData >>> 22) & 0x03ff;
             mTemperature = (double)t * 0.1 - 20.;
             mHeight = h - 0x40;
             mSpeed = (double)v * 0.01 ;
@@ -99,10 +99,10 @@ public class GraphActivity extends SherlockActivity {
         int flightNum = 0;
         boolean firstTime = true;
         int currentStep = 0x02;
-        ArrayList<Entry> heights = new ArrayList<Entry>();
-        ArrayList<Entry> speeds = new ArrayList<Entry>();
-        ArrayList<Entry> temperatures = new ArrayList<Entry>();
-        ArrayList<String> xVal = new ArrayList<String>();
+        ArrayList<Entry> heights = new ArrayList<>();
+        ArrayList<Entry> speeds = new ArrayList<>();
+        ArrayList<Entry> temperatures = new ArrayList<>();
+        ArrayList<String> xVal = new ArrayList<>();
         int currentXAxis = 0x00;
         for(int i = 0; i < 100; ++i) {
             System.arraycopy(flightHistoryData, i * 0x40, mBuffForChunk, 0, 0x40);
@@ -120,8 +120,8 @@ public class GraphActivity extends SherlockActivity {
                 speeds.add(new Entry((float) fv.getSpeed(), currentXAxis));
                 heights.add(new Entry(fv.getHeight(), currentXAxis));
                 temperatures.add(new Entry((float) fv.getTemperature(), currentXAxis));
-                double time = currentXAxis / 0.05;
-                xVal.add(String.valueOf(time));
+                double time = currentXAxis * 0.05;
+                xVal.add(String.format("%.2f", time));
                 currentXAxis += currentStep;
             }
             if (i == 12) {
@@ -131,13 +131,14 @@ public class GraphActivity extends SherlockActivity {
             }
         }
 
-        LineDataSet setHeight = new LineDataSet(heights, "Heights");
+        LineDataSet setHeight = new LineDataSet(heights, "Altitude");
         LineDataSet setSpeed = new LineDataSet(speeds, "Speed");
 
 
         setHeight.setAxisDependency(YAxis.AxisDependency.LEFT);
         setHeight.setColor(ColorTemplate.getHoloBlue());
-        setHeight.setCircleColor(Color.WHITE);
+        setHeight.setCircleColor(ColorTemplate.getHoloBlue());
+        setHeight.setValueTextColor(Color.WHITE);
         setHeight.setLineWidth(2f);
         setHeight.setCircleSize(3f);
         setHeight.setFillAlpha(65);
@@ -145,10 +146,10 @@ public class GraphActivity extends SherlockActivity {
         setHeight.setHighLightColor(Color.rgb(244, 117, 117));
         setHeight.setDrawCircleHole(false);
 
-        setSpeed.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setSpeed.setColor(ColorTemplate.getHoloBlue());
+        setSpeed.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        setSpeed.setValueTextColor(Color.WHITE);
         setSpeed.setColor(Color.RED);
-        setSpeed.setCircleColor(Color.WHITE);
+        setSpeed.setCircleColor(Color.RED);
         setSpeed.setLineWidth(2f);
         setSpeed.setCircleSize(3f);
         setSpeed.setFillAlpha(65);
@@ -164,12 +165,20 @@ public class GraphActivity extends SherlockActivity {
 
 
         LineChart mChart = new LineChart(this);
+        mChart.setDescription("Flight graph");
+        mChart.setGridBackgroundColor(Color.WHITE);
+        Paint descriptionPaint = mChart.getPaint(LineChart.PAINT_DESCRIPTION);
+        descriptionPaint.setColor(Color.WHITE);
+        //mChart.setBackgroundColor(Color.BLACK);
+
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.LayoutForCharts);
         layout.addView(mChart);
         mChart.setData(data);
 
         mChart.animateX(2500);
+        mChart.setDrawGridBackground(false);
+
 
         //Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
@@ -195,15 +204,17 @@ public class GraphActivity extends SherlockActivity {
         YAxis leftAxis = mChart.getAxisLeft();
         //leftAxis.setTypeface(tf);
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-        leftAxis.setAxisMaxValue(0x400f);
+        leftAxis.setAxisMaxValue(0x0400 - 0x40);
+        leftAxis.setAxisMinValue(-0x40);
         leftAxis.setDrawGridLines(true);
+        leftAxis.setStartAtZero(false);
 
         YAxis rightAxis = mChart.getAxisRight();
         //rightAxis.setTypeface(tf);
         rightAxis.setTextColor(Color.RED);
-        rightAxis.setAxisMaxValue(0x400f);
+        rightAxis.setAxisMaxValue(10.24f);
         rightAxis.setStartAtZero(false);
-        rightAxis.setAxisMinValue(-200);
+        rightAxis.setAxisMinValue(0f);
         rightAxis.setDrawGridLines(false);
     }
 
