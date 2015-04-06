@@ -2,9 +2,12 @@ package com.horrorsoft.viotimer;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -165,6 +168,43 @@ public class GraphActivity extends SherlockActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.LayoutForCharts);
         layout.addView(mChart);
         mChart.setData(data);
+
+        mChart.animateX(2500);
+
+        //Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+
+        // get the legend (only possible after setting data)
+        Legend l = mChart.getLegend();
+
+        // modify the legend ...
+        // l.setPosition(LegendPosition.LEFT_OF_CHART);
+        l.setForm(Legend.LegendForm.LINE);
+        //l.setTypeface(tf);
+        l.setTextSize(11f);
+        l.setTextColor(Color.WHITE);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+
+        XAxis xAxis = mChart.getXAxis();
+        //xAxis.setTypeface(tf);
+        xAxis.setTextSize(12f);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setSpaceBetweenLabels(1);
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        //leftAxis.setTypeface(tf);
+        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
+        leftAxis.setAxisMaxValue(0x400f);
+        leftAxis.setDrawGridLines(true);
+
+        YAxis rightAxis = mChart.getAxisRight();
+        //rightAxis.setTypeface(tf);
+        rightAxis.setTextColor(Color.RED);
+        rightAxis.setAxisMaxValue(0x400f);
+        rightAxis.setStartAtZero(false);
+        rightAxis.setAxisMinValue(-200);
+        rightAxis.setDrawGridLines(false);
     }
 
     @Click(R.id.FlightSetButton)

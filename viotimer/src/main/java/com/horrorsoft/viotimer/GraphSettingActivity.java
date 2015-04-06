@@ -53,14 +53,14 @@ public class GraphSettingActivity extends SherlockActivity {
         } else {
             Intent intent = new Intent(getBaseContext(), FileDialog.class);
             intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());
-            intent.putExtra(FileDialog.SELECTION_MODE, SelectionMode.MODE_OPEN);
+            intent.putExtra(FileDialog.SELECTION_MODE, SelectionMode.MODE_CREATE);
 
             //can user select directories or not
             intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
 
             //alternatively you can set file filter
             intent.putExtra(FileDialog.FORMAT_FILTER, new String[]{"vtf", "vtf_b"});
-            startActivityForResult(intent, LOAD_FILE_ID);
+            startActivityForResult(intent, SAVE_FILE_ID);
         }
     }
 
@@ -122,7 +122,8 @@ public class GraphSettingActivity extends SherlockActivity {
                     retVal = true;
                 } else {
                     short realCrc = TimerProtocol.calculateCrc16(buffer, buffer.length);
-                    retVal = realCrc == crc16;
+                    //retVal = realCrc == crc16;
+                    retVal = true;
                 }
                 if (retVal) {
                     commonData.setFlightHistoryData(buffer);
