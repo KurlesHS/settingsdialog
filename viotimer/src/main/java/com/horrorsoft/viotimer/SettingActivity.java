@@ -2,7 +2,6 @@ package com.horrorsoft.viotimer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.horrorsoft.viotimer.adapters.SettingDialogAdapter;
 import com.horrorsoft.viotimer.common.ApplicationData;
