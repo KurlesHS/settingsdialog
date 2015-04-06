@@ -24,6 +24,9 @@ public class SelectSettingActivity extends ActivityWithBluetoothStatuses {
 
     @Click(R.id.FlightSetButton)
     public void handleFlightSettings() {
+        if (commonData.getAlgorithmData().getAlgorithmCount() == 0) {
+            return;
+        }
         Intent intent = new Intent(this, FlightSettingActivity_.class);
         startActivity(intent);
     }

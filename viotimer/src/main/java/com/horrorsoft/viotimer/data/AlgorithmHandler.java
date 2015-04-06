@@ -111,7 +111,11 @@ public class AlgorithmHandler {
         /*
         return algorithmRowDataList.size();
          */
-        return algorithmData.getAlgorithm(currentAlgorithmNum).getAlgorithmForServoNum(currentServoNum).size();
+        AlgorithmData.Algorithm algorithm = algorithmData.getAlgorithm(currentAlgorithmNum);
+        if (algorithm == null) {
+            return 0;
+        }
+        return algorithm.getAlgorithmForServoNum(currentServoNum).size();
     }
 
     public AlgorithmRowData getAlgorithmRowData(int position) {

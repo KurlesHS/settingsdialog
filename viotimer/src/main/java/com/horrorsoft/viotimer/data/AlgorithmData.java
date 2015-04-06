@@ -181,6 +181,9 @@ public class AlgorithmData {
     }
 
     public Algorithm getAlgorithm(int algorithmNumber) {
+        if ( algorithmNumber >= listOfAlgorithms.size()) {
+            return null;
+        }
         return listOfAlgorithms.get(algorithmNumber);
     }
 }
