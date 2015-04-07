@@ -1,13 +1,13 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:5
 	android:versionName
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 	android:versionCode
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
@@ -41,7 +41,6 @@ application
 ADDED from AndroidManifest.xml:14:5
 MERGED from com.android.support:support-v4:22.0.0:22:5
 MERGED from com.actionbarsherlock:actionbarsherlock:4.4.0:4:3
-MERGED from viotimer:fileexplorer:unspecified:11:5
 	android:label
 		ADDED from AndroidManifest.xml:17:9
 	android:allowBackup
@@ -126,7 +125,6 @@ ADDED from AndroidManifest.xml:54:9
 		ADDED from AndroidManifest.xml:55:13
 activity#com.lamerman.FileDialog
 ADDED from AndroidManifest.xml:58:9
-MERGED from viotimer:fileexplorer:unspecified:12:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:60:13
 	android:name
