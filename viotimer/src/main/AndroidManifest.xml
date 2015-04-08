@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.horrorsoft.viotimer">
+    package="com.horrorsoft.abctimer">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -12,12 +12,12 @@
         android:maxSdkVersion="18" />
 
     <application
-        android:name=".TimerVioApplication_"
+        android:name="com.horrorsoft.abctimer.TimerVioApplication_"
         android:icon="@drawable/ic_launcher"
         android:label="@string/vio_timer_app_name"
         android:theme="@style/Theme.Horrorsoft.Viotimer" android:allowBackup="true">
         <activity
-            android:name=".StartActivity_"
+            android:name="com.horrorsoft.abctimer.StartActivity_"
             android:label="@string/vio_timer_app_name"
             android:screenOrientation="landscape" >
             <intent-filter>
