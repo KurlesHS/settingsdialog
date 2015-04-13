@@ -104,7 +104,13 @@ public class GraphActivity extends SherlockActivity {
         ArrayList<Entry> temperatures = new ArrayList<>();
         ArrayList<String> xVal = new ArrayList<>();
         int currentXAxis = 0x00;
+        double currentTime = 0.0;
         for(int i = 0; i < 100; ++i) {
+            if (i == 12) {
+                currentStep = 5;
+            } else if (i == 60) {
+                currentStep = 20;
+            }
             System.arraycopy(flightHistoryData, i * 0x40, mBuffForChunk, 0, 0x40);
             FlightChunk fc = new FlightChunk(mBuffForChunk);
             if (!fc.isValid()) {
@@ -120,15 +126,15 @@ public class GraphActivity extends SherlockActivity {
                 speeds.add(new Entry((float) fv.getSpeed(), currentXAxis));
                 heights.add(new Entry(fv.getHeight(), currentXAxis));
                 temperatures.add(new Entry((float) fv.getTemperature(), currentXAxis));
-                double time = currentXAxis * 0.05;
-                xVal.add(String.format("%.2f", time));
+                for (int xyz = 0; xyz < currentStep; ++xyz) {
+                    xVal.add(String.format("%.2f", currentTime));
+                    currentTime += 0.05;
+                }
+                //double time = currentXAxis * 0.05;
+                //xVal.add(String.format("%.2f", time));
                 currentXAxis += currentStep;
             }
-            if (i == 12) {
-                currentStep = 5;
-            } else if (i == 60) {
-                currentStep = 20;
-            }
+
         }
 
         LineDataSet setHeight = new LineDataSet(heights, "Altitude");
