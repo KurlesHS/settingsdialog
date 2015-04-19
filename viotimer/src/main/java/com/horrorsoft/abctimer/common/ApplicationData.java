@@ -336,7 +336,7 @@ public class ApplicationData {
                             byte[] retVal = null;
                             pointer *= 2;
                             if (getBinaryData().length > pointer + 1) {
-                                int realAdr = getBinaryData()[pointer] + getBinaryData()[pointer + 1] * 0x100;
+                                int realAdr = (binaryData[pointer] & 0xff) | ((binaryData[pointer + 1] & 0xff) << 0x08);
                                 int len = 0;
                                 while (getBinaryData().length > realAdr + len && getBinaryData()[realAdr + len] != 0) {
                                     len += 4;
