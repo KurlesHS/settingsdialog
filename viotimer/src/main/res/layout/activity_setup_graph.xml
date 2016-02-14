@@ -139,6 +139,12 @@
                         android:background="@drawable/style_button"
                         android:scaleType="fitXY"
                         android:src="@drawable/grp_scr"/>
+                <FrameLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_weight="6"/>
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:text="MAP TEST"
+                        android:id="@+id/mapTestButton"/>
 
             </LinearLayout>
 

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.horrorsoft.abctimer">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
+    <!-- Required to enable google maps support -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Required to show current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- end of google maps related stuff -->
 
     <application
         android:name="com.horrorsoft.abctimer.TimerVioApplication_"
         android:icon="@drawable/ic_launcher"
         android:label="@string/vio_timer_app_name"
         android:theme="@style/Theme.Horrorsoft.Viotimer" android:allowBackup="true">
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+                   android:value="AIzaSyB-c9YPDqDbYW6TR_iHnYrDZyTGhX1Nemo"/>
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version"/>
+
         <activity
             android:name="com.horrorsoft.abctimer.StartActivity_"
             android:label="@string/vio_timer_app_name"
@@ -55,6 +64,11 @@
             android:name=".GraphSettingActivity_"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Sherlock.Light.NoActionBar" />
+
+        <activity
+                android:name=".GoogleMapsActivity"
+                android:screenOrientation="landscape"
+                android:theme="@style/Theme.Sherlock.Light.NoActionBar" />
         <activity
             android:name="com.lamerman.FileDialog"
             android:screenOrientation="landscape" />
