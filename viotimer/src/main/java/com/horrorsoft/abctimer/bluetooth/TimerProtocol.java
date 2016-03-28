@@ -21,7 +21,7 @@ import java.util.Arrays;
 public class TimerProtocol implements BlueToothDataListener, BlueToothStatusListener {
 
     @Bean
-    protected ApplicationData mCommonData;
+    ApplicationData mCommonData;
 
     private BlueToothWriter mBlueToothWriter = null;
     private boolean mCurrentBlueToothStatus;
@@ -42,6 +42,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private static final int mFlightHistoryPacketTotalCount = 200;
 
     private static final String DELAY_ID_FOR_WAIT_RESPONSE = "delay_id";
+    private static final String REQUEST_GPRS_DATA_TIMER = "request_gprs_data_id";
 
     private static final int COMMON_TIMER_STATE = 0x00;
     private static final int WRITING_SETTINGS_STATE = 0x01;
@@ -49,6 +50,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     private static final int READING_ALTIMETER_DATA = 0x03;
     private static final int READING_TELEMETRY_DATA = 0x04;
     private static final int FLASH_BLUETOOTH_SETTINGS = 0x05;
+    private static final int READING_GPRS_DATA = 0x06;
 
     private static final int WAIT_READY_STATE = 0x00;
     private static final int WAIT_GOOD_STATE = 0x01;
@@ -57,11 +59,11 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
     public static final int RESULT_OK = 0x00;
     public static final int RESULT_FAIL = 0x01;
 
-    WriteSettingInTimerResultListener mWriteSettingInTimerResultListener = null;
-    ReadSettingFromTimerResultListener mReadSettingFromTimerResultListener = null;
-    ITimerCommandResultListener mReadFlightHistoryFromTimerResultListener = null;
-    ITelemetryListener mTelemetryListener = null;
-    IFlashBluetoothSettingsListener mFlashBluetoothSettingsListener = null;
+    private WriteSettingInTimerResultListener mWriteSettingInTimerResultListener = null;
+    private ReadSettingFromTimerResultListener mReadSettingFromTimerResultListener = null;
+    private ITimerCommandResultListener mReadFlightHistoryFromTimerResultListener = null;
+    private ITelemetryListener mTelemetryListener = null;
+    private IFlashBluetoothSettingsListener mFlashBluetoothSettingsListener = null;
 
     public TimerProtocol() {
         mCurrentBlueToothStatus = false;
@@ -194,8 +196,20 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         mBlueToothWriter.write(telemetryCommand);
         mLengthBufferForIncomingData = 0x00;
         startDelayTimer();
+    }
+
+    @Background(delay = 2000, id = REQUEST_GPRS_DATA_TIMER)
+    protected void requestGprsData()
+    {
+        if (mCurrentState != COMMON_TIMER_STATE || !mCurrentBlueToothStatus) {
+            requestGprsData();
+        } else {
+            mCurrentState = READING_GPRS_DATA;
+
+        }
 
     }
+
 
     @Background(delay = 2000, id = DELAY_ID_FOR_WAIT_RESPONSE)
     protected void startDelayTimer() {
@@ -664,7 +678,7 @@ public class TimerProtocol implements BlueToothDataListener, BlueToothStatusList
         return bb.getInt(0);
     }
 
-    public static short crcForFirmware(byte[] array, int length) {
+    private static short crcForFirmware(byte[] array, int length) {
         long sum = 0;
         int i = 0;
         if (length == 0) length = array.length;
