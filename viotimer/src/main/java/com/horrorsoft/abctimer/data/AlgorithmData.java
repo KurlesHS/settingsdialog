@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 19:59
  */
 
-
+@SuppressWarnings("unchecked")
 public class AlgorithmData {
 
     public interface Serialize {
@@ -24,7 +24,7 @@ public class AlgorithmData {
         byte[] getAlgorithmByteArrayFromPointer(int pointer);
     }
 
-    List<Algorithm> listOfAlgorithms;
+    private List<Algorithm> listOfAlgorithms;// = new ArrayList<Algorithm>();
 
     public String getAlgorithmDescription(int i) {
         return listOfAlgorithms.get(i).getDescription();
