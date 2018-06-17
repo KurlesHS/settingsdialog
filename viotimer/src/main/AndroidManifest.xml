@@ -20,10 +20,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/vio_timer_app_name"
         android:theme="@style/Theme.Horrorsoft.Viotimer" android:allowBackup="true">
-        <meta-data android:name="com.google.android.maps.v2.API_KEY"
-                   android:value="AIzaSyB-c9YPDqDbYW6TR_iHnYrDZyTGhX1Nemo"/>
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version"/>
 
         <activity
             android:name="com.horrorsoft.abctimer.StartActivity_"
@@ -64,11 +60,6 @@
             android:name=".GraphSettingActivity_"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Sherlock.Light.NoActionBar" />
-
-        <activity
-                android:name=".GoogleMapsActivity"
-                android:screenOrientation="landscape"
-                android:theme="@style/Theme.Sherlock.Light.NoActionBar" />
         <activity
             android:name="com.lamerman.FileDialog"
             android:screenOrientation="landscape" />

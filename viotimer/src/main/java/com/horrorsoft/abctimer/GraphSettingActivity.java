@@ -177,12 +177,6 @@ public class GraphSettingActivity extends ActivityWithBluetoothStatuses {
         }
     }
 
-    @Click(R.id.mapTestButton)
-    public void handleMapButton() {
-        Intent intent = new Intent(this, GoogleMapsActivity.class);
-        startActivity(intent);
-    }
-
     @UiThread(delay = 5000)
     protected void closeProgressDialogAfterFiveSecond() {
         closeProgressDialog();
